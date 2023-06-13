@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mini_project/constants.dart';
+import 'package:mini_project/screens/login/login.dart';
 import 'package:mini_project/theme_provider.dart';
 
 void main() {
@@ -17,7 +19,8 @@ class MyApp extends StatelessWidget {
       theme: MyThemes.lightTheme,
       darkTheme: MyThemes.darkTheme,
       debugShowCheckedModeBanner: false,
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      color: kSecondaryColor,
+      home: const Login(),
     );
   }
 }
@@ -35,12 +38,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(),
-      ),
-    );
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: const Login());
   }
 }
