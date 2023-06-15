@@ -14,15 +14,24 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  String email = '';
+  String password = '';
+  bool hidePassword = true;
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     // double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
-    String email = '';
-    String password = '';
     // bool hidePassword = true;
 
     return Scaffold(
@@ -77,35 +86,152 @@ class _LoginState extends State<Login> {
               transform: Matrix4.translationValues(0, -70, 0),
               child: Column(
                 children: [
-                  GenieTextInput(
-                    width: width * 0.95,
+                  // GenieTextInput(
+                  //   width: width * 0.95,
+                  //   height: 50,
+                  //   borderRadius: 30,
+                  //   icon: const Icon(Icons.email),
+                  //   label: 'Email',
+                  //   hint: 'user@email.com',
+                  //   email: email,
+                  //   emailController: emailController,
+                  // ),
+                  SizedBox(
+                    width: width * .95,
                     height: 50,
-                    borderRadius: 30,
-                    icon: const Icon(Icons.email),
-                    label: 'Email',
-                    hint: 'user@email.com',
-                    email: email,
-                    emailController: emailController,
+                    child: TextField(
+                      controller: emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.next,
+                      decoration: InputDecoration(
+                        labelStyle: const TextStyle(
+                            color: Color(0xA0000000), fontSize: 18),
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: kSecondaryColor,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.horizontal(
+                            right: Radius.circular(30),
+                            left: Radius.circular(30),
+                          ),
+                        ),
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 15),
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.horizontal(
+                            right: Radius.circular(30),
+                            left: Radius.circular(30),
+                          ),
+                          // borderSide: BorderSide(color: borderColor, width: borderWidth),
+                        ),
+                        iconColor: kSecondaryColor,
+                        labelText: 'Email',
+                        hintText: 'user@email.com',
+                        prefixIcon: const Icon(
+                          Icons.email,
+                          color: Colors.black45,
+                        ),
+                        suffixIcon: emailController.text.isEmpty
+                            ? const SizedBox(
+                                width: 0,
+                              )
+                            : IconButton(
+                                onPressed: () {
+                                  email = '';
+                                  emailController.clear();
+                                },
+                                icon: const Icon(
+                                  Icons.close,
+                                  color: Colors.black45,
+                                ),
+                              ),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          email = value;
+                        });
+                      },
+                    ),
                   ),
                   const SizedBox(
                     height: 5,
                   ),
-                  GenieTextInput(
-                    width: width * 0.95,
+                  SizedBox(
+                    width: width * .95,
                     height: 50,
-                    borderRadius: 30,
-                    icon: const Icon(Icons.lock),
-                    label: 'Password',
-                    hint: '********',
-                    password: password,
-                    passwordController: passwordController,
+                    child: TextField(
+                      controller: passwordController,
+                      obscureText: hidePassword,
+                      // keyboardType: TextInputType.visiblePassword,
+                      textInputAction: TextInputAction.done,
+                      decoration: InputDecoration(
+                        labelStyle: const TextStyle(
+                            color: Color(0xA0000000), fontSize: 18),
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: kSecondaryColor,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.horizontal(
+                            right: Radius.circular(30),
+                            left: Radius.circular(30),
+                          ),
+                        ),
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 15),
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.horizontal(
+                            right: Radius.circular(30),
+                            left: Radius.circular(30),
+                          ),
+                          // borderSide: BorderSide(color: borderColor, width: borderWidth),
+                        ),
+                        iconColor: kSecondaryColor,
+                        labelText: 'Password',
+                        hintText: '********',
+                        prefixIcon: const Icon(
+                          Icons.lock,
+                          color: Colors.black45,
+                        ),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              hidePassword = !hidePassword;
+                            });
+                          },
+                          icon: const Icon(
+                            Icons.remove_red_eye,
+                            color: Colors.black45,
+                          ),
+                        ),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          password = value;
+                        });
+                      },
+                      // onSubmitted: (value) {
+                      //   signInWithEmailAndPassword();
+                      // },
+                    ),
                   ),
+                  // GenieTextInput(
+                  //   width: width * 0.95,
+                  //   height: 50,
+                  //   borderRadius: 30,
+                  //   icon: const Icon(Icons.lock),
+                  //   label: 'Password',
+                  //   hint: '********',
+                  //   password: password,
+                  //   passwordController: passwordController,
+                  // ),
                   const SizedBox(
                     height: 5,
                   ),
                   GenieButton(
                     text: 'Continue',
-                    color: emailController.text.isEmpty &&
+                    color: emailController.text.isEmpty ||
                             passwordController.text.isEmpty
                         ? const Color(0x23000000)
                         : kSecondaryColor,
