@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mini_project/constants.dart';
-import 'package:mini_project/widgets/text/choptime_text.dart';
+import 'package:mini_project/widgets/text/genie_text.dart';
 
-class ChopTimeButton extends StatelessWidget {
+class GenieButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   final double height;
@@ -11,18 +11,22 @@ class ChopTimeButton extends StatelessWidget {
   final Color textColor;
   final InteractiveInkFeatureFactory? factory;
   final double? borderRadius;
+  final Color borderColor;
+  final double borderWidth;
 
-  const ChopTimeButton(
-      {Key? key,
-      required this.text,
-      required this.onPressed,
-      this.height = 50,
-      this.width = 200,
-      this.factory,
-      this.color = kSecondaryColor,
-      this.textColor = Colors.white,
-      this.borderRadius = 30})
-      : super(key: key);
+  const GenieButton({
+    Key? key,
+    required this.text,
+    required this.onPressed,
+    this.height = 50,
+    this.width = 200,
+    this.factory,
+    this.color = kSecondaryColor,
+    this.textColor = Colors.white,
+    this.borderRadius = 30,
+    this.borderColor = Colors.transparent,
+    this.borderWidth = 0,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,14 +39,17 @@ class ChopTimeButton extends StatelessWidget {
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(borderRadius!),
-              // side: const BorderSide(color: Colors.blue),
+              side: BorderSide(
+                color: borderColor,
+                width: borderWidth,
+              ),
             ),
           ),
           splashFactory: factory,
           shadowColor: MaterialStateProperty.all<Color>(Colors.white),
           backgroundColor: MaterialStateProperty.all<Color>(color),
         ),
-        child: ChopTimeText(
+        child: GenieText(
           text: text,
           fontSize: 16,
           fontWeight: FontWeight.w500,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ChopTimeText extends StatelessWidget {
+class GenieText extends StatelessWidget {
   final String text;
   final double fontSize;
   final TextAlign textAlign;
@@ -10,7 +10,7 @@ class ChopTimeText extends StatelessWidget {
   final int? maxLines;
   final TextOverflow? overflow;
   final double? textScaleFactor;
-  const ChopTimeText({
+  const GenieText({
     Key? key,
     required this.text,
     this.fontSize = 16,

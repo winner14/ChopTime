@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mini_project/constants.dart';
 
-class ChopTimeTextInput extends StatelessWidget {
+class GenieTextInput extends StatelessWidget {
   final String? email;
   final String? hint;
   final String? label;
@@ -13,8 +13,10 @@ class ChopTimeTextInput extends StatelessWidget {
   final double? width;
   final double? height;
   final double borderRadius;
+  final Color borderColor;
+  final double borderWidth;
 
-  const ChopTimeTextInput({
+  const GenieTextInput({
     Key? key,
     this.email,
     this.password,
@@ -27,6 +29,8 @@ class ChopTimeTextInput extends StatelessWidget {
     this.width,
     this.height = 50,
     this.borderRadius = 10,
+    this.borderColor = Colors.transparent,
+    this.borderWidth = 0,
   }) : super(key: key);
 
   @override
@@ -45,6 +49,7 @@ class ChopTimeTextInput extends StatelessWidget {
               right: Radius.circular(borderRadius),
               left: Radius.circular(borderRadius),
             ),
+            borderSide: BorderSide(color: borderColor, width: borderWidth),
           ),
           iconColor: kSecondaryColor,
           labelText: label,

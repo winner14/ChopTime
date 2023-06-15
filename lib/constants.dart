@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mini_project/widgets/text/choptime_text.dart';
+import 'package:mini_project/widgets/text/genie_text.dart';
 
 const kPrimaryColor = Color(0xFF4CAF50);
 const kSecondaryColor = Color(0xFFCFB53B);
@@ -20,7 +20,7 @@ void showSnackbar(context, color, message) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       backgroundColor: color,
-      content: ChopTimeText(
+      content: GenieText(
         text: message,
         color: Colors.white,
         fontWeight: FontWeight.w300,
@@ -42,7 +42,7 @@ void showSnackbarWithoutAction(context, color, message) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       backgroundColor: color,
-      content: ChopTimeText(
+      content: GenieText(
         text: message,
         color: Colors.white,
       ),
