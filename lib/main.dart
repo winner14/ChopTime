@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mini_project/constants.dart';
+import 'package:mini_project/screens/intro/intro_page.dart';
 import 'package:mini_project/screens/login/login.dart';
 import 'package:mini_project/theme_provider.dart';
 
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
       darkTheme: MyThemes.darkTheme,
       debugShowCheckedModeBanner: false,
       color: kSecondaryColor,
-      home: const Login(),
+      home: const GenieIntro(),
     );
   }
 }

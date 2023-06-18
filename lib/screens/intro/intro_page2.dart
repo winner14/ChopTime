@@ -3,8 +3,8 @@ import 'package:mini_project/constants.dart';
 import 'package:mini_project/widgets/image/genie_image.dart';
 import 'package:mini_project/widgets/text/genie_text.dart';
 
-class GenieIntro1 extends StatelessWidget {
-  const GenieIntro1({super.key});
+class GenieIntro2 extends StatelessWidget {
+  const GenieIntro2({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +20,12 @@ class GenieIntro1 extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           const SizedBox(height: 70),
           const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
+            padding: EdgeInsets.symmetric(horizontal: 15),
             child: GenieText(
-              text: 'Discover recipes made just for you',
+              text: 'No more kitchen stress',
               fontSize: 25,
               fontWeight: FontWeight.w500,
               color: kBackgroundColor,
@@ -34,12 +33,12 @@ class GenieIntro1 extends StatelessWidget {
             ),
           ),
           Container(
-            height: 250,
-            transform: Matrix4.translationValues(0, 30, 0),
-            child: const GenieImage(image: 'assets/images/intro1.png'),
+            height: 230,
+            transform: Matrix4.translationValues(0, 70, 0),
+            child: const GenieImage(image: 'assets/images/intro2.png'),
           ),
           const SizedBox(
-            height: 150,
+            height: 170,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -47,7 +46,7 @@ class GenieIntro1 extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 15),
                   child: GenieText(
                     text:
-                        'Genie uses the ingredients you have to create delicious dishes with a touch of magic',
+                        'Genie turns your ingredients into easy and delicious recipes, making cooking a breeze',
                     fontSize: 19,
                     fontWeight: FontWeight.w400,
                     color: kBackgroundColor,

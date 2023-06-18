@@ -12,7 +12,10 @@ const kAppBgColorLight = Colors.white;
 
 //next screen
 void nextScreen(context, screen) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => screen));
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => screen),
+  );
 }
 
 //snackbar

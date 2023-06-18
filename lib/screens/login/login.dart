@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mini_project/constants.dart';
 import 'package:mini_project/widgets/button/button.dart';
 import 'package:mini_project/widgets/image/genie_image.dart';
-import 'package:mini_project/widgets/line/line.dart';
 import 'package:mini_project/widgets/text/genie_text.dart';
-import 'package:mini_project/widgets/text_input/genie_text_input.dart';
+import 'package:mini_project/screens/home/home.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -32,10 +31,7 @@ class _LoginState extends State<Login> {
     // double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
-    // bool hidePassword = true;
-
     return Scaffold(
-      // appBar: AppBar(),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -49,9 +45,10 @@ class _LoginState extends State<Login> {
                   bottomRight: Radius.circular(130),
                 ),
                 image: DecorationImage(
-                    image: AssetImage('assets/images/topBg.png'),
-                    fit: BoxFit.fill,
-                    opacity: 0.4),
+                  image: AssetImage('assets/images/topBg.png'),
+                  fit: BoxFit.fill,
+                  opacity: 0.35,
+                ),
               ),
             ),
             Container(
@@ -86,16 +83,6 @@ class _LoginState extends State<Login> {
               transform: Matrix4.translationValues(0, -70, 0),
               child: Column(
                 children: [
-                  // GenieTextInput(
-                  //   width: width * 0.95,
-                  //   height: 50,
-                  //   borderRadius: 30,
-                  //   icon: const Icon(Icons.email),
-                  //   label: 'Email',
-                  //   hint: 'user@email.com',
-                  //   email: email,
-                  //   emailController: emailController,
-                  // ),
                   SizedBox(
                     width: width * .95,
                     height: 50,
@@ -216,16 +203,6 @@ class _LoginState extends State<Login> {
                       // },
                     ),
                   ),
-                  // GenieTextInput(
-                  //   width: width * 0.95,
-                  //   height: 50,
-                  //   borderRadius: 30,
-                  //   icon: const Icon(Icons.lock),
-                  //   label: 'Password',
-                  //   hint: '********',
-                  //   password: password,
-                  //   passwordController: passwordController,
-                  // ),
                   const SizedBox(
                     height: 5,
                   ),
@@ -238,7 +215,9 @@ class _LoginState extends State<Login> {
                     width: width * 0.95,
                     borderColor: kSecondaryColor,
                     borderWidth: 1.2,
-                    onPressed: () {},
+                    onPressed: () {
+                      nextScreen(context, const Home());
+                    },
                   )
                 ],
               ),
