@@ -46,7 +46,8 @@ class _LoginState extends State<Login> {
                 ),
                 image: DecorationImage(
                   image: AssetImage('assets/images/topBg.png'),
-                  fit: BoxFit.fill,
+                  fit: BoxFit.cover,
+                  repeat: ImageRepeat.repeat,
                   opacity: 0.35,
                 ),
               ),
@@ -208,13 +209,17 @@ class _LoginState extends State<Login> {
                   ),
                   GenieButton(
                     text: 'Continue',
+                    textColor: emailController.text.isEmpty ||
+                            passwordController.text.isEmpty
+                        ? kPrimaryColor
+                        : Colors.white,
                     color: emailController.text.isEmpty ||
                             passwordController.text.isEmpty
-                        ? const Color(0x23000000)
+                        ? Colors.white
                         : kSecondaryColor,
                     width: width * 0.95,
                     borderColor: kSecondaryColor,
-                    borderWidth: 1.2,
+                    borderWidth: 2,
                     onPressed: () {
                       nextScreen(context, const Home());
                     },
@@ -234,6 +239,8 @@ class _LoginState extends State<Login> {
               child: GenieButton(
                 text: 'Sign in with GOOGLE',
                 width: width * 0.95,
+                borderColor: kSecondaryColor,
+                borderWidth: 2,
                 onPressed: () {},
               ),
             ),

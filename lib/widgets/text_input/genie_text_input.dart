@@ -8,6 +8,8 @@ class GenieTextInput extends StatelessWidget {
   final String? password;
   final TextEditingController? emailController;
   final TextEditingController? passwordController;
+  final TextEditingController? controller;
+  final String? input;
   final VoidCallback? onChange;
   final Icon? icon;
   final double? width;
@@ -21,6 +23,8 @@ class GenieTextInput extends StatelessWidget {
     this.email,
     this.password,
     this.emailController,
+    required this.controller,
+    required this.input,
     this.hint,
     this.label,
     this.passwordController,

@@ -17,7 +17,7 @@ class GenieIntro extends StatefulWidget {
 class _GenieIntroState extends State<GenieIntro> {
   final PageController _controller = PageController();
   bool lastPage = false;
-  bool FirstPage = false;
+  bool firstPage = true;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class _GenieIntroState extends State<GenieIntro> {
             onPageChanged: (index) {
               setState(() {
                 lastPage = (index == 2);
-                FirstPage = (index == 0);
+                firstPage = (index == 0);
               });
             },
             controller: _controller,
@@ -45,13 +45,13 @@ class _GenieIntroState extends State<GenieIntro> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    FirstPage
+                    firstPage
                         ? _controller.jumpToPage(2)
                         : _controller.previousPage(
                             duration: const Duration(milliseconds: 500),
                             curve: Curves.easeInOut);
                   },
-                  child: FirstPage == true
+                  child: firstPage == true
                       ? const GenieText(
                           text: 'Skip',
                           color: Colors.black54,
