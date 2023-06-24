@@ -55,7 +55,7 @@ class GenieTextInput extends StatelessWidget {
             ),
             borderSide: BorderSide(color: borderColor, width: borderWidth),
           ),
-          iconColor: kSecondaryColor,
+          iconColor: mySecondaryColor,
           labelText: label,
           hintText: hint,
           prefixIcon: icon,

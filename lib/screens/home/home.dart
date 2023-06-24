@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mini_project/constants.dart';
-import 'package:mini_project/widgets/image/genie_image.dart';
-import 'package:mini_project/widgets/text/genie_text.dart';
-import 'package:mini_project/widgets/text_input/genie_text_input.dart';
+import 'package:mini_project/widgets/image/cm_image.dart';
+import 'package:mini_project/widgets/text/cm_text.dart';
+import 'package:mini_project/widgets/text_input/cm_text_input.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -31,7 +31,7 @@ class _HomeState extends State<Home> {
       //   automaticallyImplyLeading: false,
       //   elevation: 0,
       //   backgroundColor: Colors.transparent,
-      //   // title: const GenieText(
+      //   // title: const CMText(
       //   //   text: 'Genie',
       //   //   fontSize: 35,
       //   //   fontWeight: FontWeight.w500,
@@ -42,7 +42,7 @@ class _HomeState extends State<Home> {
         width: double.infinity,
         height: double.infinity,
         decoration: const BoxDecoration(
-          color: kPrimaryColor,
+          color: myPrimaryColor,
           image: DecorationImage(
             image: AssetImage('assets/images/topBg.png'),
             fit: BoxFit.cover,
@@ -76,16 +76,16 @@ class _HomeState extends State<Home> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            GenieText(
+                            CMText(
                               text:
                                   'Hello, Winner', //add function for name later
-                              color: kBackgroundColor,
+                              color: myBackgroundColor,
                               fontSize: 20,
                               fontWeight: FontWeight.w500,
                             ),
-                            GenieText(
+                            CMText(
                               text: 'Ready for a Meal?',
-                              color: kBackgroundColor,
+                              color: myBackgroundColor,
                               fontSize: 25,
                               fontWeight: FontWeight.w500,
                             ),
@@ -116,27 +116,36 @@ class _HomeState extends State<Home> {
                   topRight: Radius.circular(20),
                 ),
               ),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      TextField(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: TextField(
                         controller: searchController,
-                        // obscureText: hidePassword,
-                        // keyboardType: TextInputType.visiblePassword,
-                        textInputAction: TextInputAction.done,
+                        keyboardType: TextInputType.text,
+                        textInputAction: TextInputAction.search,
                         decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          labelText: 'Password',
-                          hintText: '',
-                          prefixIcon: const Icon(Icons.lock),
+                          contentPadding:
+                              const EdgeInsets.symmetric(horizontal: 15),
+                          border: const OutlineInputBorder(
+                            borderRadius: BorderRadius.horizontal(
+                              right: Radius.circular(30),
+                              left: Radius.circular(30),
+                            ),
+                            borderSide:
+                                BorderSide(color: mySecondaryColor, width: 2),
+                          ),
+                          iconColor: mySecondaryColor,
+                          // labelText: label,
+                          hintText: 'Search to add ingredients',
+                          // prefixIcon: icon,
                           suffixIcon: IconButton(
                             onPressed: () {
-                              setState(() {
-                                // hidePassword = !hidePassword;
-                              });
+                              // searchController.clear();
                             },
-                            icon: const Icon(Icons.remove_red_eye),
+                            icon: const Icon(Icons.search_rounded),
                           ),
                         ),
                         onChanged: (value) {
@@ -144,13 +153,10 @@ class _HomeState extends State<Home> {
                             search = value;
                           });
                         },
-                        onSubmitted: (value) {
-                          // signInWithEmailAndPassword();
-                        },
                       ),
-                    ],
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
           ],

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:mini_project/widgets/text/genie_text.dart';
+import 'package:mini_project/widgets/text/cm_text.dart';
 
-const kPrimaryColor = Color(0xFF4CAF50);
-const kSecondaryColor = Color(0xFFCFB53B);
-const kPrimaryTextColor = Color(0xFFD4AF37);
-const kSecondaryTextColor = Color(0xFF757575);
-const kPrimaryDarkColor = Color(0xFF388E3C);
-const kBackgroundColor = Color(0xFFfafafa);
-const kAppBgColorDark = Colors.black;
-const kAppBgColorLight = Colors.white;
+const myPrimaryColor = Color(0xFF4CAF50);
+const mySecondaryColor = Color(0xFFCFB53B);
+const myPrimaryTextColor = Color(0xFFF7FDF7);
+const mySecondaryTextColor = Color(0xFF111111);
+const myPrimaryDarkColor = Color(0xFF4CAF50);
+const myBackgroundColor = Color(0xFFF7FDF7);
+const myAppBgColorDark = Color(0xFF111111);
+const myAppBgColorLight = Color(0xFFF7FDF7);
 
 //next screen
 void nextScreen(context, screen) {
@@ -23,7 +23,7 @@ void showSnackbar(context, color, message) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       backgroundColor: color,
-      content: GenieText(
+      content: CMText(
         text: message,
         color: Colors.white,
         fontWeight: FontWeight.w300,
@@ -45,7 +45,7 @@ void showSnackbarWithoutAction(context, color, message) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       backgroundColor: color,
-      content: GenieText(
+      content: CMText(
         text: message,
         color: Colors.white,
       ),

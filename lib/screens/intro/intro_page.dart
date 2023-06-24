@@ -1,100 +1,64 @@
 import 'package:flutter/material.dart';
 import 'package:mini_project/constants.dart';
-import 'package:mini_project/screens/intro/intro_page1.dart';
-import 'package:mini_project/screens/intro/intro_page2.dart';
-import 'package:mini_project/screens/intro/intro_page3.dart';
-import 'package:mini_project/screens/login/login.dart';
-import 'package:mini_project/widgets/text/genie_text.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:mini_project/widgets/button/button.dart';
+import 'package:mini_project/widgets/text/cm_text.dart';
 
-class GenieIntro extends StatefulWidget {
-  const GenieIntro({super.key});
-
-  @override
-  State<GenieIntro> createState() => _GenieIntroState();
-}
-
-class _GenieIntroState extends State<GenieIntro> {
-  final PageController _controller = PageController();
-  bool lastPage = false;
-  bool firstPage = true;
+class Intro extends StatelessWidget {
+  const Intro({super.key});
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      body: Stack(
-        children: [
-          PageView(
-            onPageChanged: (index) {
-              setState(() {
-                lastPage = (index == 2);
-                firstPage = (index == 0);
-              });
-            },
-            controller: _controller,
-            children: const [
-              GenieIntro1(),
-              GenieIntro2(),
-              GenieIntro3(),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          color: myPrimaryColor,
+          image: DecorationImage(
+            image: AssetImage('assets/images/topBg.png'),
+            repeat: ImageRepeat.repeat,
+            opacity: 0.35,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 60),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              const CMText(
+                text: 'Stress Free Cooking For Everyone',
+                color: myPrimaryTextColor,
+                fontSize: 30,
+                fontWeight: FontWeight.w500,
+                textAlign: TextAlign.center,
+              ),
+              const Padding(
+                padding: EdgeInsets.only(bottom: 30),
+                child: CMText(
+                  text:
+                      'Find a wide range of recipes made just for you.\nJust input your ingredients and start cooking.',
+                  color: myPrimaryTextColor,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w400,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              CMButton(
+                text: 'Get stated',
+                onPressed: () {
+                  //add function later
+                },
+                color: mySecondaryColor,
+                width: width * .9,
+                textSize: 26,
+                fontWeight: FontWeight.w500,
+              )
             ],
           ),
-          Container(
-            alignment: const Alignment(0, 0.7),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    firstPage
-                        ? _controller.jumpToPage(2)
-                        : _controller.previousPage(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeInOut);
-                  },
-                  child: firstPage == true
-                      ? const GenieText(
-                          text: 'Skip',
-                          color: Colors.black54,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20,
-                        )
-                      : const GenieText(
-                          text: 'Back',
-                          color: Colors.black54,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20,
-                        ),
-                ),
-                SmoothPageIndicator(
-                  controller: _controller,
-                  count: 3,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    lastPage == true
-                        ? nextScreen(context, const Login())
-                        : _controller.nextPage(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeInOut);
-                  },
-                  child: lastPage == true
-                      ? const GenieText(
-                          text: 'Start',
-                          color: Colors.black54,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20,
-                        )
-                      : const GenieText(
-                          text: 'Next',
-                          color: Colors.black54,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20,
-                        ),
-                )
-              ],
-            ),
-          )
-        ],
+        ),
       ),
     );
   }

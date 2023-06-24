@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class GenieText extends StatelessWidget {
+class CMText extends StatelessWidget {
   final String text;
   final double fontSize;
   final TextAlign textAlign;
@@ -10,7 +10,7 @@ class GenieText extends StatelessWidget {
   final int? maxLines;
   final TextOverflow? overflow;
   final double? textScaleFactor;
-  const GenieText({
+  const CMText({
     Key? key,
     required this.text,
     this.fontSize = 16,
@@ -18,7 +18,7 @@ class GenieText extends StatelessWidget {
     this.color,
     this.maxLines,
     this.overflow,
-    this.fontWeight = FontWeight.normal,
+    this.fontWeight = FontWeight.w400,
     this.textScaleFactor,
   }) : super(key: key);
 

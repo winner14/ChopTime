@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mini_project/constants.dart';
-import 'package:mini_project/widgets/text/genie_text.dart';
+import 'package:mini_project/widgets/text/cm_text.dart';
 
-class GenieButton extends StatelessWidget {
+class CMButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   final double height;
@@ -14,20 +14,24 @@ class GenieButton extends StatelessWidget {
   final Color borderColor;
   final double borderWidth;
   final double elevation;
+  final double textSize;
+  final FontWeight fontWeight;
 
-  const GenieButton({
+  const CMButton({
     Key? key,
     required this.text,
     required this.onPressed,
-    this.height = 50,
+    this.height = 60,
     this.width = 200,
     this.factory,
-    this.color = kPrimaryColor,
+    this.color = myPrimaryColor,
     this.textColor = Colors.white,
-    this.borderRadius = 30,
+    this.borderRadius = 15,
     this.borderColor = Colors.transparent,
     this.borderWidth = 0,
     this.elevation = 0,
+    this.textSize = 18,
+    this.fontWeight = FontWeight.w400,
   }) : super(key: key);
 
   @override
@@ -52,10 +56,10 @@ class GenieButton extends StatelessWidget {
           shadowColor: MaterialStateProperty.all<Color>(Colors.white),
           backgroundColor: MaterialStateProperty.all<Color>(color),
         ),
-        child: GenieText(
+        child: CMText(
           text: text,
-          fontSize: 18,
-          fontWeight: FontWeight.w500,
+          fontSize: textSize,
+          fontWeight: fontWeight,
           color: textColor,
         ),
       ),
