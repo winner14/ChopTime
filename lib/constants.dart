@@ -4,11 +4,10 @@ import 'package:mini_project/widgets/text/cm_text.dart';
 const myPrimaryColor = Color(0xFF4CAF50);
 const mySecondaryColor = Color(0xFFCFB53B);
 const myPrimaryTextColor = Color(0xFFF7FDF7);
-const mySecondaryTextColor = Color(0xFF111111);
+const mySecondaryTextColor = Color(0xFF201F1F);
 const myPrimaryDarkColor = Color(0xFF4CAF50);
-const myBackgroundColor = Color(0xFFF7FDF7);
-const myAppBgColorDark = Color(0xFF111111);
-const myAppBgColorLight = Color(0xFFF7FDF7);
+const myBgColorDark = Color(0xFF201F1F);
+const myBgColorLight = Color(0xFFF7FDF7);
 
 //next screen
 void nextScreen(context, screen) {

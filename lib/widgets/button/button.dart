@@ -24,7 +24,7 @@ class CMButton extends StatelessWidget {
     this.height = 60,
     this.width = 200,
     this.factory,
-    this.color = myPrimaryColor,
+    this.color = mySecondaryColor,
     this.textColor = Colors.white,
     this.borderRadius = 15,
     this.borderColor = Colors.transparent,
