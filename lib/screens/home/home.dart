@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mini_project/constants.dart';
+import 'package:mini_project/screens/recipes/recipes.dart';
 import 'package:mini_project/widgets/button/button.dart';
 import 'package:mini_project/widgets/cards/ingredient_box.dart';
 import 'package:mini_project/widgets/text/cm_text.dart';
@@ -218,7 +219,14 @@ class _HomeState extends State<Home> {
                                 textSize: 20,
                                 fontWeight: FontWeight.w500,
                                 width: width * .95,
-                                onPressed: () {},
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    context: context,
+                                    builder: (context) => const Recipes(),
+                                  );
+                                },
                               )
                             ],
                           ),
