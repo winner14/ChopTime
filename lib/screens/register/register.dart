@@ -13,16 +13,22 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  final nameController = TextEditingController();
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
-  String name = '', email = '', password = '', confirmPassword = '';
+  String firstName = '',
+      lastName = '',
+      email = '',
+      password = '',
+      confirmPassword = '';
   bool hidePassword = true;
 
   @override
   void dispose() {
-    nameController.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -50,7 +56,7 @@ class _RegisterState extends State<Register> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Container(
-                height: height * .68,
+                height: height * .76,
                 width: double.infinity,
                 decoration: const BoxDecoration(
                   color: myBgColorLight,
@@ -74,7 +80,7 @@ class _RegisterState extends State<Register> {
                         child: SizedBox(
                           height: 60,
                           child: TextField(
-                            controller: nameController,
+                            controller: firstNameController,
                             keyboardType: TextInputType.text,
                             textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
@@ -98,20 +104,20 @@ class _RegisterState extends State<Register> {
                                 // borderSide: BorderSide(color: borderColor, width: borderWidth),
                               ),
                               iconColor: mySecondaryColor,
-                              labelText: 'Full name',
-                              hintText: 'John Smith',
+                              labelText: 'First name',
+                              hintText: 'John',
                               prefixIcon: const Icon(
                                 Icons.person,
                                 color: Colors.black45,
                               ),
-                              suffixIcon: nameController.text.isEmpty
+                              suffixIcon: firstNameController.text.isEmpty
                                   ? const SizedBox(
                                       width: 0,
                                     )
                                   : IconButton(
                                       onPressed: () {
-                                        name = '';
-                                        nameController.clear();
+                                        firstName = '';
+                                        firstNameController.clear();
                                       },
                                       icon: const Icon(
                                         Icons.close,
@@ -121,7 +127,65 @@ class _RegisterState extends State<Register> {
                             ),
                             onChanged: (value) {
                               setState(() {
-                                name = value;
+                                firstName = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 6.0),
+                        child: SizedBox(
+                          height: 60,
+                          child: TextField(
+                            controller: lastNameController,
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.next,
+                            decoration: InputDecoration(
+                              labelStyle: const TextStyle(
+                                  color: Color(0xA0000000), fontSize: 18),
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: mySecondaryColor,
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.horizontal(
+                                  right: Radius.circular(15),
+                                  left: Radius.circular(15),
+                                ),
+                              ),
+                              border: const OutlineInputBorder(
+                                borderRadius: BorderRadius.horizontal(
+                                  right: Radius.circular(15),
+                                  left: Radius.circular(15),
+                                ),
+                                // borderSide: BorderSide(color: borderColor, width: borderWidth),
+                              ),
+                              iconColor: mySecondaryColor,
+                              labelText: 'Last name',
+                              hintText: 'Smith',
+                              prefixIcon: const Icon(
+                                Icons.person,
+                                color: Colors.black45,
+                              ),
+                              suffixIcon: firstNameController.text.isEmpty
+                                  ? const SizedBox(
+                                      width: 0,
+                                    )
+                                  : IconButton(
+                                      onPressed: () {
+                                        lastName = '';
+                                        lastNameController.clear();
+                                      },
+                                      icon: const Icon(
+                                        Icons.close,
+                                        color: Colors.black45,
+                                      ),
+                                    ),
+                            ),
+                            onChanged: (value) {
+                              setState(() {
+                                lastName = value;
                               });
                             },
                           ),
@@ -313,8 +377,12 @@ class _RegisterState extends State<Register> {
                           textSize: 22,
                           width: width * .95,
                           onPressed: () {
-                            //add function later
-                            nextScreen(context, const Home());
+                            // nextScreen(context, const Home());
+                            // final user = User(
+                            //   firstName: firstNameController,
+                            //   lastName: lastNameController,
+                            //   emailName: emailController,
+                            // );
                           },
                         ),
                       ),

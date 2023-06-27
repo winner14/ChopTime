@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mini_project/constants.dart';
 import 'package:mini_project/screens/recipes/recipes.dart';
 import 'package:mini_project/widgets/button/button.dart';
-import 'package:mini_project/widgets/cards/ingredient_box.dart';
+import 'package:mini_project/widgets/cards/ingredient_card.dart';
 import 'package:mini_project/widgets/text/cm_text.dart';
 
 class Home extends StatefulWidget {
@@ -160,7 +160,7 @@ class _HomeState extends State<Home> {
                                     crossAxisSpacing: 5,
                                     mainAxisSpacing: 5),
                             itemBuilder: (context, index) {
-                              return const IngredientBox();
+                              return const IngredientCard();
                             },
                           ),
                         ),

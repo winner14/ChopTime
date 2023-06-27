@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mini_project/constants.dart';
 
-class IngredientBox extends StatelessWidget {
-  const IngredientBox({super.key});
+class IngredientCard extends StatelessWidget {
+  const IngredientCard({super.key});
 
   @override
   Widget build(BuildContext context) {
