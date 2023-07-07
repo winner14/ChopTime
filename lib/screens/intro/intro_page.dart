@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mini_project/constants.dart';
-import 'package:mini_project/screens/login/login.dart';
+import 'package:mini_project/screens/auth/login/login.dart';
 import 'package:mini_project/widgets/button/button.dart';
 import 'package:mini_project/widgets/text/cm_text.dart';
 

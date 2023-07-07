@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mini_project/widgets/text/cm_text.dart';
 
@@ -52,3 +54,24 @@ void showSnackbarWithoutAction(context, color, message) {
     ),
   );
 }
+
+final currentUser = FirebaseAuth.instance.currentUser;
+
+// Future<User?> getUserInfo() async {
+//  final User? user = FirebaseAuth.instance.currentUser;
+// final String userId = user?.uid ?? '';
+
+// final CollectionReference usersCollection =
+//     FirebaseFirestore.instance.collection('users');
+// final DocumentSnapshot userSnapshot = await usersCollection.doc(userId).get();
+
+// if (userSnapshot.exists) {
+//   final Map<String, dynamic> userData = userSnapshot.data() as Map<String, dynamic>;
+//   // Access specific fields from the userData map
+//   final String firstName = userData['firstName'] ?? '';
+//   final String lastName = userData['lastName'] ?? '';
+//   final String email = userData['email'] ?? '';
+//   // Use the retrieved data as needed
+// }
+
+// }

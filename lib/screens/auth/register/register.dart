@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mini_project/constants.dart';
 import 'package:mini_project/main.dart';
 import 'package:mini_project/screens/home/home.dart';
-import 'package:mini_project/screens/login/login.dart';
+import 'package:mini_project/screens/auth/login/login.dart';
 import 'package:mini_project/widgets/button/button.dart';
 import 'package:mini_project/widgets/text/cm_text.dart';
 
@@ -404,15 +404,24 @@ class _RegisterState extends State<Register> {
                             text: 'Register',
                             textSize: 22,
                             width: width * .95,
-                            onPressed: () {
+                            onPressed: () async {
                               // nextScreen(context, const Home());
-                              final user = User(
-                                firstName: firstName,
-                                lastName: lastName,
-                                email: email,
-                              );
-                              signUpWithEmailAndPassword();
-                              createUser(user);
+                              await signUpWithEmailAndPassword();
+                              // final user = User(
+                              //   id: FirebaseAuth.instance.currentUser!.uid,
+                              //   firstName: firstName,
+                              //   lastName: lastName,
+                              //   email: email,
+                              // );
+                              if (FirebaseAuth.instance.currentUser != null) {
+                                final user = User(
+                                  id: FirebaseAuth.instance.currentUser!.uid,
+                                  firstName: firstName,
+                                  lastName: lastName,
+                                  email: email,
+                                );
+                                await createUser(user);
+                              }
                             },
                           ),
                         ),
@@ -454,7 +463,7 @@ class _RegisterState extends State<Register> {
     }
 
     final docUser = FirebaseFirestore.instance.collection('users').doc();
-    user.id = docUser.id;
+    user.id = FirebaseAuth.instance.currentUser!.uid;
 
     final json = user.toJson();
     await docUser.set(json);

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:mini_project/constants.dart';
 import 'package:mini_project/screens/home/home.dart';
 import 'package:mini_project/screens/intro/intro_page.dart';
-import 'package:mini_project/screens/login/login.dart';
-import 'package:mini_project/screens/register/register.dart';
+import 'package:mini_project/screens/auth/login/login.dart';
+import 'package:mini_project/screens/auth/register/register.dart';
 import 'package:mini_project/theme_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 
