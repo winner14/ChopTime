@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mini_project/constants.dart';
 import 'package:mini_project/main.dart';
+import 'package:mini_project/screens/auth/reset_password.dart';
 import 'package:mini_project/screens/home/home.dart';
 import 'package:mini_project/screens/auth/register/register.dart';
 import 'package:mini_project/widgets/button/button.dart';
@@ -213,16 +214,18 @@ class _LoginState extends State<Login> {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 3.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          // add function later
-                        },
-                        child: const CMText(
-                          text: "Forgot password?",
-                          color: Colors.red,
-                          fontWeight: FontWeight.w500,
+                    GestureDetector(
+                      onTap: () {
+                        nextScreen(context, const ResetPassword());
+                      },
+                      child: const SizedBox(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 3.0),
+                          child: CMText(
+                            text: "Forgot password?",
+                            color: Colors.red,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ),
