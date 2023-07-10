@@ -16,22 +16,6 @@ class _EndDrawerState extends State<EndDrawer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // body: ListTile(
-      //   leading: const Icon(
-      //     Icons.logout,
-      //     color: mySecondaryTextColor,
-      //   ),
-      //   title: const CMText(
-      //     text: 'Logout',
-      //     color: mySecondaryTextColor,
-      //     fontWeight: FontWeight.w500,
-      //     fontSize: 18,
-      //   ),
-      //   onTap: () {
-      //     FirebaseAuth.instance.signOut();
-      //     Navigator.pop(context);
-      //   },
-      // ),
       body: FutureBuilder<User?>(
         future: getUserInfo(),
         builder: (context, userSnapshot) {
@@ -77,105 +61,33 @@ class _EndDrawerState extends State<EndDrawer> {
                       children: [
                         Column(
                           children: [
-                            GestureDetector(
-                              onTap: () {
+                            drawerItem(
+                              'Profile',
+                              Icons.person,
+                              () {
                                 //add function later
                               },
-                              child: const SizedBox(
-                                width: double.infinity,
-                                height: 50,
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(right: 5.0),
-                                      child: Icon(
-                                        Icons.edit_document,
-                                        color: mySecondaryTextColor,
-                                      ),
-                                    ),
-                                    CMText(
-                                      text: 'Edit Profile',
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ],
-                                ),
-                              ),
                             ),
-                            GestureDetector(
-                              onTap: () {
+                            drawerItem(
+                              'Discover',
+                              Icons.food_bank_outlined,
+                              () {
                                 //add function later
                               },
-                              child: const SizedBox(
-                                width: double.infinity,
-                                height: 50,
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(right: 5.0),
-                                      child: Icon(
-                                        Icons.food_bank_outlined,
-                                        color: mySecondaryTextColor,
-                                      ),
-                                    ),
-                                    CMText(
-                                      text: 'Discover',
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ],
-                                ),
-                              ),
                             ),
-                            GestureDetector(
-                              onTap: () {
+                            drawerItem(
+                              'Bookmarks',
+                              Icons.bookmark,
+                              () {
                                 //add function later
                               },
-                              child: const SizedBox(
-                                width: double.infinity,
-                                height: 50,
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(right: 5.0),
-                                      child: Icon(
-                                        Icons.bookmark,
-                                        color: mySecondaryTextColor,
-                                      ),
-                                    ),
-                                    CMText(
-                                      text: 'Bookmarks',
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ],
-                                ),
-                              ),
                             ),
-                            GestureDetector(
-                              onTap: () {
+                            drawerItem(
+                              'Settings',
+                              Icons.settings,
+                              () {
                                 //add function later
                               },
-                              child: const SizedBox(
-                                width: double.infinity,
-                                height: 50,
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(right: 5.0),
-                                      child: Icon(
-                                        Icons.settings,
-                                        color: mySecondaryTextColor,
-                                      ),
-                                    ),
-                                    CMText(
-                                      text: 'Setting',
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ],
-                                ),
-                              ),
                             ),
                           ],
                         ),
@@ -194,22 +106,10 @@ class _EndDrawerState extends State<EndDrawer> {
                       ],
                     ),
                   ),
-                  // ListTile(
-                  //   leading: const Icon(
-                  //     Icons.logout,
-                  //     color: mySecondaryTextColor,
-                  //   ),
-                  //   title: const CMText(
-                  //     text: 'Logout',
-                  //     color: mySecondaryTextColor,
-                  //     fontWeight: FontWeight.w500,
-                  //     fontSize: 18,
-                  //   ),
                 ],
               ),
             );
           } else {
-            print(FirebaseAuth.instance.currentUser!.uid.toString().trim());
             return const Center(
               child: CircularProgressIndicator(
                 backgroundColor: myPrimaryColor,
@@ -218,6 +118,32 @@ class _EndDrawerState extends State<EndDrawer> {
             );
           }
         },
+      ),
+    );
+  }
+
+  Widget drawerItem(String item, IconData icon, Function onTap) {
+    return GestureDetector(
+      onTap: onTap(),
+      child: SizedBox(
+        width: double.infinity,
+        height: 50,
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 5.0),
+              child: Icon(
+                icon,
+                color: mySecondaryTextColor,
+              ),
+            ),
+            CMText(
+              text: item,
+              fontSize: 25,
+              fontWeight: FontWeight.w500,
+            ),
+          ],
+        ),
       ),
     );
   }

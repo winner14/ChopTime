@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mini_project/constants.dart';
 import 'package:mini_project/main.dart';
-import 'package:mini_project/screens/home/home.dart';
 import 'package:mini_project/screens/auth/login/login.dart';
 import 'package:mini_project/widgets/button/button.dart';
 import 'package:mini_project/widgets/text/cm_text.dart';
@@ -133,7 +132,8 @@ class _RegisterState extends State<Register> {
                               ),
                               onChanged: (value) {
                                 setState(() {
-                                  firstName = value;
+                                  value[0].toUpperCase();
+                                  firstName = value.trim();
                                 });
                               },
                             ),
@@ -191,7 +191,8 @@ class _RegisterState extends State<Register> {
                               ),
                               onChanged: (value) {
                                 setState(() {
-                                  lastName = value;
+                                  value[0].toUpperCase();
+                                  lastName = value.trim();
                                 });
                               },
                             ),
