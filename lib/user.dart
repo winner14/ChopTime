@@ -17,11 +17,4 @@ class User {
         'lastName': lastName,
         'email': email,
       };
-
-  static User fromJson(Map<String, dynamic> json) => User(
-        id: json['id'],
-        firstName: json['firstName'],
-        lastName: json['lastName'],
-        email: json['email'],
-      );
 }

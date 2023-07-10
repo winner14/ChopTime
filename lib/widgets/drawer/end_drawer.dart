@@ -2,6 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mini_project/constants.dart';
+import 'package:mini_project/screens/controls/add_recipe.dart';
+import 'package:mini_project/screens/controls/bookmarks.dart';
+import 'package:mini_project/screens/controls/discover.dart';
+import 'package:mini_project/screens/controls/edit_profile.dart';
 import 'package:mini_project/widgets/button/button.dart';
 import 'package:mini_project/widgets/text/cm_text.dart';
 
@@ -62,31 +66,38 @@ class _EndDrawerState extends State<EndDrawer> {
                         Column(
                           children: [
                             drawerItem(
-                              'Profile',
+                              'Edit Profile',
                               Icons.person,
                               () {
-                                //add function later
+                                nextScreen(context, const EditProfile());
                               },
                             ),
                             drawerItem(
                               'Discover',
                               Icons.food_bank_outlined,
                               () {
-                                //add function later
+                                nextScreen(context, const Discover());
                               },
                             ),
                             drawerItem(
                               'Bookmarks',
                               Icons.bookmark,
                               () {
-                                //add function later
+                                nextScreen(context, const Bookmarks());
+                              },
+                            ),
+                            drawerItem(
+                              'Add Recipe',
+                              Icons.add_box,
+                              () {
+                                nextScreen(context, const AddRecipe());
                               },
                             ),
                             drawerItem(
                               'Settings',
                               Icons.settings,
                               () {
-                                //add function later
+                                nextScreen(context, const Settings());
                               },
                             ),
                           ],
@@ -124,7 +135,9 @@ class _EndDrawerState extends State<EndDrawer> {
 
   Widget drawerItem(String item, IconData icon, Function onTap) {
     return GestureDetector(
-      onTap: onTap(),
+      onTap: () {
+        onTap();
+      },
       child: SizedBox(
         width: double.infinity,
         height: 50,
