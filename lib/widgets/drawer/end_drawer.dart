@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mini_project/constants.dart';
 import 'package:mini_project/screens/controls/add_recipe.dart';
-import 'package:mini_project/screens/controls/bookmarks.dart';
+import 'package:mini_project/screens/controls/favourites.dart';
 import 'package:mini_project/screens/controls/discover.dart';
 import 'package:mini_project/screens/controls/edit_profile.dart';
 import 'package:mini_project/widgets/button/button.dart';
@@ -80,10 +80,10 @@ class _EndDrawerState extends State<EndDrawer> {
                               },
                             ),
                             drawerItem(
-                              'Bookmarks',
-                              Icons.bookmark,
+                              'Favourites',
+                              Icons.favorite,
                               () {
-                                nextScreen(context, const Bookmarks());
+                                nextScreen(context, const Favourites());
                               },
                             ),
                             drawerItem(
