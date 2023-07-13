@@ -6,6 +6,7 @@ import 'package:mini_project/screens/controls/add_recipe.dart';
 import 'package:mini_project/screens/controls/favourites.dart';
 import 'package:mini_project/screens/controls/discover.dart';
 import 'package:mini_project/screens/controls/edit_profile.dart';
+import 'package:mini_project/screens/controls/settings.dart';
 import 'package:mini_project/widgets/button/button.dart';
 import 'package:mini_project/widgets/text/cm_text.dart';
 
@@ -97,7 +98,7 @@ class _EndDrawerState extends State<EndDrawer> {
                               'Settings',
                               Icons.settings,
                               () {
-                                nextScreen(context, const Settings());
+                                nextScreen(context, const MySettings());
                               },
                             ),
                           ],

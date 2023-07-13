@@ -25,7 +25,7 @@ class RecipeCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Container(
-            color: myBgColorLight,
+            color: const Color(0x875C501B),
             height: 60,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 6),

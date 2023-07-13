@@ -179,6 +179,7 @@ class _HomeState extends State<Home> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: GridView.builder(
+                                  padding: const EdgeInsets.only(top: 0),
                                   itemCount: 15,
                                   gridDelegate:
                                       const SliverGridDelegateWithFixedCrossAxisCount(
