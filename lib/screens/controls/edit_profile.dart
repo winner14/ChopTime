@@ -36,6 +36,11 @@ class _EditProfileState extends State<EditProfile> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        title: const CMText(
+          text: 'Edit Profile',
+          fontSize: 24,
+          fontWeight: FontWeight.w500,
+        ),
       ),
       extendBodyBehindAppBar: true,
       body: Container(

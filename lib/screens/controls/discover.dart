@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mini_project/constants.dart';
 import 'package:mini_project/widgets/cards/recipe_card.dart';
+import 'package:mini_project/widgets/text/cm_text.dart';
 
 class Discover extends StatefulWidget {
   const Discover({super.key});
@@ -17,6 +18,11 @@ class _DiscoverState extends State<Discover> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        title: const CMText(
+          text: 'Discover',
+          fontSize: 24,
+          fontWeight: FontWeight.w500,
+        ),
       ),
       extendBodyBehindAppBar: true,
       body: Container(
