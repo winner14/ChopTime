@@ -62,9 +62,11 @@ class _RecipesState extends State<Recipes> {
                             padding: EdgeInsets.symmetric(
                                 horizontal: 2.0, vertical: 4),
                             child: RecipeCard(
-                                recipeName: 'Braised Rice',
-                                duration: 10,
-                                likes: 20),
+                              recipeName: 'Braised Rice',
+                              duration: 10,
+                              likes: 20,
+                              by: 'Community',
+                            ),
                           );
                         })),
               ],

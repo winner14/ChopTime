@@ -79,14 +79,12 @@ class _DiscoverState extends State<Discover> {
 
   Widget buildRecipes(Recipes recipes) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 3.0, horizontal: 4),
+      padding: const EdgeInsets.symmetric(vertical: 3.0, horizontal: 2),
       child: RecipeCard(
         recipeName: recipes.recipeName,
         duration: recipes.duration,
         likes: recipes.likes,
-        onTap: () {
-          //add funtion later
-        },
+        by: recipes.by,
       ),
     );
   }
@@ -105,7 +103,7 @@ class Recipes {
   final List steps;
   final int duration;
   final bool isApproved;
-  final String by;
+  String by;
   final int likes;
 
   Recipes({
@@ -115,7 +113,7 @@ class Recipes {
     required this.steps,
     required this.duration,
     required this.isApproved,
-    required this.by,
+    this.by = 'Community',
     required this.likes,
   });
 

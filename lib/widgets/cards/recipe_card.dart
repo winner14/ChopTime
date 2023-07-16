@@ -6,11 +6,13 @@ class RecipeCard extends StatefulWidget {
   final String recipeName;
   final int duration;
   final int likes;
+  final String by;
   const RecipeCard({
     Key? key,
     required this.recipeName,
     required this.duration,
     required this.likes,
+    required this.by,
   }) : super(key: key);
 
   @override
@@ -79,7 +81,11 @@ class _RecipeCardState extends State<RecipeCard> {
                             onTap: () {
                               setState(() {
                                 liked = !liked;
-                                likeCount++;
+                                if (liked == true) {
+                                  likeCount++;
+                                } else {
+                                  likeCount--;
+                                }
                               });
                             },
                             child: liked == true
@@ -101,7 +107,15 @@ class _RecipeCardState extends State<RecipeCard> {
                               text: '${widget.likes}',
                               fontSize: 18,
                             ),
-                          )
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 4.0),
+                            child: CMText(
+                              text: widget.by,
+                              fontSize: 18,
+                            ),
+                          ),
                         ],
                       )
                     ],
