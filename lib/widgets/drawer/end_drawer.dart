@@ -155,6 +155,7 @@ class _EndDrawerState extends State<EndDrawer> {
               text: item,
               fontSize: 25,
               fontWeight: FontWeight.w500,
+              color: mySecondaryTextColor,
             ),
           ],
         ),

@@ -60,9 +60,11 @@ class _FavouritesState extends State<Favourites> {
                           itemCount: 5,
                           itemBuilder: (context, index) {
                             return const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 3.0),
-                              child: RecipeCard(),
-                            );
+                                padding: EdgeInsets.symmetric(vertical: 3.0),
+                                child: RecipeCard(
+                                    recipeName: 'Braised Rice',
+                                    duration: 10,
+                                    likes: 20));
                           },
                         ),
                       )

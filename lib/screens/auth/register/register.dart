@@ -488,16 +488,6 @@ class _RegisterState extends State<Register> {
         email: email,
         password: password,
       );
-
-      // final user = userCredential.user;
-
-      // if (user != null) {
-      //   final docUser = FirebaseFirestore.instance.collection('users').doc();
-      //   user.id = docUser.id;
-
-      //   final json = user.toJson();
-      //   await docUser.set(json);
-      // }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         showSnackbar(

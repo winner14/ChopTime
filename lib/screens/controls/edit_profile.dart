@@ -300,6 +300,7 @@ class _EditProfileState extends State<EditProfile> {
 
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) => const Center(
         child: CircularProgressIndicator(),
       ),

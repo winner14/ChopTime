@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mini_project/constants.dart';
 
 class CMText extends StatelessWidget {
   final String text;
   final double fontSize;
   final TextAlign textAlign;
   final FontWeight fontWeight;
-  final Color? color;
+  final Color color;
   final int? maxLines;
   final TextOverflow? overflow;
   final double? textScaleFactor;
@@ -15,7 +16,7 @@ class CMText extends StatelessWidget {
     required this.text,
     this.fontSize = 16,
     this.textAlign = TextAlign.start,
-    this.color,
+    this.color = myPrimaryTextColor,
     this.maxLines,
     this.overflow,
     this.fontWeight = FontWeight.w400,

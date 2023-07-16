@@ -61,7 +61,10 @@ class _RecipesState extends State<Recipes> {
                           return const Padding(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 2.0, vertical: 4),
-                            child: RecipeCard(),
+                            child: RecipeCard(
+                                recipeName: 'Braised Rice',
+                                duration: 10,
+                                likes: 20),
                           );
                         })),
               ],
