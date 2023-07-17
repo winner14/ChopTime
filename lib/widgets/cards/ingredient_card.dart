@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mini_project/constants.dart';
+import 'package:mini_project/widgets/text/cm_text.dart';
 
 class IngredientCard extends StatelessWidget {
-  const IngredientCard({super.key});
+  final String ingredient;
+  const IngredientCard({Key? key, required this.ingredient}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +18,16 @@ class IngredientCard extends StatelessWidget {
         ),
         border: Border.all(width: .8, color: Colors.black12),
       ),
-      // child: Column(
-      //   children: [
-      //     Image(image: AssetImage('assetName'))
-      //   ],
-      // ),
+      child: Column(
+        children: [
+          CMText(
+            text: ingredient,
+            color: Colors.black,
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+          ),
+        ],
+      ),
     );
   }
 }

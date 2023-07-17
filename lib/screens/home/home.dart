@@ -19,6 +19,15 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final searchController = TextEditingController();
   String search = '';
+  bool isFishAndMeat = false, isfruits = true, isOthers = true;
+
+  final filter = [
+    'Fruits',
+    'Fish and Meat',
+    'Others',
+  ];
+
+  String? value = 'Fruits';
 
   @override
   void dispose() {
@@ -124,74 +133,134 @@ class _HomeState extends State<Home> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(5),
-                              child: SizedBox(
-                                height: 55,
-                                // width: width * .95,
-                                child: TextField(
-                                  controller: searchController,
-                                  keyboardType: TextInputType.text,
-                                  textInputAction: TextInputAction.search,
-                                  decoration: InputDecoration(
-                                    focusedBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: mySecondaryColor,
-                                        width: .5,
-                                      ),
-                                      borderRadius: BorderRadius.horizontal(
-                                        right: Radius.circular(15),
-                                        left: Radius.circular(15),
-                                      ),
-                                    ),
-                                    border: const OutlineInputBorder(
-                                      borderRadius: BorderRadius.horizontal(
-                                        right: Radius.circular(15),
-                                        left: Radius.circular(15),
-                                      ),
-                                      borderSide: BorderSide(
-                                          color: mySecondaryColor, width: .5),
-                                    ),
-                                    iconColor: mySecondaryColor,
-                                    // labelText: label,
-                                    hintText: 'Search to add ingredients',
-                                    // prefixIcon: icon,
-                                    suffixIcon: IconButton(
-                                      onPressed: () {
-                                        // searchController.clear();
-                                      },
-                                      icon: const Icon(
-                                        Icons.search_rounded,
-                                        color: Colors.black45,
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(5, 5, 0, 5),
+                                    child: SizedBox(
+                                      height: 55,
+                                      width: width * .6,
+                                      child: TextField(
+                                        controller: searchController,
+                                        keyboardType: TextInputType.text,
+                                        textInputAction: TextInputAction.search,
+                                        decoration: InputDecoration(
+                                          focusedBorder:
+                                              const OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: mySecondaryColor,
+                                              width: .5,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.horizontal(
+                                              right: Radius.circular(15),
+                                              left: Radius.circular(15),
+                                            ),
+                                          ),
+                                          border: const OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.horizontal(
+                                              right: Radius.circular(15),
+                                              left: Radius.circular(15),
+                                            ),
+                                            borderSide: BorderSide(
+                                                color: mySecondaryColor,
+                                                width: .5),
+                                          ),
+                                          iconColor: mySecondaryColor,
+                                          // labelText: label,
+                                          hintText: 'Search to add ingredients',
+                                          // prefixIcon: icon,
+                                          suffixIcon: IconButton(
+                                            onPressed: () {
+                                              // searchController.clear();
+                                            },
+                                            icon: const Icon(
+                                              Icons.search_rounded,
+                                              color: Colors.black45,
+                                            ),
+                                          ),
+                                        ),
+                                        onChanged: (value) {
+                                          setState(() {
+                                            search = value;
+                                          });
+                                        },
                                       ),
                                     ),
                                   ),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      search = value;
-                                    });
-                                  },
                                 ),
-                              ),
+                                Padding(
+                                  padding: const EdgeInsets.all(4),
+                                  child: PopupMenuButton<String>(
+                                    icon: const Center(
+                                      child: Icon(
+                                        Icons.filter_list_rounded,
+                                        color: myPrimaryColor,
+                                        size: 40,
+                                      ),
+                                    ),
+                                    itemBuilder: (BuildContext context) {
+                                      return filter.map((String item) {
+                                        return PopupMenuItem<String>(
+                                          value: item,
+                                          child: Text(item),
+                                        );
+                                      }).toList();
+                                    },
+                                    onSelected: (String? value) {
+                                      setState(() {
+                                        this.value = value;
+                                        if (value == 'Fruits') {
+                                          isfruits = true;
+                                          isFishAndMeat = false;
+                                          isOthers = false;
+                                        } else if (value == 'Fish and Meat') {
+                                          isfruits = false;
+                                          isFishAndMeat = true;
+                                          isOthers = false;
+                                        } else if (value == 'Others') {
+                                          isfruits = false;
+                                          isFishAndMeat = false;
+                                          isOthers = true;
+                                        }
+                                      });
+                                    },
+                                  ),
+                                )
+                              ],
                             ),
                             Expanded(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: GridView.builder(
-                                  padding: const EdgeInsets.only(top: 0),
-                                  itemCount: 15,
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 3,
-                                          crossAxisSpacing: 5,
-                                          mainAxisSpacing: 5),
-                                  itemBuilder: (context, index) {
-                                    return const IngredientCard();
-                                  },
-                                ),
-                              ),
-                            ),
+                                child: StreamBuilder(
+                              stream: getIngredients(),
+                              builder: ((context, snapshot) {
+                                if (snapshot.hasData) {
+                                  final ingredients = snapshot.data;
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    child: GridView.builder(
+                                      padding: const EdgeInsets.only(top: 0),
+                                      itemCount: ingredients!.length,
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 3,
+                                              crossAxisSpacing: 5,
+                                              mainAxisSpacing: 5),
+                                      itemBuilder: (context, index) {
+                                        return buildIngredients(
+                                            ingredients[index]);
+                                      },
+                                    ),
+                                  );
+                                } else {
+                                  print(snapshot.error);
+                                  return const Loading();
+                                }
+                              }),
+                            )),
                             Container(
                               height: height * .18,
                               width: double.infinity,
@@ -276,6 +345,23 @@ class _HomeState extends State<Home> {
     );
   }
 
+  DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
+        value: item,
+        child: Text(item),
+      );
+
+  Widget buildIngredients(Ingredients ingredients) {
+    List fishAndMeat = ingredients.fishAndMeat;
+    List fruits = ingredients.fruits;
+    List others = ingredients.others;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 3.0, horizontal: 2),
+      child: IngredientCard(
+        ingredient: fishAndMeat[0],
+      ),
+    );
+  }
+
   Future<User?> getUserInfo() async {
     final querySnapshot = await FirebaseFirestore.instance
         .collection('users')
@@ -291,6 +377,13 @@ class _HomeState extends State<Home> {
       return null;
     }
   }
+
+  Stream<List<Ingredients>> getIngredients() => FirebaseFirestore.instance
+      .collection('ingredients')
+      .snapshots()
+      .map((snapshot) => snapshot.docs
+          .map((doc) => Ingredients.fromJson(doc.data()))
+          .toList());
 }
 
 class User {
@@ -319,4 +412,34 @@ class User {
         lastName: json['lastName'],
         email: json['email'],
       );
+}
+
+class Ingredients {
+  String id;
+  final List fruits;
+  final List fishAndMeat;
+  final List others;
+
+  Ingredients({
+    this.id = '',
+    required this.fruits,
+    required this.fishAndMeat,
+    required this.others,
+  });
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'fruits': fruits,
+        'fishAndMeat': fishAndMeat,
+        'others': others,
+      };
+
+  factory Ingredients.fromJson(Map<String, dynamic> json) {
+    return Ingredients(
+      id: json['id'] ?? '',
+      fruits: json['fruits'] ?? [],
+      fishAndMeat: json['fishAndMeat'] ?? [],
+      others: json['others'] ?? [],
+    );
+  }
 }
