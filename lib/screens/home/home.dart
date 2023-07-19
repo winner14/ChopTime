@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mini_project/constants.dart';
+import 'package:mini_project/screens/add_ingredient/add_ingredient.dart';
 import 'package:mini_project/screens/recipes/recipes.dart';
 import 'package:mini_project/widgets/button/button.dart';
 import 'package:mini_project/widgets/cards/ingredient_card.dart';
@@ -19,13 +20,22 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final searchController = TextEditingController();
   String search = '';
-  bool isFishAndMeat = false, isfruits = true, isOthers = true;
+  bool isFruits = true,
+      isFishAndMeat = false,
+      isOthers = false,
+      isSpices = false;
 
   final filter = [
     'Fruits',
     'Fish and Meat',
     'Others',
+    'Add your own ingredient'
   ];
+
+  List selectedIngredients = [];
+  bool ingredientIsSelected = false;
+  String selectedIngredient = '';
+  int ingredientCount = 0;
 
   String? value = 'Fruits';
 
@@ -136,6 +146,19 @@ class _HomeState extends State<Home> {
                             Row(
                               children: [
                                 Expanded(
+                                  // child: Padding(
+                                  //   padding:
+                                  //       const EdgeInsets.fromLTRB(5, 5, 0, 5),
+                                  //   child: CMButton(
+                                  //     text: 'Add and Ingredient',
+                                  //     textColor: myBgColorDark,
+                                  //     color: myBgColorLight,
+                                  //     borderColor: myBgColorDark,
+                                  //     onPressed: () {
+                                  //       //add funtion later
+                                  //     },
+                                  //   ),
+                                  // ),
                                   child: Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(5, 5, 0, 5),
@@ -214,17 +237,26 @@ class _HomeState extends State<Home> {
                                       setState(() {
                                         this.value = value;
                                         if (value == 'Fruits') {
-                                          isfruits = true;
+                                          isFruits = true;
                                           isFishAndMeat = false;
                                           isOthers = false;
                                         } else if (value == 'Fish and Meat') {
-                                          isfruits = false;
+                                          isFruits = false;
                                           isFishAndMeat = true;
                                           isOthers = false;
                                         } else if (value == 'Others') {
-                                          isfruits = false;
+                                          isFruits = false;
                                           isFishAndMeat = false;
                                           isOthers = true;
+                                        } else if (value ==
+                                            'Add your own ingredient') {
+                                          showModalBottomSheet(
+                                            isScrollControlled: true,
+                                            backgroundColor: Colors.transparent,
+                                            context: context,
+                                            builder: (context) =>
+                                                const AddIngredient(),
+                                          );
                                         }
                                       });
                                     },
@@ -233,34 +265,31 @@ class _HomeState extends State<Home> {
                               ],
                             ),
                             Expanded(
-                                child: StreamBuilder(
-                              stream: getIngredients(),
-                              builder: ((context, snapshot) {
-                                if (snapshot.hasData) {
-                                  final ingredients = snapshot.data;
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0),
-                                    child: GridView.builder(
-                                      padding: const EdgeInsets.only(top: 0),
-                                      itemCount: ingredients!.length,
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 3,
-                                              crossAxisSpacing: 5,
-                                              mainAxisSpacing: 5),
-                                      itemBuilder: (context, index) {
-                                        return buildIngredients(
-                                            ingredients[index]);
-                                      },
-                                    ),
-                                  );
-                                } else {
-                                  print(snapshot.error);
-                                  return const Loading();
-                                }
-                              }),
-                            )),
+                              child: StreamBuilder<List<Ingredients>>(
+                                stream: getIngredients(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    final ingredients = snapshot.data!;
+                                    print(selectedIngredients);
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      child: GridView.count(
+                                        padding: const EdgeInsets.only(top: 0),
+                                        crossAxisCount: 3,
+                                        crossAxisSpacing: 5,
+                                        mainAxisSpacing: 5,
+                                        childAspectRatio: 1,
+                                        children: buildIngredients(ingredients),
+                                      ),
+                                    );
+                                  } else {
+                                    print(snapshot.error);
+                                    return const Loading();
+                                  }
+                                },
+                              ),
+                            ),
                             Container(
                               height: height * .18,
                               width: double.infinity,
@@ -295,19 +324,34 @@ class _HomeState extends State<Home> {
                                         ),
                                         Container(
                                           height: 30,
-                                          width: 40,
+                                          width: 50,
                                           decoration: const BoxDecoration(
                                             color: Color(0xFF045007),
                                             borderRadius: BorderRadius.all(
                                               Radius.circular(10),
                                             ),
                                           ),
-                                          child: const Center(
+                                          child: Center(
                                               child: CMText(
-                                            text: '20',
+                                            text: '$ingredientCount',
                                             color: myPrimaryTextColor,
                                             fontSize: 18,
                                           )),
+                                        ),
+                                        CMButton(
+                                          text: 'Clear',
+                                          textSize: 18,
+                                          fontWeight: FontWeight.w500,
+                                          color: const Color(0xFF045007),
+                                          borderRadius: 10,
+                                          width: 80,
+                                          height: 30,
+                                          onPressed: () {
+                                            setState(() {
+                                              selectedIngredients.clear();
+                                              ingredientCount = 0;
+                                            });
+                                          },
                                         )
                                       ],
                                     ),
@@ -317,12 +361,34 @@ class _HomeState extends State<Home> {
                                       fontWeight: FontWeight.w500,
                                       width: width * .95,
                                       onPressed: () {
-                                        showModalBottomSheet(
-                                          isScrollControlled: true,
-                                          backgroundColor: Colors.transparent,
-                                          context: context,
-                                          builder: (context) => const Recipes(),
-                                        );
+                                        if (ingredientCount == 0) {
+                                          const SnackBar(
+                                            backgroundColor: myPrimaryColor,
+                                            content: CMText(
+                                              text:
+                                                  'Please select at least one ingredient',
+                                              color: Colors.white,
+                                            ),
+                                            duration:
+                                                Duration(milliseconds: 200),
+                                          );
+                                          showSnackbarWithoutAction(
+                                            context,
+                                            myPrimaryColor,
+                                            'Please select at least one ingredient',
+                                          );
+                                          return;
+                                        } else {
+                                          showModalBottomSheet(
+                                            isScrollControlled: true,
+                                            backgroundColor: Colors.transparent,
+                                            context: context,
+                                            builder: (context) => Recipes(
+                                              selectedIngredients:
+                                                  selectedIngredients,
+                                            ),
+                                          );
+                                        }
                                       },
                                     )
                                   ],
@@ -345,21 +411,33 @@ class _HomeState extends State<Home> {
     );
   }
 
-  DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
-        value: item,
-        child: Text(item),
-      );
+  List<Widget> buildIngredients(List<Ingredients> ingredients) {
+    return ingredients.map((ingredient) {
+      final isSelected = selectedIngredients.contains(ingredient.name);
 
-  Widget buildIngredients(Ingredients ingredients) {
-    List fishAndMeat = ingredients.fishAndMeat;
-    List fruits = ingredients.fruits;
-    List others = ingredients.others;
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 3.0, horizontal: 2),
-      child: IngredientCard(
-        ingredient: fishAndMeat[0],
-      ),
-    );
+      return GestureDetector(
+        onTap: () {
+          setState(() {
+            if (isSelected) {
+              selectedIngredients.remove(ingredient.name);
+              if (ingredientCount > 0) {
+                ingredientCount--;
+              }
+            } else {
+              selectedIngredients.add(ingredient.name);
+              ingredientCount++;
+            }
+          });
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 3.0, horizontal: 2),
+          child: IngredientCard(
+            ingredient: ingredient.name,
+            isSelected: isSelected,
+          ),
+        ),
+      );
+    }).toList();
   }
 
   Future<User?> getUserInfo() async {
@@ -378,12 +456,48 @@ class _HomeState extends State<Home> {
     }
   }
 
-  Stream<List<Ingredients>> getIngredients() => FirebaseFirestore.instance
-      .collection('ingredients')
-      .snapshots()
-      .map((snapshot) => snapshot.docs
-          .map((doc) => Ingredients.fromJson(doc.data()))
-          .toList());
+  Stream<List<Ingredients>> getIngredients() {
+    if (isFruits) {
+      return FirebaseFirestore.instance
+          .collection('ingredients')
+          .where('category', isEqualTo: 'Fruits and Vegetables')
+          .snapshots()
+          .map((snapshot) => snapshot.docs
+              .map((doc) => Ingredients.fromJson(doc.data()))
+              .toList());
+    } else if (isFishAndMeat) {
+      return FirebaseFirestore.instance
+          .collection('ingredients')
+          .where('category', isEqualTo: 'Fish and Meat')
+          .snapshots()
+          .map((snapshot) => snapshot.docs
+              .map((doc) => Ingredients.fromJson(doc.data()))
+              .toList());
+    } else if (isOthers) {
+      return FirebaseFirestore.instance
+          .collection('ingredients')
+          .where('category', isEqualTo: 'Spices')
+          .snapshots()
+          .map((snapshot) => snapshot.docs
+              .map((doc) => Ingredients.fromJson(doc.data()))
+              .toList());
+    } else if (isOthers) {
+      return FirebaseFirestore.instance
+          .collection('ingredients')
+          .where('category', isEqualTo: 'Others')
+          .snapshots()
+          .map((snapshot) => snapshot.docs
+              .map((doc) => Ingredients.fromJson(doc.data()))
+              .toList());
+    } else {
+      return FirebaseFirestore.instance
+          .collection('ingredients')
+          .snapshots()
+          .map((snapshot) => snapshot.docs
+              .map((doc) => Ingredients.fromJson(doc.data()))
+              .toList());
+    }
+  }
 }
 
 class User {
@@ -416,30 +530,24 @@ class User {
 
 class Ingredients {
   String id;
-  final List fruits;
-  final List fishAndMeat;
-  final List others;
+  final String name;
+  final String category;
 
   Ingredients({
     this.id = '',
-    required this.fruits,
-    required this.fishAndMeat,
-    required this.others,
+    required this.name,
+    required this.category,
   });
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'fruits': fruits,
-        'fishAndMeat': fishAndMeat,
-        'others': others,
+        'name': name,
+        'category': category,
       };
 
-  factory Ingredients.fromJson(Map<String, dynamic> json) {
-    return Ingredients(
-      id: json['id'] ?? '',
-      fruits: json['fruits'] ?? [],
-      fishAndMeat: json['fishAndMeat'] ?? [],
-      others: json['others'] ?? [],
-    );
-  }
+  static Ingredients fromJson(Map<String, dynamic> json) => Ingredients(
+        id: json['id'],
+        name: json['name'],
+        category: json['category'],
+      );
 }

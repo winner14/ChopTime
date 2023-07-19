@@ -19,6 +19,8 @@ final navigatorKey = GlobalKey<NavigatorState>();
 class _LoginState extends State<Login> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final FocusNode emailFocus = FocusNode();
+  final FocusNode passwordFocus = FocusNode();
   String email = '';
   String password = '';
   bool hidePassword = true;
@@ -28,6 +30,8 @@ class _LoginState extends State<Login> {
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
+    emailFocus.dispose();
+    passwordFocus.dispose();
     super.dispose();
   }
 

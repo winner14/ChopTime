@@ -44,7 +44,7 @@ class _RecipeCardState extends State<RecipeCard> {
         children: [
           Container(
             decoration: const BoxDecoration(
-              color: Color.fromARGB(178, 76, 175, 79),
+              color: Color(0xB14CAF4F),
               borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
             ),
             height: 86,
@@ -123,7 +123,7 @@ class _RecipeCardState extends State<RecipeCard> {
                   Container(
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(8)),
-                      color: Color.fromARGB(148, 247, 253, 247),
+                      color: Color(0x93F7FDF7),
                     ),
                     child: const Icon(
                       Icons.bookmark_outline_outlined,

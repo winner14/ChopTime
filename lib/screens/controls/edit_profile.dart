@@ -18,6 +18,9 @@ class _EditProfileState extends State<EditProfile> {
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final emailController = TextEditingController();
+  final FocusNode _firstNameFocusNode = FocusNode();
+  final FocusNode _lastNameFocusNode = FocusNode();
+  final FocusNode _emailFocusNode = FocusNode();
   String firstName = '', lastName = '', email = '';
   final _formKey = GlobalKey<FormState>();
 
@@ -26,6 +29,9 @@ class _EditProfileState extends State<EditProfile> {
     firstNameController.dispose();
     lastNameController.dispose();
     emailController.dispose();
+    _firstNameFocusNode.dispose();
+    _lastNameFocusNode.dispose();
+    _emailFocusNode.dispose();
     super.dispose();
   }
 
@@ -43,260 +49,298 @@ class _EditProfileState extends State<EditProfile> {
         ),
       ),
       extendBodyBehindAppBar: true,
-      body: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: const BoxDecoration(
-            color: myPrimaryColor,
-            image: DecorationImage(
-                image: AssetImage('assets/images/topBg.png'),
-                repeat: ImageRepeat.repeat,
-                opacity: .35),
-          ),
-          child: SafeArea(
-            child: SingleChildScrollView(
-              reverse: true,
-              child: Column(
-                children: [
-                  Container(
-                    height: height * .65,
-                    width: double.infinity,
-                    decoration: const BoxDecoration(
-                      color: myBgColorLight,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(15),
-                        topRight: Radius.circular(15),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 8),
-                      child: Column(
-                        // mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 6.0),
-                            child: SizedBox(
-                              height: 60,
-                              child: TextField(
-                                controller: firstNameController,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration: InputDecoration(
-                                  labelStyle: const TextStyle(
-                                      color: Color(0xA0000000), fontSize: 18),
-                                  focusedBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: mySecondaryColor,
-                                      width: 2,
-                                    ),
-                                    borderRadius: BorderRadius.horizontal(
-                                      right: Radius.circular(15),
-                                      left: Radius.circular(15),
-                                    ),
-                                  ),
-                                  border: const OutlineInputBorder(
-                                    borderRadius: BorderRadius.horizontal(
-                                      right: Radius.circular(15),
-                                      left: Radius.circular(15),
-                                    ),
-                                    // borderSide: BorderSide(color: borderColor, width: borderWidth),
-                                  ),
-                                  iconColor: mySecondaryColor,
-                                  labelText: 'First name',
-                                  hintText: 'John',
-                                  prefixIcon: const Icon(
-                                    Icons.person,
-                                    color: Colors.black45,
-                                  ),
-                                  suffixIcon: firstNameController.text.isEmpty
-                                      ? const SizedBox(
-                                          width: 0,
-                                        )
-                                      : IconButton(
-                                          onPressed: () {
-                                            firstName = '';
-                                            firstNameController.clear();
-                                          },
-                                          icon: const Icon(
-                                            Icons.close,
-                                            color: Colors.black45,
-                                          ),
-                                        ),
-                                ),
-                                onChanged: (value) {
-                                  setState(() {
-                                    value[0].toUpperCase();
-                                    firstName = value.trim();
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 6.0),
-                            child: SizedBox(
-                              height: 60,
-                              child: TextField(
-                                controller: lastNameController,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration: InputDecoration(
-                                  labelStyle: const TextStyle(
-                                      color: Color(0xA0000000), fontSize: 18),
-                                  focusedBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: mySecondaryColor,
-                                      width: 2,
-                                    ),
-                                    borderRadius: BorderRadius.horizontal(
-                                      right: Radius.circular(15),
-                                      left: Radius.circular(15),
-                                    ),
-                                  ),
-                                  border: const OutlineInputBorder(
-                                    borderRadius: BorderRadius.horizontal(
-                                      right: Radius.circular(15),
-                                      left: Radius.circular(15),
-                                    ),
-                                    // borderSide: BorderSide(color: borderColor, width: borderWidth),
-                                  ),
-                                  iconColor: mySecondaryColor,
-                                  labelText: 'Last name',
-                                  hintText: 'Smith',
-                                  prefixIcon: const Icon(
-                                    Icons.person,
-                                    color: Colors.black45,
-                                  ),
-                                  suffixIcon: firstNameController.text.isEmpty
-                                      ? const SizedBox(
-                                          width: 0,
-                                        )
-                                      : IconButton(
-                                          onPressed: () {
-                                            lastName = '';
-                                            lastNameController.clear();
-                                          },
-                                          icon: const Icon(
-                                            Icons.close,
-                                            color: Colors.black45,
-                                          ),
-                                        ),
-                                ),
-                                onChanged: (value) {
-                                  setState(() {
-                                    value[0].toUpperCase();
-                                    lastName = value.trim();
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 6.0),
-                            child: SizedBox(
-                              // width: width * .95,
-                              height: 60,
-                              child: TextFormField(
-                                controller: emailController,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                validator: (email) => email!.isEmpty
-                                    ? 'Please enter your email'
-                                    : !email.contains('@')
-                                        ? 'Please enter a valid email'
-                                        : null,
-                                keyboardType: TextInputType.emailAddress,
-                                textInputAction: TextInputAction.next,
-                                decoration: InputDecoration(
-                                  labelStyle: const TextStyle(
-                                      color: Color(0xA0000000), fontSize: 18),
-                                  focusedBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: mySecondaryColor,
-                                      width: 2,
-                                    ),
-                                    borderRadius: BorderRadius.horizontal(
-                                      right: Radius.circular(15),
-                                      left: Radius.circular(15),
-                                    ),
-                                  ),
-                                  border: const OutlineInputBorder(
-                                    borderRadius: BorderRadius.horizontal(
-                                      right: Radius.circular(15),
-                                      left: Radius.circular(15),
-                                    ),
-                                    // borderSide: BorderSide(color: borderColor, width: borderWidth),
-                                  ),
-                                  iconColor: mySecondaryColor,
-                                  labelText: 'Email',
-                                  hintText: 'user@email.com',
-                                  prefixIcon: const Icon(
-                                    Icons.email,
-                                    color: Colors.black45,
-                                  ),
-                                  suffixIcon: emailController.text.isEmpty
-                                      ? const SizedBox(
-                                          width: 0,
-                                        )
-                                      : IconButton(
-                                          onPressed: () {
-                                            email = '';
-                                            emailController.clear();
-                                          },
-                                          icon: const Icon(
-                                            Icons.close,
-                                            color: Colors.black45,
-                                          ),
-                                        ),
-                                ),
-                                onChanged: (value) {
-                                  setState(() {
-                                    email = value;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 8.0),
-                            child: CMText(
-                              text:
-                                  'Continuing this operation will permanently update your account information on our servers.',
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: CMButton(
-                              text: 'Save',
-                              textSize: 20,
-                              onPressed: () {
-                                updateUserData(User(
-                                  id: FirebaseAuth.instance.currentUser!.uid
-                                      .toString(),
-                                  firstName: firstName,
-                                  lastName: lastName,
-                                  email: email,
-                                ));
-                              },
-                              height: 60,
-                              width: double.infinity,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
+      body: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          _firstNameFocusNode.unfocus();
+          _lastNameFocusNode.unfocus();
+          _emailFocusNode.unfocus();
+        },
+        child: Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: const BoxDecoration(
+              color: myPrimaryColor,
+              image: DecorationImage(
+                  image: AssetImage('assets/images/topBg.png'),
+                  repeat: ImageRepeat.repeat,
+                  opacity: .35),
             ),
-          )),
+            child: SafeArea(
+              child: SingleChildScrollView(
+                reverse: true,
+                child: Column(
+                  children: [
+                    Container(
+                      height: height * .65,
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                        color: myBgColorLight,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(15),
+                          topRight: Radius.circular(15),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 8),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            // mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 6.0),
+                                child: SizedBox(
+                                  height: 60,
+                                  child: TextFormField(
+                                    controller: firstNameController,
+                                    keyboardType: TextInputType.text,
+                                    textInputAction: TextInputAction.next,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter your first name';
+                                      }
+                                      return null;
+                                    },
+                                    focusNode: _firstNameFocusNode,
+                                    decoration: InputDecoration(
+                                      labelStyle: const TextStyle(
+                                          color: Color(0xA0000000),
+                                          fontSize: 18),
+                                      focusedBorder: const OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: mySecondaryColor,
+                                          width: 2,
+                                        ),
+                                        borderRadius: BorderRadius.horizontal(
+                                          right: Radius.circular(15),
+                                          left: Radius.circular(15),
+                                        ),
+                                      ),
+                                      border: const OutlineInputBorder(
+                                        borderRadius: BorderRadius.horizontal(
+                                          right: Radius.circular(15),
+                                          left: Radius.circular(15),
+                                        ),
+                                        // borderSide: BorderSide(color: borderColor, width: borderWidth),
+                                      ),
+                                      iconColor: mySecondaryColor,
+                                      labelText: 'First name',
+                                      hintText: 'John',
+                                      prefixIcon: const Icon(
+                                        Icons.person,
+                                        color: Colors.black45,
+                                      ),
+                                      suffixIcon:
+                                          firstNameController.text.isEmpty
+                                              ? const SizedBox(
+                                                  width: 0,
+                                                )
+                                              : IconButton(
+                                                  onPressed: () {
+                                                    firstName = '';
+                                                    firstNameController.clear();
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons.close,
+                                                    color: Colors.black45,
+                                                  ),
+                                                ),
+                                    ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        value[0].toUpperCase();
+                                        firstName = value.trim();
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 6.0),
+                                child: SizedBox(
+                                  height: 60,
+                                  child: TextFormField(
+                                    controller: lastNameController,
+                                    keyboardType: TextInputType.text,
+                                    textInputAction: TextInputAction.next,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter your last name';
+                                      }
+                                      return null;
+                                    },
+                                    focusNode: _lastNameFocusNode,
+                                    decoration: InputDecoration(
+                                      labelStyle: const TextStyle(
+                                          color: Color(0xA0000000),
+                                          fontSize: 18),
+                                      focusedBorder: const OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: mySecondaryColor,
+                                          width: 2,
+                                        ),
+                                        borderRadius: BorderRadius.horizontal(
+                                          right: Radius.circular(15),
+                                          left: Radius.circular(15),
+                                        ),
+                                      ),
+                                      border: const OutlineInputBorder(
+                                        borderRadius: BorderRadius.horizontal(
+                                          right: Radius.circular(15),
+                                          left: Radius.circular(15),
+                                        ),
+                                        // borderSide: BorderSide(color: borderColor, width: borderWidth),
+                                      ),
+                                      iconColor: mySecondaryColor,
+                                      labelText: 'Last name',
+                                      hintText: 'Smith',
+                                      prefixIcon: const Icon(
+                                        Icons.person,
+                                        color: Colors.black45,
+                                      ),
+                                      suffixIcon:
+                                          lastNameController.text.isEmpty
+                                              ? const SizedBox(
+                                                  width: 0,
+                                                )
+                                              : IconButton(
+                                                  onPressed: () {
+                                                    lastName = '';
+                                                    lastNameController.clear();
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons.close,
+                                                    color: Colors.black45,
+                                                  ),
+                                                ),
+                                    ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        // value[0].toUpperCase();
+                                        lastName = value.trim();
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 6.0),
+                                child: SizedBox(
+                                  // width: width * .95,
+                                  height: 60,
+                                  child: TextFormField(
+                                    controller: emailController,
+                                    validator: (email) => email!.isEmpty
+                                        ? 'Please enter your email'
+                                        : !email.contains('@')
+                                            ? 'Please enter a valid email'
+                                            : null,
+                                    focusNode: _emailFocusNode,
+                                    keyboardType: TextInputType.emailAddress,
+                                    textInputAction: TextInputAction.next,
+                                    decoration: InputDecoration(
+                                      labelStyle: const TextStyle(
+                                          color: Color(0xA0000000),
+                                          fontSize: 18),
+                                      focusedBorder: const OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: mySecondaryColor,
+                                          width: 2,
+                                        ),
+                                        borderRadius: BorderRadius.horizontal(
+                                          right: Radius.circular(15),
+                                          left: Radius.circular(15),
+                                        ),
+                                      ),
+                                      border: const OutlineInputBorder(
+                                        borderRadius: BorderRadius.horizontal(
+                                          right: Radius.circular(15),
+                                          left: Radius.circular(15),
+                                        ),
+                                        // borderSide: BorderSide(color: borderColor, width: borderWidth),
+                                      ),
+                                      iconColor: mySecondaryColor,
+                                      labelText: 'Email',
+                                      hintText: 'user@email.com',
+                                      prefixIcon: const Icon(
+                                        Icons.email,
+                                        color: Colors.black45,
+                                      ),
+                                      suffixIcon: emailController.text.isEmpty
+                                          ? const SizedBox(
+                                              width: 0,
+                                            )
+                                          : IconButton(
+                                              onPressed: () {
+                                                email = '';
+                                                emailController.clear();
+                                              },
+                                              icon: const Icon(
+                                                Icons.close,
+                                                color: Colors.black45,
+                                              ),
+                                            ),
+                                    ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        email = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 8.0),
+                                child: CMText(
+                                  text:
+                                      'Continuing this operation will permanently update your account information on our servers.',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8),
+                                child: CMButton(
+                                  text: 'Save',
+                                  textSize: 20,
+                                  onPressed: () {
+                                    updateUserData(User(
+                                      id: FirebaseAuth.instance.currentUser!.uid
+                                          .toString(),
+                                      firstName: firstName,
+                                      lastName: lastName,
+                                      email: email,
+                                    ));
+                                  },
+                                  height: 60,
+                                  width: double.infinity,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            )),
+      ),
     );
   }
 
   Future<void> updateUserData(User user) async {
     final currentUserUid = FirebaseAuth.instance.currentUser!.uid;
+
+    if (!_formKey.currentState!.validate()) {
+      return showSnackbarWithoutAction(
+          context, myPrimaryColor, 'Please fill the required fields');
+    }
 
     showDialog(
       context: context,

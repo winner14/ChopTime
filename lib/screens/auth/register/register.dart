@@ -22,6 +22,9 @@ class _RegisterState extends State<Register> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  final FocusNode firstNameFocusNode = FocusNode();
+  final FocusNode lastNameFocusNode = FocusNode();
+  final FocusNode emailFocusNode = FocusNode();
   String firstName = '',
       lastName = '',
       email = '',
@@ -36,6 +39,10 @@ class _RegisterState extends State<Register> {
     lastNameController.dispose();
     emailController.dispose();
     passwordController.dispose();
+    confirmPasswordController.dispose();
+    firstNameFocusNode.dispose();
+    lastNameFocusNode.dispose();
+    emailFocusNode.dispose();
     super.dispose();
   }
 
@@ -472,7 +479,8 @@ class _RegisterState extends State<Register> {
   Future signUpWithEmailAndPassword() async {
     final formIsValid = _formKey.currentState!.validate();
     if (!formIsValid) {
-      return;
+      return showSnackbarWithoutAction(
+          context, Colors.red, 'Please fill in all fields');
     }
 
     showDialog(

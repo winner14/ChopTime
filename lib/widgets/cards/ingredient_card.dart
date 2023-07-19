@@ -4,7 +4,10 @@ import 'package:mini_project/widgets/text/cm_text.dart';
 
 class IngredientCard extends StatelessWidget {
   final String ingredient;
-  const IngredientCard({Key? key, required this.ingredient}) : super(key: key);
+  final bool isSelected;
+  const IngredientCard(
+      {Key? key, required this.ingredient, this.isSelected = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,17 +19,19 @@ class IngredientCard extends StatelessWidget {
         borderRadius: const BorderRadius.all(
           Radius.circular(10),
         ),
-        border: Border.all(width: .8, color: Colors.black12),
+        border: Border.all(
+          width: isSelected == false ? .8 : 1.2,
+          color: isSelected == false ? Colors.black12 : mySecondaryColor,
+        ),
       ),
-      child: Column(
-        children: [
-          CMText(
-            text: ingredient,
-            color: Colors.black,
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-          ),
-        ],
+      child: Center(
+        child: CMText(
+          text: ingredient,
+          color: Colors.black,
+          textAlign: TextAlign.center,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }

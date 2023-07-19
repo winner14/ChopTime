@@ -556,15 +556,8 @@ class _AddRecipeState extends State<AddRecipe> {
   }
 
   Future addRecipe(Recipes recipes) async {
-    // final formIsValid = _formKey.currentState!.validate();
-    // if (!formIsValid) {
-    //   return;
-    // }
-
     try {
       final docUser = FirebaseFirestore.instance.collection('recipes').doc();
-      // recipes.by = FirebaseAuth.instance.currentUser!.uid;
-
       final json = recipes.toJson();
       await docUser.set(json);
     } catch (e) {
