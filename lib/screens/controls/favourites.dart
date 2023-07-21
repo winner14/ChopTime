@@ -28,9 +28,11 @@ class _FavouritesState extends State<Favourites> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-          color: myPrimaryColor,
-          image: DecorationImage(
+        decoration: BoxDecoration(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? myPrimaryColorDark
+              : myPrimaryColorLight,
+          image: const DecorationImage(
               image: AssetImage('assets/images/topBg.png'),
               repeat: ImageRepeat.repeat,
               opacity: .35),

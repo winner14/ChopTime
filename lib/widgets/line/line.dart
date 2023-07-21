@@ -10,7 +10,9 @@ class GenieLine extends StatelessWidget {
     return Container(
       height: 1,
       color: Theme.of(context).brightness == Brightness.dark
-          ? myPrimaryColor
+          ? Theme.of(context).brightness == Brightness.dark
+              ? myPrimaryColorDark
+              : myPrimaryColorLight
           : myPrimaryDarkColor,
     );
   }

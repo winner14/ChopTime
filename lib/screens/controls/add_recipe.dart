@@ -45,9 +45,11 @@ class _AddRecipeState extends State<AddRecipe> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-          color: myPrimaryColor,
-          image: DecorationImage(
+        decoration: BoxDecoration(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? myPrimaryColorDark
+              : myPrimaryColorLight,
+          image: const DecorationImage(
               image: AssetImage('assets/images/topBg.png'),
               repeat: ImageRepeat.repeat,
               opacity: .35),
@@ -86,7 +88,7 @@ class _AddRecipeState extends State<AddRecipe> {
                                         CMText(
                                           text: 'Name of dish',
                                           fontSize: 20,
-                                          color: mySecondaryTextColor,
+                                          color: myTextColorLight,
                                         ),
                                       ],
                                     ),
@@ -160,7 +162,7 @@ class _AddRecipeState extends State<AddRecipe> {
                                         CMText(
                                           text: 'Ingredients',
                                           fontSize: 20,
-                                          color: mySecondaryTextColor,
+                                          color: myTextColorLight,
                                         ),
                                       ],
                                     ),
@@ -282,7 +284,7 @@ class _AddRecipeState extends State<AddRecipe> {
                                           CMText(
                                             text: 'Directions',
                                             fontSize: 20,
-                                            color: mySecondaryTextColor,
+                                            color: myTextColorLight,
                                           ),
                                         ],
                                       ),
@@ -333,7 +335,7 @@ class _AddRecipeState extends State<AddRecipe> {
                                                                       "${index + 1}. ${directions[index]}",
                                                                   fontSize: 18,
                                                                   color:
-                                                                      mySecondaryTextColor,
+                                                                      myTextColorLight,
                                                                 ),
                                                                 GestureDetector(
                                                                   onTap: () {
@@ -438,7 +440,7 @@ class _AddRecipeState extends State<AddRecipe> {
                                               child: CMText(
                                                 text: "Estimated cooking time",
                                                 fontSize: 18,
-                                                color: mySecondaryTextColor,
+                                                color: myTextColorLight,
                                               ),
                                             ),
                                             SizedBox(
@@ -447,7 +449,7 @@ class _AddRecipeState extends State<AddRecipe> {
                                               child: TextField(
                                                 controller: durationController,
                                                 keyboardType:
-                                                    TextInputType.text,
+                                                    TextInputType.number,
                                                 textInputAction:
                                                     TextInputAction.done,
                                                 decoration: InputDecoration(
@@ -561,7 +563,12 @@ class _AddRecipeState extends State<AddRecipe> {
       final json = recipes.toJson();
       await docUser.set(json);
     } catch (e) {
-      showSnackbarWithoutAction(context, myPrimaryColor, e);
+      showSnackbarWithoutAction(
+          context,
+          Theme.of(context).brightness == Brightness.dark
+              ? myPrimaryColorDark
+              : myPrimaryColorLight,
+          e);
     }
   }
 }
@@ -607,5 +614,29 @@ class Recipes {
         isApproved: json['isApproved'],
         by: json['by'],
         likes: json['likes'],
+      );
+}
+
+class Ingredients {
+  String id;
+  final String name;
+  final String category;
+
+  Ingredients({
+    this.id = '',
+    required this.name,
+    required this.category,
+  });
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'category': category,
+      };
+
+  static Ingredients fromJson(Map<String, dynamic> json) => Ingredients(
+        id: json['id'],
+        name: json['name'],
+        category: json['category'],
       );
 }

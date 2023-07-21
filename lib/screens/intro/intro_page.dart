@@ -16,9 +16,11 @@ class Intro extends StatelessWidget {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-          color: myPrimaryColor,
-          image: DecorationImage(
+        decoration: BoxDecoration(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? myPrimaryColorDark
+              : myPrimaryColorLight,
+          image: const DecorationImage(
             image: AssetImage('assets/images/topBg.png'),
             repeat: ImageRepeat.repeat,
             opacity: 0.35,
@@ -39,7 +41,7 @@ class Intro extends StatelessWidget {
                 children: [
                   const CMText(
                     text: 'Stress Free Cooking For Everyone',
-                    color: myPrimaryTextColor,
+                    color: myTextColorDark,
                     fontSize: 30,
                     fontWeight: FontWeight.w500,
                     textAlign: TextAlign.center,
@@ -49,7 +51,7 @@ class Intro extends StatelessWidget {
                     child: CMText(
                       text:
                           'Find a wide range of recipes made just for you.\nJust input your ingredients and start cooking.',
-                      color: myPrimaryTextColor,
+                      color: myTextColorDark,
                       fontSize: 18,
                       fontWeight: FontWeight.w400,
                       textAlign: TextAlign.center,

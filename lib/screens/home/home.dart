@@ -51,7 +51,9 @@ class _HomeState extends State<Home> {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       endDrawer: Drawer(
-        backgroundColor: myPrimaryColor,
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? myPrimaryColorDark
+            : myPrimaryColorLight,
         width: width * .6,
         child: const EndDrawer(),
       ),
@@ -62,12 +64,17 @@ class _HomeState extends State<Home> {
             return Container(
               width: double.infinity,
               height: double.infinity,
-              decoration: const BoxDecoration(
-                color: myPrimaryColor,
+              decoration: BoxDecoration(
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? myPrimaryColorDark
+                    : myPrimaryColorLight,
                 image: DecorationImage(
-                    image: AssetImage('assets/images/topBg.png'),
-                    repeat: ImageRepeat.repeat,
-                    opacity: .35),
+                  image: const AssetImage('assets/images/topBg.png'),
+                  repeat: ImageRepeat.repeat,
+                  opacity: Theme.of(context).brightness == Brightness.dark
+                      ? .7
+                      : .35,
+                ),
               ),
               child: Column(
                 children: [
@@ -131,9 +138,11 @@ class _HomeState extends State<Home> {
                     child: Container(
                       height: height * .8,
                       width: double.infinity,
-                      decoration: const BoxDecoration(
-                        color: myBgColorLight,
-                        borderRadius: BorderRadius.only(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? myBgColorLight
+                            : myBgColorDark,
+                        borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(15),
                           topRight: Radius.circular(15),
                         ),
@@ -146,23 +155,18 @@ class _HomeState extends State<Home> {
                             Row(
                               children: [
                                 Expanded(
-                                  // child: Padding(
-                                  //   padding:
-                                  //       const EdgeInsets.fromLTRB(5, 5, 0, 5),
-                                  //   child: CMButton(
-                                  //     text: 'Add and Ingredient',
-                                  //     textColor: myBgColorDark,
-                                  //     color: myBgColorLight,
-                                  //     borderColor: myBgColorDark,
-                                  //     onPressed: () {
-                                  //       //add funtion later
-                                  //     },
-                                  //   ),
-                                  // ),
                                   child: Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(5, 5, 0, 5),
-                                    child: SizedBox(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? myFgColorDark
+                                            : myFgColorLight,
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(15)),
+                                      ),
                                       height: 55,
                                       width: width * .6,
                                       child: TextField(
@@ -217,49 +221,65 @@ class _HomeState extends State<Home> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(4),
-                                  child: PopupMenuButton<String>(
-                                    icon: const Center(
-                                      child: Icon(
-                                        Icons.filter_list_rounded,
-                                        color: myPrimaryColor,
-                                        size: 40,
-                                      ),
+                                  child: Container(
+                                    width: 55, // Set the desired width here
+                                    height: 55, // Set the desired height here
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? myFgColorDark
+                                          : myFgColorLight,
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(15)),
                                     ),
-                                    itemBuilder: (BuildContext context) {
-                                      return filter.map((String item) {
-                                        return PopupMenuItem<String>(
-                                          value: item,
-                                          child: Text(item),
-                                        );
-                                      }).toList();
-                                    },
-                                    onSelected: (String? value) {
-                                      setState(() {
-                                        this.value = value;
-                                        if (value == 'Fruits') {
-                                          isFruits = true;
-                                          isFishAndMeat = false;
-                                          isOthers = false;
-                                        } else if (value == 'Fish and Meat') {
-                                          isFruits = false;
-                                          isFishAndMeat = true;
-                                          isOthers = false;
-                                        } else if (value == 'Others') {
-                                          isFruits = false;
-                                          isFishAndMeat = false;
-                                          isOthers = true;
-                                        } else if (value ==
-                                            'Add your own ingredient') {
-                                          showModalBottomSheet(
-                                            isScrollControlled: true,
-                                            backgroundColor: Colors.transparent,
-                                            context: context,
-                                            builder: (context) =>
-                                                const AddIngredient(),
+                                    child: PopupMenuButton<String>(
+                                      icon: Center(
+                                        child: Icon(
+                                          Icons.filter_list_rounded,
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? myTextColorDark
+                                              : myTextColorLight,
+                                          size: 40,
+                                        ),
+                                      ),
+                                      itemBuilder: (BuildContext context) {
+                                        return filter.map((String item) {
+                                          return PopupMenuItem<String>(
+                                            value: item,
+                                            child: Text(item),
                                           );
-                                        }
-                                      });
-                                    },
+                                        }).toList();
+                                      },
+                                      onSelected: (String? value) {
+                                        setState(() {
+                                          this.value = value;
+                                          if (value == 'Fruits') {
+                                            isFruits = true;
+                                            isFishAndMeat = false;
+                                            isOthers = false;
+                                          } else if (value == 'Fish and Meat') {
+                                            isFruits = false;
+                                            isFishAndMeat = true;
+                                            isOthers = false;
+                                          } else if (value == 'Others') {
+                                            isFruits = false;
+                                            isFishAndMeat = false;
+                                            isOthers = true;
+                                          } else if (value ==
+                                              'Add your own ingredient') {
+                                            showModalBottomSheet(
+                                              isScrollControlled: true,
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              context: context,
+                                              builder: (context) =>
+                                                  const AddIngredient(),
+                                            );
+                                          }
+                                        });
+                                      },
+                                    ),
                                   ),
                                 )
                               ],
@@ -293,9 +313,12 @@ class _HomeState extends State<Home> {
                             Container(
                               height: height * .18,
                               width: double.infinity,
-                              decoration: const BoxDecoration(
-                                color: myPrimaryColor,
-                                borderRadius: BorderRadius.only(
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? myPrimaryColorDark
+                                    : myPrimaryColorLight,
+                                borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(20),
                                   topRight: Radius.circular(20),
                                 ),
@@ -317,7 +340,7 @@ class _HomeState extends State<Home> {
                                           child: Center(
                                             child: CMText(
                                               text: 'Selected Ingredients',
-                                              color: myPrimaryTextColor,
+                                              color: myTextColorDark,
                                               fontSize: 18,
                                             ),
                                           ),
@@ -325,16 +348,23 @@ class _HomeState extends State<Home> {
                                         Container(
                                           height: 30,
                                           width: 50,
-                                          decoration: const BoxDecoration(
-                                            color: Color(0xFF045007),
-                                            borderRadius: BorderRadius.all(
+                                          decoration: BoxDecoration(
+                                            color:
+                                                Theme.of(context).brightness ==
+                                                        Brightness.dark
+                                                    ? myBgColorDark
+                                                    : myBgColorLight,
+                                            borderRadius:
+                                                const BorderRadius.all(
                                               Radius.circular(10),
                                             ),
                                           ),
                                           child: Center(
                                               child: CMText(
-                                            text: '$ingredientCount',
-                                            color: myPrimaryTextColor,
+                                            text: ingredientCount < 20
+                                                ? '$ingredientCount'
+                                                : '20+',
+                                            color: myTextColorDark,
                                             fontSize: 18,
                                           )),
                                         ),
@@ -342,7 +372,11 @@ class _HomeState extends State<Home> {
                                           text: 'Clear',
                                           textSize: 18,
                                           fontWeight: FontWeight.w500,
-                                          color: const Color(0xFF045007),
+                                          // color: const Color(0xFF045007),
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? myBgColorDark
+                                              : myBgColorLight,
                                           borderRadius: 10,
                                           width: 80,
                                           height: 30,
@@ -362,19 +396,26 @@ class _HomeState extends State<Home> {
                                       width: width * .95,
                                       onPressed: () {
                                         if (ingredientCount == 0) {
-                                          const SnackBar(
-                                            backgroundColor: myPrimaryColor,
-                                            content: CMText(
+                                          SnackBar(
+                                            backgroundColor:
+                                                Theme.of(context).brightness ==
+                                                        Brightness.dark
+                                                    ? myPrimaryColorDark
+                                                    : myPrimaryColorLight,
+                                            content: const CMText(
                                               text:
                                                   'Please select at least one ingredient',
                                               color: Colors.white,
                                             ),
-                                            duration:
-                                                Duration(milliseconds: 200),
+                                            duration: const Duration(
+                                                milliseconds: 200),
                                           );
                                           showSnackbarWithoutAction(
                                             context,
-                                            myPrimaryColor,
+                                            Theme.of(context).brightness ==
+                                                    Brightness.dark
+                                                ? myPrimaryColorDark
+                                                : myPrimaryColorLight,
                                             'Please select at least one ingredient',
                                           );
                                           return;

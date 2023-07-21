@@ -15,7 +15,9 @@ class IngredientCard extends StatelessWidget {
       height: 20,
       width: 20,
       decoration: BoxDecoration(
-        color: myBgColorLight,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? myFgColorDark
+            : myFgColorLight,
         borderRadius: const BorderRadius.all(
           Radius.circular(10),
         ),
@@ -27,7 +29,9 @@ class IngredientCard extends StatelessWidget {
       child: Center(
         child: CMText(
           text: ingredient,
-          color: Colors.black,
+          color: Theme.of(context).brightness == Brightness.dark
+              ? myTextColorDark
+              : myTextColorLight,
           textAlign: TextAlign.center,
           fontSize: 20,
           fontWeight: FontWeight.bold,

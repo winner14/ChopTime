@@ -16,7 +16,7 @@ class CMText extends StatelessWidget {
     required this.text,
     this.fontSize = 16,
     this.textAlign = TextAlign.start,
-    this.color = myPrimaryTextColor,
+    this.color = myTextColorDark,
     this.maxLines,
     this.overflow,
     this.fontWeight = FontWeight.w400,

@@ -23,6 +23,8 @@ class _RecipeCardState extends State<RecipeCard> {
   bool liked = false;
   int likeCount = 0;
 
+  bool isAddedToFavorites = false;
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -43,11 +45,14 @@ class _RecipeCardState extends State<RecipeCard> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Container(
-            decoration: const BoxDecoration(
-              color: Color(0xB14CAF4F),
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
+            decoration: BoxDecoration(
+              color: Theme.of(context).brightness == Brightness.light
+                  ? const Color(0xB14CAF4F)
+                  : const Color(0xAF000000),
+              borderRadius:
+                  const BorderRadius.vertical(bottom: Radius.circular(10)),
             ),
-            height: 86,
+            height: 87,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 6),
               child: Row(
@@ -92,12 +97,12 @@ class _RecipeCardState extends State<RecipeCard> {
                                 ? const Icon(
                                     Icons.favorite,
                                     size: 30,
-                                    color: myPrimaryTextColor,
+                                    color: myTextColorDark,
                                   )
                                 : const Icon(
                                     Icons.favorite_border_outlined,
                                     size: 30,
-                                    color: myPrimaryTextColor,
+                                    color: myTextColorDark,
                                   ),
                           ),
                           Padding(
@@ -120,15 +125,24 @@ class _RecipeCardState extends State<RecipeCard> {
                       )
                     ],
                   ),
-                  Container(
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                      color: Color(0x93F7FDF7),
-                    ),
-                    child: const Icon(
-                      Icons.bookmark_outline_outlined,
-                      size: 45,
-                      color: Colors.black54,
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isAddedToFavorites = !isAddedToFavorites;
+                      });
+                    },
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        color: Colors.black54,
+                      ),
+                      child: Icon(
+                        isAddedToFavorites == true
+                            ? Icons.bookmark
+                            : Icons.bookmark_border_outlined,
+                        size: 45,
+                        color: const Color(0x93F7FDF7),
+                      ),
                     ),
                   )
                 ],

@@ -14,14 +14,13 @@ Future main() async {
   runApp(const MyApp());
 }
 
-final navigatorKey = GlobalKey<NavigatorState>();
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
     return MaterialApp(
       builder: (context, child) => ResponsiveBreakpoints.builder(
         child: child!,
@@ -39,7 +38,9 @@ class MyApp extends StatelessWidget {
       theme: MyThemes.lightTheme,
       darkTheme: MyThemes.darkTheme,
       debugShowCheckedModeBanner: false,
-      color: myPrimaryColor,
+      color: Theme.of(context).brightness == Brightness.dark
+          ? myPrimaryColorDark
+          : myPrimaryColorLight,
       home: const MainPage(),
     );
   }

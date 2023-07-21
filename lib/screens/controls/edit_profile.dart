@@ -59,9 +59,11 @@ class _EditProfileState extends State<EditProfile> {
         child: Container(
             width: double.infinity,
             height: double.infinity,
-            decoration: const BoxDecoration(
-              color: myPrimaryColor,
-              image: DecorationImage(
+            decoration: BoxDecoration(
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? myPrimaryColorDark
+                  : myPrimaryColorLight,
+              image: const DecorationImage(
                   image: AssetImage('assets/images/topBg.png'),
                   repeat: ImageRepeat.repeat,
                   opacity: .35),
@@ -339,7 +341,11 @@ class _EditProfileState extends State<EditProfile> {
 
     if (!_formKey.currentState!.validate()) {
       return showSnackbarWithoutAction(
-          context, myPrimaryColor, 'Please fill the required fields');
+          context,
+          Theme.of(context).brightness == Brightness.dark
+              ? myPrimaryColorDark
+              : myPrimaryColorLight,
+          'Please fill the required fields');
     }
 
     showDialog(
@@ -362,7 +368,12 @@ class _EditProfileState extends State<EditProfile> {
         });
       });
     } catch (e) {
-      showSnackbarWithoutAction(context, myPrimaryColor, e.toString());
+      showSnackbarWithoutAction(
+          context,
+          Theme.of(context).brightness == Brightness.dark
+              ? myPrimaryColorDark
+              : myPrimaryColorLight,
+          e.toString());
     }
 
     firstNameController.clear();
@@ -373,7 +384,12 @@ class _EditProfileState extends State<EditProfile> {
     Navigator.pop(context);
 
     // ignore: use_build_context_synchronously
-    showSnackbarWithoutAction(context, myPrimaryColor, 'Updated successfully');
+    showSnackbarWithoutAction(
+        context,
+        Theme.of(context).brightness == Brightness.dark
+            ? myPrimaryColorDark
+            : myPrimaryColorLight,
+        'Updated successfully');
   }
 }
 

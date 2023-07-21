@@ -42,7 +42,7 @@ class _EndDrawerState extends State<EndDrawer> {
                     child: CMText(
                       text:
                           '${userSnapshot.data!.firstName} ${userSnapshot.data!.lastName}',
-                      color: mySecondaryTextColor,
+                      color: myTextColorLight,
                       fontWeight: FontWeight.w500,
                       fontSize: 20,
                     ),
@@ -51,13 +51,13 @@ class _EndDrawerState extends State<EndDrawer> {
                     padding: const EdgeInsets.only(bottom: 5.0),
                     child: CMText(
                       text: userSnapshot.data!.email,
-                      color: mySecondaryTextColor,
+                      color: myTextColorLight,
                       fontWeight: FontWeight.w300,
                       fontSize: 16,
                     ),
                   ),
                   const Divider(
-                    color: mySecondaryTextColor,
+                    color: myTextColorLight,
                     thickness: 0.5,
                   ),
                   Expanded(
@@ -122,9 +122,11 @@ class _EndDrawerState extends State<EndDrawer> {
               ),
             );
           } else {
-            return const Center(
+            return Center(
               child: CircularProgressIndicator(
-                backgroundColor: myPrimaryColor,
+                backgroundColor: Theme.of(context).brightness == Brightness.dark
+                    ? myPrimaryColorDark
+                    : myPrimaryColorLight,
                 color: mySecondaryColor,
               ),
             );
@@ -148,14 +150,14 @@ class _EndDrawerState extends State<EndDrawer> {
               padding: const EdgeInsets.only(right: 5.0),
               child: Icon(
                 icon,
-                color: mySecondaryTextColor,
+                color: myTextColorLight,
               ),
             ),
             CMText(
               text: item,
               fontSize: 25,
               fontWeight: FontWeight.w500,
-              color: mySecondaryTextColor,
+              color: myTextColorLight,
             ),
           ],
         ),

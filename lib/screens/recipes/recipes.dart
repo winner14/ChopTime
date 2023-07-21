@@ -29,9 +29,11 @@ class _RecipesState extends State<Recipes> {
         minChildSize: .7,
         builder: (_, controller) => Container(
           height: double.infinity,
-          decoration: const BoxDecoration(
-            color: myBgColorLight,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          decoration: BoxDecoration(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? myBgColorDark
+                : myBgColorLight,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 1),
@@ -57,7 +59,7 @@ class _RecipesState extends State<Recipes> {
                       children: [
                         CMText(
                           text: 'Recipes that match your ingredients',
-                          color: mySecondaryTextColor,
+                          color: myTextColorLight,
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
                           textAlign: TextAlign.center,
@@ -98,7 +100,7 @@ class _RecipesState extends State<Recipes> {
                                       'No recipes found for your selected ingredients. \nTry adding more ingredients or change your selected ingredients.',
                                   textAlign: TextAlign.center,
                                   fontSize: 18,
-                                  color: mySecondaryTextColor,
+                                  color: myTextColorLight,
                                   fontWeight: FontWeight.w500,
                                 ),
                                 CMButton(

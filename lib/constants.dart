@@ -2,13 +2,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mini_project/widgets/text/cm_text.dart';
 
-const myPrimaryColor = Color(0xFF4CAF50);
+const myPrimaryColorLight = Color(0xFF4CAF50);
+const myPrimaryColorDark = Color.fromARGB(255, 0, 0, 0);
 const mySecondaryColor = Color(0xFFCFB53B);
-const myPrimaryTextColor = Color(0xFFF7FDF7);
-const mySecondaryTextColor = Color(0xFF201F1F);
+const myTextColorDark = Color(0xFFF7FDF7);
+const myTextColorLight = Color(0xFF201F1F);
 const myPrimaryDarkColor = Color(0xFF4CAF50);
 const myBgColorDark = Color(0xFF201F1F);
-const myBgColorLight = Color(0xFFF7FDF7);
+const myFgColorDark = Colors.black;
+const myBgColorLight = Color(0xFFDFE6DF);
+const myFgColorLight = Colors.white;
 
 //next screen
 void nextScreen(context, screen) {

@@ -28,9 +28,11 @@ class _ResetPasswordState extends State<ResetPassword> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-          color: myPrimaryColor,
-          image: DecorationImage(
+        decoration: BoxDecoration(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? myPrimaryColorDark
+              : myPrimaryColorLight,
+          image: const DecorationImage(
               image: AssetImage('assets/images/topBg.png'),
               repeat: ImageRepeat.repeat,
               opacity: .35),
@@ -159,7 +161,12 @@ class _ResetPasswordState extends State<ResetPassword> {
         },
       );
     } on FirebaseAuthException catch (e) {
-      showSnackbar(context, myPrimaryColor, e.message.toString());
+      showSnackbar(
+          context,
+          Theme.of(context).brightness == Brightness.dark
+              ? myPrimaryColorDark
+              : myPrimaryColorLight,
+          e.message.toString());
     }
   }
 }

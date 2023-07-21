@@ -59,7 +59,7 @@ class _AddIngredientState extends State<AddIngredient> {
                   child: CMText(
                     text: 'Name of ingredient:',
                     fontSize: 22,
-                    color: mySecondaryTextColor,
+                    color: myTextColorLight,
                   ),
                 ),
                 Padding(
@@ -125,7 +125,7 @@ class _AddIngredientState extends State<AddIngredient> {
                   child: CMText(
                     text: 'Category of ingredient',
                     fontSize: 22,
-                    color: mySecondaryTextColor,
+                    color: myTextColorLight,
                   ),
                 ),
                 Padding(
@@ -146,7 +146,10 @@ class _AddIngredientState extends State<AddIngredient> {
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
                           elevation: 10,
-                          focusColor: myPrimaryColor,
+                          focusColor:
+                              Theme.of(context).brightness == Brightness.dark
+                                  ? myPrimaryColorDark
+                                  : myPrimaryColorLight,
                           dropdownColor: const Color(0xB14CAF4F),
                           value: value,
                           items: genders.map(buildMenuItem).toList(),

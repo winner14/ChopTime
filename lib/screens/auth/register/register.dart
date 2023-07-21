@@ -54,9 +54,11 @@ class _RegisterState extends State<Register> {
       body: Container(
         height: double.infinity,
         width: double.infinity,
-        decoration: const BoxDecoration(
-          color: myPrimaryColor,
-          image: DecorationImage(
+        decoration: BoxDecoration(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? myPrimaryColorDark
+              : myPrimaryColorLight,
+          image: const DecorationImage(
             image: AssetImage('assets/images/topBg.png'),
             repeat: ImageRepeat.repeat,
             opacity: .35,

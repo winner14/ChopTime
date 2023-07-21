@@ -8,8 +8,10 @@ class Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: myBgColorLight,
-      child: const SizedBox(
+      color: Theme.of(context).brightness == Brightness.dark
+          ? myBgColorDark
+          : myBgColorLight,
+      child: SizedBox(
         width: double.infinity,
         height: double.infinity,
         child: Center(
@@ -17,13 +19,16 @@ class Loading extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 child: CircularProgressIndicator(
-                  backgroundColor: myPrimaryColor,
+                  backgroundColor:
+                      Theme.of(context).brightness == Brightness.dark
+                          ? myPrimaryColorDark
+                          : myPrimaryColorLight,
                   color: mySecondaryColor,
                 ),
               ),
-              CMText(
+              const CMText(
                 text: 'Just a moment... Please wait.',
                 fontSize: 15,
               )
