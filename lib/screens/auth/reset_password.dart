@@ -21,6 +21,12 @@ class _ResetPasswordState extends State<ResetPassword> {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
+        title: const CMText(
+          text: 'Password Reset',
+          color: myTextColorDark,
+          fontSize: 22,
+          fontWeight: FontWeight.w500,
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -32,21 +38,27 @@ class _ResetPasswordState extends State<ResetPassword> {
           color: Theme.of(context).brightness == Brightness.dark
               ? myPrimaryColorDark
               : myPrimaryColorLight,
-          image: const DecorationImage(
-              image: AssetImage('assets/images/topBg.png'),
-              repeat: ImageRepeat.repeat,
-              opacity: .35),
+          image: DecorationImage(
+            image: Theme.of(context).brightness == Brightness.dark
+                ? const AssetImage('assets/images/topBgDark.png')
+                : const AssetImage('assets/images/topBg.png'),
+            repeat: ImageRepeat.repeat,
+            opacity:
+                Theme.of(context).brightness == Brightness.dark ? .15 : .35,
+          ),
         ),
         child: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Container(
-                height: height * .8,
+                height: height * .65,
                 width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: myBgColorLight,
-                  borderRadius: BorderRadius.only(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? myBgColorDark
+                      : myBgColorLight,
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(15),
                     topRight: Radius.circular(15),
                   ),
@@ -54,15 +66,21 @@ class _ResetPasswordState extends State<ResetPassword> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const CMText(
-                      text: 'Enter your email address',
-                      fontSize: 20,
-                    ),
+                    // const CMText(
+                    //   text: 'Enter your email address',
+                    //   fontSize: 20,
+                    // ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 6.0),
-                      child: SizedBox(
+                      child: Container(
                         width: width * .95,
                         height: 60,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? myFgColorDark
+                              : myFgColorLight,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
                         child: TextFormField(
                           controller: emailController,
                           keyboardType: TextInputType.emailAddress,
@@ -93,11 +111,26 @@ class _ResetPasswordState extends State<ResetPassword> {
                               ),
                             ),
                             iconColor: mySecondaryColor,
-                            labelText: 'Email',
+                            label: CMText(
+                              text: 'Enter your email',
+                              color: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? myTextColorDark
+                                  : myTextColorLight,
+                            ),
                             hintText: 'user@email.com',
-                            prefixIcon: const Icon(
+                            hintStyle: TextStyle(
+                              color: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? myTextColorDark
+                                  : myTextColorLight,
+                            ),
+                            prefixIcon: Icon(
                               Icons.email,
-                              color: Colors.black45,
+                              color: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? myTextColorDark
+                                  : myTextColorLight,
                             ),
                             suffixIcon: emailController.text.isEmpty
                                 ? const SizedBox(

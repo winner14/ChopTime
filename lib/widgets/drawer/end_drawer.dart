@@ -42,7 +42,9 @@ class _EndDrawerState extends State<EndDrawer> {
                     child: CMText(
                       text:
                           '${userSnapshot.data!.firstName} ${userSnapshot.data!.lastName}',
-                      color: myTextColorLight,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? myTextColorDark
+                          : myTextColorLight,
                       fontWeight: FontWeight.w500,
                       fontSize: 20,
                     ),
@@ -51,13 +53,17 @@ class _EndDrawerState extends State<EndDrawer> {
                     padding: const EdgeInsets.only(bottom: 5.0),
                     child: CMText(
                       text: userSnapshot.data!.email,
-                      color: myTextColorLight,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? myTextColorDark
+                          : myTextColorLight,
                       fontWeight: FontWeight.w300,
                       fontSize: 16,
                     ),
                   ),
-                  const Divider(
-                    color: myTextColorLight,
+                  Divider(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? myTextColorDark
+                        : myTextColorLight,
                     thickness: 0.5,
                   ),
                   Expanded(
@@ -150,14 +156,18 @@ class _EndDrawerState extends State<EndDrawer> {
               padding: const EdgeInsets.only(right: 5.0),
               child: Icon(
                 icon,
-                color: myTextColorLight,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? myTextColorDark
+                    : myTextColorLight,
               ),
             ),
             CMText(
               text: item,
               fontSize: 25,
               fontWeight: FontWeight.w500,
-              color: myTextColorLight,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? myTextColorDark
+                  : myTextColorLight,
             ),
           ],
         ),

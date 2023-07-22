@@ -10,7 +10,7 @@ const myTextColorLight = Color(0xFF201F1F);
 const myPrimaryDarkColor = Color(0xFF4CAF50);
 const myBgColorDark = Color(0xFF201F1F);
 const myFgColorDark = Colors.black;
-const myBgColorLight = Color(0xFFDFE6DF);
+const myBgColorLight = Color(0xFFEFF3EF);
 const myFgColorLight = Colors.white;
 
 //next screen

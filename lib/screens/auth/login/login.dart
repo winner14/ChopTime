@@ -59,10 +59,12 @@ class _LoginState extends State<Login> {
                 ? myPrimaryColorDark
                 : myPrimaryColorLight,
             image: DecorationImage(
-              image: const AssetImage('assets/images/topBg.png'),
+              image: Theme.of(context).brightness == Brightness.dark
+                  ? const AssetImage('assets/images/topBgDark.png')
+                  : const AssetImage('assets/images/topBg.png'),
               repeat: ImageRepeat.repeat,
               opacity:
-                  Theme.of(context).brightness == Brightness.dark ? .35 : .7,
+                  Theme.of(context).brightness == Brightness.dark ? .15 : .35,
             ),
           ),
           child: SafeArea(

@@ -61,12 +61,16 @@ class _EditProfileState extends State<EditProfile> {
             height: double.infinity,
             decoration: BoxDecoration(
               color: Theme.of(context).brightness == Brightness.dark
-                  ? myPrimaryColorDark
+                  ? Colors.black
                   : myPrimaryColorLight,
-              image: const DecorationImage(
-                  image: AssetImage('assets/images/topBg.png'),
-                  repeat: ImageRepeat.repeat,
-                  opacity: .35),
+              image: DecorationImage(
+                image: Theme.of(context).brightness == Brightness.dark
+                    ? const AssetImage('assets/images/topBgDark.png')
+                    : const AssetImage('assets/images/topBg.png'),
+                repeat: ImageRepeat.repeat,
+                opacity:
+                    Theme.of(context).brightness == Brightness.dark ? .15 : .35,
+              ),
             ),
             child: SafeArea(
               child: SingleChildScrollView(
@@ -76,9 +80,11 @@ class _EditProfileState extends State<EditProfile> {
                     Container(
                       height: height * .65,
                       width: double.infinity,
-                      decoration: const BoxDecoration(
-                        color: myBgColorLight,
-                        borderRadius: BorderRadius.only(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? myBgColorDark
+                            : myBgColorLight,
+                        borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(15),
                           topRight: Radius.circular(15),
                         ),
@@ -94,7 +100,14 @@ class _EditProfileState extends State<EditProfile> {
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 6.0),
-                                child: SizedBox(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? myFgColorDark
+                                        : myFgColorLight,
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
                                   height: 60,
                                   child: TextFormField(
                                     controller: firstNameController,
@@ -129,11 +142,26 @@ class _EditProfileState extends State<EditProfile> {
                                         // borderSide: BorderSide(color: borderColor, width: borderWidth),
                                       ),
                                       iconColor: mySecondaryColor,
-                                      labelText: 'First name',
+                                      hintStyle: TextStyle(
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? myTextColorDark
+                                            : myTextColorLight,
+                                      ),
+                                      label: CMText(
+                                        text: 'First name',
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? myTextColorDark
+                                            : myTextColorLight,
+                                      ),
                                       hintText: 'John',
-                                      prefixIcon: const Icon(
+                                      prefixIcon: Icon(
                                         Icons.person,
-                                        color: Colors.black45,
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? myTextColorDark
+                                            : myTextColorLight,
                                       ),
                                       suffixIcon:
                                           firstNameController.text.isEmpty
@@ -145,9 +173,13 @@ class _EditProfileState extends State<EditProfile> {
                                                     firstName = '';
                                                     firstNameController.clear();
                                                   },
-                                                  icon: const Icon(
+                                                  icon: Icon(
                                                     Icons.close,
-                                                    color: Colors.black45,
+                                                    color: Theme.of(context)
+                                                                .brightness ==
+                                                            Brightness.dark
+                                                        ? myTextColorDark
+                                                        : myTextColorLight,
                                                   ),
                                                 ),
                                     ),
@@ -163,8 +195,15 @@ class _EditProfileState extends State<EditProfile> {
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 6.0),
-                                child: SizedBox(
+                                child: Container(
                                   height: 60,
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? myFgColorDark
+                                        : myFgColorLight,
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
                                   child: TextFormField(
                                     controller: lastNameController,
                                     keyboardType: TextInputType.text,
@@ -198,11 +237,26 @@ class _EditProfileState extends State<EditProfile> {
                                         // borderSide: BorderSide(color: borderColor, width: borderWidth),
                                       ),
                                       iconColor: mySecondaryColor,
-                                      labelText: 'Last name',
+                                      label: CMText(
+                                        text: 'Last ame',
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? myTextColorDark
+                                            : myTextColorLight,
+                                      ),
                                       hintText: 'Smith',
-                                      prefixIcon: const Icon(
+                                      hintStyle: TextStyle(
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? myTextColorDark
+                                            : myTextColorLight,
+                                      ),
+                                      prefixIcon: Icon(
                                         Icons.person,
-                                        color: Colors.black45,
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? myTextColorDark
+                                            : myTextColorLight,
                                       ),
                                       suffixIcon:
                                           lastNameController.text.isEmpty
@@ -214,9 +268,13 @@ class _EditProfileState extends State<EditProfile> {
                                                     lastName = '';
                                                     lastNameController.clear();
                                                   },
-                                                  icon: const Icon(
+                                                  icon: Icon(
                                                     Icons.close,
-                                                    color: Colors.black45,
+                                                    color: Theme.of(context)
+                                                                .brightness ==
+                                                            Brightness.dark
+                                                        ? myTextColorDark
+                                                        : myTextColorLight,
                                                   ),
                                                 ),
                                     ),
@@ -232,9 +290,16 @@ class _EditProfileState extends State<EditProfile> {
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 6.0),
-                                child: SizedBox(
+                                child: Container(
                                   // width: width * .95,
                                   height: 60,
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? myFgColorDark
+                                        : myFgColorLight,
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
                                   child: TextFormField(
                                     controller: emailController,
                                     validator: (email) => email!.isEmpty
@@ -267,11 +332,26 @@ class _EditProfileState extends State<EditProfile> {
                                         // borderSide: BorderSide(color: borderColor, width: borderWidth),
                                       ),
                                       iconColor: mySecondaryColor,
-                                      labelText: 'Email',
+                                      label: CMText(
+                                        text: 'Email',
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? myTextColorDark
+                                            : myTextColorLight,
+                                      ),
                                       hintText: 'user@email.com',
-                                      prefixIcon: const Icon(
+                                      hintStyle: TextStyle(
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? myTextColorDark
+                                            : myTextColorLight,
+                                      ),
+                                      prefixIcon: Icon(
                                         Icons.email,
-                                        color: Colors.black45,
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? myTextColorDark
+                                            : myTextColorLight,
                                       ),
                                       suffixIcon: emailController.text.isEmpty
                                           ? const SizedBox(
@@ -282,9 +362,13 @@ class _EditProfileState extends State<EditProfile> {
                                                 email = '';
                                                 emailController.clear();
                                               },
-                                              icon: const Icon(
+                                              icon: Icon(
                                                 Icons.close,
-                                                color: Colors.black45,
+                                                color: Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.dark
+                                                    ? myTextColorDark
+                                                    : myTextColorLight,
                                               ),
                                             ),
                                     ),

@@ -34,10 +34,14 @@ class _DiscoverState extends State<Discover> {
             color: Theme.of(context).brightness == Brightness.dark
                 ? myPrimaryColorDark
                 : myPrimaryColorLight,
-            image: const DecorationImage(
-                image: AssetImage('assets/images/topBg.png'),
-                repeat: ImageRepeat.repeat,
-                opacity: .35),
+            image: DecorationImage(
+              image: Theme.of(context).brightness == Brightness.dark
+                  ? const AssetImage('assets/images/topBgDark.png')
+                  : const AssetImage('assets/images/topBg.png'),
+              repeat: ImageRepeat.repeat,
+              opacity:
+                  Theme.of(context).brightness == Brightness.dark ? .15 : .35,
+            ),
           ),
           child: SingleChildScrollView(
             reverse: true,
@@ -46,9 +50,11 @@ class _DiscoverState extends State<Discover> {
                 Container(
                   height: height * .85,
                   width: double.infinity,
-                  decoration: const BoxDecoration(
-                    color: myBgColorLight,
-                    borderRadius: BorderRadius.only(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? myBgColorDark
+                        : myBgColorLight,
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(15),
                       topRight: Radius.circular(15),
                     ),

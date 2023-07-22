@@ -20,10 +20,13 @@ class Intro extends StatelessWidget {
           color: Theme.of(context).brightness == Brightness.dark
               ? myPrimaryColorDark
               : myPrimaryColorLight,
-          image: const DecorationImage(
-            image: AssetImage('assets/images/topBg.png'),
+          image: DecorationImage(
+            image: Theme.of(context).brightness == Brightness.dark
+                ? const AssetImage('assets/images/topBgDark.png')
+                : const AssetImage('assets/images/topBg.png'),
             repeat: ImageRepeat.repeat,
-            opacity: 0.35,
+            opacity:
+                Theme.of(context).brightness == Brightness.dark ? .15 : .35,
           ),
         ),
         child: Padding(

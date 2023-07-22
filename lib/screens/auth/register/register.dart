@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mini_project/constants.dart';
-import 'package:mini_project/main.dart';
 import 'package:mini_project/screens/auth/login/login.dart';
 import 'package:mini_project/widgets/button/button.dart';
 import 'package:mini_project/widgets/text/cm_text.dart';
@@ -58,10 +57,13 @@ class _RegisterState extends State<Register> {
           color: Theme.of(context).brightness == Brightness.dark
               ? myPrimaryColorDark
               : myPrimaryColorLight,
-          image: const DecorationImage(
-            image: AssetImage('assets/images/topBg.png'),
+          image: DecorationImage(
+            image: Theme.of(context).brightness == Brightness.dark
+                ? const AssetImage('assets/images/topBgDark.png')
+                : const AssetImage('assets/images/topBg.png'),
             repeat: ImageRepeat.repeat,
-            opacity: .35,
+            opacity:
+                Theme.of(context).brightness == Brightness.dark ? .15 : .35,
           ),
         ),
         child: SafeArea(
@@ -73,9 +75,11 @@ class _RegisterState extends State<Register> {
                 Container(
                   height: height * .76,
                   width: double.infinity,
-                  decoration: const BoxDecoration(
-                    color: myBgColorLight,
-                    borderRadius: BorderRadius.only(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? myBgColorDark
+                        : myBgColorLight,
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20),
                     ),
@@ -87,15 +91,27 @@ class _RegisterState extends State<Register> {
                       key: _formKey,
                       child: Column(
                         children: [
-                          const CMText(
+                          CMText(
                             text: 'Fill this form to create an acoount',
                             fontSize: 28,
                             fontWeight: FontWeight.w500,
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? myTextColorDark
+                                    : myTextColorLight,
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 6.0),
-                            child: SizedBox(
+                            child: Container(
                               height: 60,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? myFgColorDark
+                                    : myFgColorLight,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(15)),
+                              ),
                               child: TextField(
                                 controller: firstNameController,
                                 keyboardType: TextInputType.text,
@@ -121,11 +137,26 @@ class _RegisterState extends State<Register> {
                                     // borderSide: BorderSide(color: borderColor, width: borderWidth),
                                   ),
                                   iconColor: mySecondaryColor,
-                                  labelText: 'First name',
+                                  label: CMText(
+                                    text: 'First Name',
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? myTextColorDark
+                                        : myTextColorLight,
+                                  ),
                                   hintText: 'John',
-                                  prefixIcon: const Icon(
+                                  hintStyle: TextStyle(
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? myTextColorDark
+                                        : myTextColorLight,
+                                  ),
+                                  prefixIcon: Icon(
                                     Icons.person,
-                                    color: Colors.black45,
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? myTextColorDark
+                                        : myTextColorLight,
                                   ),
                                   suffixIcon: firstNameController.text.isEmpty
                                       ? const SizedBox(
@@ -136,9 +167,13 @@ class _RegisterState extends State<Register> {
                                             firstName = '';
                                             firstNameController.clear();
                                           },
-                                          icon: const Icon(
+                                          icon: Icon(
                                             Icons.close,
-                                            color: Colors.black45,
+                                            color:
+                                                Theme.of(context).brightness ==
+                                                        Brightness.dark
+                                                    ? myTextColorDark
+                                                    : myTextColorLight,
                                           ),
                                         ),
                                 ),
@@ -153,8 +188,16 @@ class _RegisterState extends State<Register> {
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 6.0),
-                            child: SizedBox(
+                            child: Container(
                               height: 60,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? myFgColorDark
+                                    : myFgColorLight,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(15)),
+                              ),
                               child: TextField(
                                 controller: lastNameController,
                                 keyboardType: TextInputType.text,
@@ -180,11 +223,26 @@ class _RegisterState extends State<Register> {
                                     // borderSide: BorderSide(color: borderColor, width: borderWidth),
                                   ),
                                   iconColor: mySecondaryColor,
-                                  labelText: 'Last name',
+                                  label: CMText(
+                                    text: 'Last Name',
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? myTextColorDark
+                                        : myTextColorLight,
+                                  ),
                                   hintText: 'Smith',
-                                  prefixIcon: const Icon(
+                                  hintStyle: TextStyle(
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? myTextColorDark
+                                        : myTextColorLight,
+                                  ),
+                                  prefixIcon: Icon(
                                     Icons.person,
-                                    color: Colors.black45,
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? myTextColorDark
+                                        : myTextColorLight,
                                   ),
                                   suffixIcon: firstNameController.text.isEmpty
                                       ? const SizedBox(
@@ -195,9 +253,13 @@ class _RegisterState extends State<Register> {
                                             lastName = '';
                                             lastNameController.clear();
                                           },
-                                          icon: const Icon(
+                                          icon: Icon(
                                             Icons.close,
-                                            color: Colors.black45,
+                                            color:
+                                                Theme.of(context).brightness ==
+                                                        Brightness.dark
+                                                    ? myTextColorDark
+                                                    : myTextColorLight,
                                           ),
                                         ),
                                 ),
@@ -212,9 +274,17 @@ class _RegisterState extends State<Register> {
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 6.0),
-                            child: SizedBox(
+                            child: Container(
                               width: width * .95,
                               height: 60,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? myFgColorDark
+                                    : myFgColorLight,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(15)),
+                              ),
                               child: TextFormField(
                                 controller: emailController,
                                 autovalidateMode:
@@ -247,11 +317,26 @@ class _RegisterState extends State<Register> {
                                     // borderSide: BorderSide(color: borderColor, width: borderWidth),
                                   ),
                                   iconColor: mySecondaryColor,
-                                  labelText: 'Email',
+                                  label: CMText(
+                                    text: 'Email',
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? myTextColorDark
+                                        : myTextColorLight,
+                                  ),
                                   hintText: 'user@email.com',
-                                  prefixIcon: const Icon(
+                                  hintStyle: TextStyle(
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? myTextColorDark
+                                        : myTextColorLight,
+                                  ),
+                                  prefixIcon: Icon(
                                     Icons.email,
-                                    color: Colors.black45,
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? myTextColorDark
+                                        : myTextColorLight,
                                   ),
                                   suffixIcon: emailController.text.isEmpty
                                       ? const SizedBox(
@@ -262,9 +347,13 @@ class _RegisterState extends State<Register> {
                                             email = '';
                                             emailController.clear();
                                           },
-                                          icon: const Icon(
+                                          icon: Icon(
                                             Icons.close,
-                                            color: Colors.black45,
+                                            color:
+                                                Theme.of(context).brightness ==
+                                                        Brightness.dark
+                                                    ? myTextColorDark
+                                                    : myTextColorLight,
                                           ),
                                         ),
                                 ),
@@ -278,9 +367,17 @@ class _RegisterState extends State<Register> {
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 6.0),
-                            child: SizedBox(
+                            child: Container(
                               width: width * .95,
                               height: 60,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? myFgColorDark
+                                    : myFgColorLight,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(15)),
+                              ),
                               child: TextFormField(
                                 controller: passwordController,
                                 autovalidateMode:
@@ -314,11 +411,26 @@ class _RegisterState extends State<Register> {
                                     // borderSide: BorderSide(color: borderColor, width: borderWidth),
                                   ),
                                   iconColor: mySecondaryColor,
-                                  labelText: 'Password',
+                                  label: CMText(
+                                    text: 'Password',
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? myTextColorDark
+                                        : myTextColorLight,
+                                  ),
                                   hintText: '********',
-                                  prefixIcon: const Icon(
+                                  hintStyle: TextStyle(
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? myTextColorDark
+                                          : myTextColorLight,
+                                      fontSize: 18),
+                                  prefixIcon: Icon(
                                     Icons.lock,
-                                    color: Colors.black45,
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? myTextColorDark
+                                        : myTextColorLight,
                                   ),
                                   suffixIcon: IconButton(
                                     onPressed: () {
@@ -326,9 +438,12 @@ class _RegisterState extends State<Register> {
                                         hidePassword = !hidePassword;
                                       });
                                     },
-                                    icon: const Icon(
+                                    icon: Icon(
                                       Icons.remove_red_eye,
-                                      color: Colors.black45,
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? myTextColorDark
+                                          : myTextColorLight,
                                     ),
                                   ),
                                 ),
@@ -345,9 +460,17 @@ class _RegisterState extends State<Register> {
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 6.0),
-                            child: SizedBox(
+                            child: Container(
                               width: width * .95,
                               height: 60,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? myFgColorDark
+                                    : myFgColorLight,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(15)),
+                              ),
                               child: TextFormField(
                                 controller: confirmPasswordController,
                                 autovalidateMode:
@@ -382,11 +505,26 @@ class _RegisterState extends State<Register> {
                                     // borderSide: BorderSide(color: borderColor, width: borderWidth),
                                   ),
                                   iconColor: mySecondaryColor,
-                                  labelText: 'Confirm Password',
+                                  label: CMText(
+                                    text: 'Confirm Password',
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? myTextColorDark
+                                        : myTextColorLight,
+                                  ),
                                   hintText: '********',
-                                  prefixIcon: const Icon(
+                                  hintStyle: TextStyle(
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? myTextColorDark
+                                          : myTextColorLight,
+                                      fontSize: 18),
+                                  prefixIcon: Icon(
                                     Icons.lock,
-                                    color: Colors.black45,
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? myTextColorDark
+                                        : myTextColorLight,
                                   ),
                                   suffixIcon: IconButton(
                                     onPressed: () {
@@ -394,9 +532,12 @@ class _RegisterState extends State<Register> {
                                         hidePassword = !hidePassword;
                                       });
                                     },
-                                    icon: const Icon(
+                                    icon: Icon(
                                       Icons.remove_red_eye,
-                                      color: Colors.black45,
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? myTextColorDark
+                                          : myTextColorLight,
                                     ),
                                   ),
                                 ),
@@ -437,8 +578,13 @@ class _RegisterState extends State<Register> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const CMText(
-                                    text: 'Alreaady have an account? '),
+                                CMText(
+                                  text: 'Alreaady have an account? ',
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? myTextColorDark
+                                      : myTextColorLight,
+                                ),
                                 GestureDetector(
                                   onTap: () {
                                     //add function later

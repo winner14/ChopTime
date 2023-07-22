@@ -49,10 +49,14 @@ class _AddRecipeState extends State<AddRecipe> {
           color: Theme.of(context).brightness == Brightness.dark
               ? myPrimaryColorDark
               : myPrimaryColorLight,
-          image: const DecorationImage(
-              image: AssetImage('assets/images/topBg.png'),
-              repeat: ImageRepeat.repeat,
-              opacity: .35),
+          image: DecorationImage(
+            image: Theme.of(context).brightness == Brightness.dark
+                ? const AssetImage('assets/images/topBgDark.png')
+                : const AssetImage('assets/images/topBg.png'),
+            repeat: ImageRepeat.repeat,
+            opacity:
+                Theme.of(context).brightness == Brightness.dark ? .15 : .35,
+          ),
         ),
         child: SafeArea(
           child: SingleChildScrollView(
@@ -62,9 +66,11 @@ class _AddRecipeState extends State<AddRecipe> {
                 Container(
                   height: height * .85,
                   width: double.infinity,
-                  decoration: const BoxDecoration(
-                    color: myBgColorLight,
-                    borderRadius: BorderRadius.only(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? myBgColorDark
+                        : myBgColorLight,
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(15),
                       topRight: Radius.circular(15),
                     ),
@@ -80,25 +86,33 @@ class _AddRecipeState extends State<AddRecipe> {
                             children: [
                               Column(
                                 children: [
-                                  const Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 8.0),
-                                    child: Row(
-                                      children: [
-                                        CMText(
-                                          text: 'Name of dish',
-                                          fontSize: 20,
-                                          color: myTextColorLight,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                  // const Padding(
+                                  //   padding:
+                                  //       EdgeInsets.symmetric(vertical: 8.0),
+                                  //   child: Row(
+                                  //     children: [
+                                  //       CMText(
+                                  //         text: 'Name of dish',
+                                  //         fontSize: 20,
+                                  //         color: myTextColorLight,
+                                  //       ),
+                                  //     ],
+                                  //   ),
+                                  // ),
                                   Padding(
                                     padding:
                                         const EdgeInsets.only(bottom: 15.0),
-                                    child: SizedBox(
+                                    child: Container(
                                       height: 60,
                                       width: width * .95,
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? myFgColorDark
+                                            : myFgColorLight,
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(15)),
+                                      ),
                                       child: TextField(
                                         controller: recipeNameController,
                                         keyboardType: TextInputType.text,
@@ -128,7 +142,7 @@ class _AddRecipeState extends State<AddRecipe> {
                                             // borderSide: BorderSide(color: borderColor, width: borderWidth),
                                           ),
                                           iconColor: mySecondaryColor,
-                                          hintText: 'Fried Rice with chicken',
+                                          hintText: 'Name of Dish',
                                           suffixIcon:
                                               recipeNameController.text.isEmpty
                                                   ? const SizedBox(
@@ -154,19 +168,19 @@ class _AddRecipeState extends State<AddRecipe> {
                                       ),
                                     ),
                                   ),
-                                  const Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 8.0),
-                                    child: Row(
-                                      children: [
-                                        CMText(
-                                          text: 'Ingredients',
-                                          fontSize: 20,
-                                          color: myTextColorLight,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                  // const Padding(
+                                  //   padding:
+                                  //       EdgeInsets.symmetric(vertical: 8.0),
+                                  //   child: Row(
+                                  //     children: [
+                                  //       CMText(
+                                  //         text: 'Ingredients',
+                                  //         fontSize: 20,
+                                  //         color: myTextColorLight,
+                                  //       ),
+                                  //     ],
+                                  //   ),
+                                  // ),
                                   Padding(
                                     padding:
                                         const EdgeInsets.only(bottom: 15.0),
@@ -177,9 +191,19 @@ class _AddRecipeState extends State<AddRecipe> {
                                         Padding(
                                           padding:
                                               const EdgeInsets.only(right: 4.0),
-                                          child: SizedBox(
+                                          child: Container(
                                             height: 60,
                                             width: width * .4,
+                                            decoration: BoxDecoration(
+                                              color: Theme.of(context)
+                                                          .brightness ==
+                                                      Brightness.dark
+                                                  ? myFgColorDark
+                                                  : myFgColorLight,
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(15)),
+                                            ),
                                             child: TextField(
                                               controller: ingredientController,
                                               keyboardType: TextInputType.text,
@@ -211,7 +235,7 @@ class _AddRecipeState extends State<AddRecipe> {
                                                   // borderSide: BorderSide(color: borderColor, width: borderWidth),
                                                 ),
                                                 iconColor: mySecondaryColor,
-                                                hintText: 'Input ingredient',
+                                                hintText: 'Ingredients',
                                                 suffixIcon: ingredientController
                                                         .text.isEmpty
                                                     ? const SizedBox(
@@ -312,8 +336,12 @@ class _AddRecipeState extends State<AddRecipe> {
                                                         child: Container(
                                                           decoration:
                                                               BoxDecoration(
-                                                            color: Colors
-                                                                .grey[300],
+                                                            color: Theme.of(context)
+                                                                        .brightness ==
+                                                                    Brightness
+                                                                        .dark
+                                                                ? myFgColorDark
+                                                                : myFgColorLight,
                                                             borderRadius:
                                                                 const BorderRadius
                                                                     .all(
@@ -363,9 +391,17 @@ class _AddRecipeState extends State<AddRecipe> {
                                             )
                                           : const SizedBox(height: 10),
                                     ]),
-                                    SizedBox(
+                                    Container(
                                       height: 60,
                                       width: width * .95,
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? myFgColorDark
+                                            : myFgColorLight,
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(15)),
+                                      ),
                                       child: TextField(
                                         controller: directionController,
                                         keyboardType: TextInputType.text,
@@ -434,18 +470,28 @@ class _AddRecipeState extends State<AddRecipe> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            const Padding(
-                                              padding:
-                                                  EdgeInsets.only(bottom: 8.0),
-                                              child: CMText(
-                                                text: "Estimated cooking time",
-                                                fontSize: 18,
-                                                color: myTextColorLight,
-                                              ),
-                                            ),
-                                            SizedBox(
+                                            // const Padding(
+                                            //   padding:
+                                            //       EdgeInsets.only(bottom: 8.0),
+                                            //   child: CMText(
+                                            //     text: "Estimated cooking time",
+                                            //     fontSize: 18,
+                                            //     color: myTextColorLight,
+                                            //   ),
+                                            // ),
+                                            Container(
                                               height: 60,
                                               width: width * .4,
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.dark
+                                                    ? myFgColorDark
+                                                    : myFgColorLight,
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(15)),
+                                              ),
                                               child: TextField(
                                                 controller: durationController,
                                                 keyboardType:
@@ -480,7 +526,7 @@ class _AddRecipeState extends State<AddRecipe> {
                                                     // borderSide: BorderSide(color: borderColor, width: borderWidth),
                                                   ),
                                                   iconColor: mySecondaryColor,
-                                                  hintText: 'In minutes',
+                                                  hintText: 'Cooking time',
                                                   suffixIcon: durationController
                                                           .text.isEmpty
                                                       ? const SizedBox(
