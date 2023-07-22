@@ -26,11 +26,11 @@ class _EndDrawerState extends State<EndDrawer> {
         builder: (context, userSnapshot) {
           if (userSnapshot.hasData) {
             return Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 50, 8, 8),
+              padding: const EdgeInsets.fromLTRB(8, 35, 8, 8),
               child: Column(
                 children: [
                   const Padding(
-                    padding: EdgeInsets.only(bottom: 10),
+                    padding: EdgeInsets.only(bottom: 8),
                     child: CircleAvatar(
                       radius: 50,
                       backgroundImage:

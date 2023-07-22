@@ -53,7 +53,7 @@ class Intro extends StatelessWidget {
                     padding: EdgeInsets.only(bottom: 30),
                     child: CMText(
                       text:
-                          'Find a wide range of recipes made just for you.\nJust input your ingredients and start cooking.',
+                          'Find a wide range of recipes made just for you. Just input your ingredients and start cooking.',
                       color: myTextColorDark,
                       fontSize: 18,
                       fontWeight: FontWeight.w400,

@@ -90,7 +90,7 @@ class _HomeState extends State<Home> {
                 child: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 50, 10, 10),
+                      padding: const EdgeInsets.fromLTRB(10, 35, 10, 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -167,11 +167,12 @@ class _HomeState extends State<Home> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Expanded(
                                     child: Padding(
                                       padding:
-                                          const EdgeInsets.fromLTRB(5, 5, 0, 5),
+                                          const EdgeInsets.fromLTRB(2, 5, 0, 5),
                                       child: Focus(
                                         key: _formKey,
                                         child: Container(
@@ -337,7 +338,7 @@ class _HomeState extends State<Home> {
                                 ),
                               ),
                               Container(
-                                height: height * .18,
+                                // height: height * .18,
                                 width: double.infinity,
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).brightness ==
@@ -351,70 +352,74 @@ class _HomeState extends State<Home> {
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      vertical: 12.0, horizontal: 18),
+                                      vertical: 10, horizontal: 18),
                                   child: Column(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          const Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 5),
-                                            child: Center(
-                                              child: CMText(
-                                                text: 'Selected Ingredients',
-                                                color: myTextColorDark,
-                                                fontSize: 18,
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 10),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            const Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 5),
+                                              child: Center(
+                                                child: CMText(
+                                                  text: 'Selected Ingredients',
+                                                  color: myTextColorDark,
+                                                  fontSize: 18,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          Container(
-                                            height: 30,
-                                            width: 50,
-                                            decoration: BoxDecoration(
+                                            Container(
+                                              height: 30,
+                                              width: 50,
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.dark
+                                                    ? myBgColorDark
+                                                    : const Color(0xFF045007),
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                  Radius.circular(10),
+                                                ),
+                                              ),
+                                              child: Center(
+                                                  child: CMText(
+                                                text: ingredientCount < 20
+                                                    ? '$ingredientCount'
+                                                    : '20+',
+                                                color: myTextColorDark,
+                                                fontSize: 18,
+                                              )),
+                                            ),
+                                            CMButton(
+                                              text: 'Clear',
+                                              textSize: 18,
+                                              fontWeight: FontWeight.w500,
+                                              // color: const Color(0xFF045007),
                                               color: Theme.of(context)
                                                           .brightness ==
                                                       Brightness.dark
                                                   ? myBgColorDark
                                                   : const Color(0xFF045007),
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                Radius.circular(10),
-                                              ),
-                                            ),
-                                            child: Center(
-                                                child: CMText(
-                                              text: ingredientCount < 20
-                                                  ? '$ingredientCount'
-                                                  : '20+',
-                                              color: myTextColorDark,
-                                              fontSize: 18,
-                                            )),
-                                          ),
-                                          CMButton(
-                                            text: 'Clear',
-                                            textSize: 18,
-                                            fontWeight: FontWeight.w500,
-                                            // color: const Color(0xFF045007),
-                                            color:
-                                                Theme.of(context).brightness ==
-                                                        Brightness.dark
-                                                    ? myBgColorDark
-                                                    : const Color(0xFF045007),
-                                            borderRadius: 10,
-                                            width: 80,
-                                            height: 30,
-                                            onPressed: () {
-                                              setState(() {
-                                                selectedIngredients.clear();
-                                                ingredientCount = 0;
-                                              });
-                                            },
-                                          )
-                                        ],
+                                              borderRadius: 10,
+                                              width: 80,
+                                              height: 30,
+                                              onPressed: () {
+                                                setState(() {
+                                                  selectedIngredients.clear();
+                                                  ingredientCount = 0;
+                                                });
+                                              },
+                                            )
+                                          ],
+                                        ),
                                       ),
                                       CMButton(
                                         text: "Let's Cook!",
