@@ -22,6 +22,10 @@ class _AddRecipeState extends State<AddRecipe> {
 
   List<String> ingredients = [];
   List<String> directions = [];
+  Future<List<String>> oldIngredients = FirebaseFirestore.instance
+      .collection('ingredients')
+      .get()
+      .then((value) => value.docs.map((e) => e['name'].toString()).toList());
 
   @override
   void dispose() {
@@ -264,6 +268,7 @@ class _AddRecipeState extends State<AddRecipe> {
                                               onSubmitted: (value) {
                                                 setState(() {
                                                   ingredients.add(value);
+
                                                   ingredientController.clear();
                                                 });
                                               },
@@ -582,10 +587,10 @@ class _AddRecipeState extends State<AddRecipe> {
                                                   });
                                                 },
                                                 onSubmitted: (value) {
-                                                  setState(() {
-                                                    directions.add(value);
-                                                    directionController.clear();
-                                                  });
+                                                  // setState(() {
+                                                  //   directions.add(value);
+                                                  //   directionController.clear();
+                                                  // });
                                                 },
                                               ),
                                             ),
@@ -610,6 +615,43 @@ class _AddRecipeState extends State<AddRecipe> {
                                                   duration: duration,
                                                   likes: 0);
                                               addRecipe(recipes);
+
+                                              oldIngredients.then(
+                                                (value) {
+                                                  bool ingredientInDatabase =
+                                                      false;
+                                                  for (int i = 0;
+                                                      i < value.length;
+                                                      i++) {
+                                                    for (int i = 0;
+                                                        i < ingredients.length;
+                                                        i++) {
+                                                      if (value[i]
+                                                              .toLowerCase() ==
+                                                          ingredients[i]
+                                                              .toLowerCase()) {
+                                                        ingredientInDatabase =
+                                                            true;
+                                                      }
+                                                    }
+                                                    if (ingredientInDatabase ==
+                                                        false) {
+                                                      final ingredient =
+                                                          Ingredients(
+                                                        name: ingredients[i],
+                                                      );
+                                                      addNewIngredient(
+                                                          ingredient);
+                                                    }
+                                                  }
+                                                },
+                                              );
+                                              // oldIngredients.then((value) => {
+                                              //       value.sort(),
+                                              //       value.forEach((element) {
+                                              //         print(element);
+                                              //       })
+                                              //     });
                                             },
                                             width: width * .95,
                                           ),
@@ -647,6 +689,14 @@ class _AddRecipeState extends State<AddRecipe> {
               : myPrimaryColorLight,
           e);
     }
+  }
+
+  Future addNewIngredient(Ingredients ingredients) async {
+    final docIngredient =
+        FirebaseFirestore.instance.collection('ingredients').doc();
+
+    final json = ingredients.toJson();
+    await docIngredient.set(json);
   }
 }
 
@@ -698,22 +748,26 @@ class Ingredients {
   String id;
   final String name;
   final String category;
+  final bool isApproved;
 
   Ingredients({
     this.id = '',
+    this.isApproved = false,
     required this.name,
-    required this.category,
+    this.category = '',
   });
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
         'category': category,
+        'isApproved': isApproved,
       };
 
   static Ingredients fromJson(Map<String, dynamic> json) => Ingredients(
         id: json['id'],
         name: json['name'],
         category: json['category'],
+        isApproved: json['isApproved'],
       );
 }
