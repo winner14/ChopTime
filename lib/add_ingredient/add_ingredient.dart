@@ -15,13 +15,14 @@ class _AddIngredientState extends State<AddIngredient> {
   final ingredientNameController = TextEditingController();
   final FocusNode ingredientNameFocusNode = FocusNode();
   String ingredientName = '';
+  final _formKey = GlobalKey<FormState>();
 
   final categories = [
     'Category of Ingredient',
     'Fruits and Vegetables',
     'Fish and Meat',
     'Spices',
-    'Othes',
+    'Others',
   ];
 
   String? value = 'Category of Ingredient';
@@ -38,12 +39,14 @@ class _AddIngredientState extends State<AddIngredient> {
     // double width = MediaQuery.of(context).size.width;
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: () {},
+      onTap: () {
+        ingredientNameFocusNode.unfocus();
+      },
       excludeFromSemantics: true,
       child: DraggableScrollableSheet(
-        initialChildSize: .4,
-        maxChildSize: .5,
-        minChildSize: .2,
+        initialChildSize: .8,
+        maxChildSize: .8,
+        minChildSize: .35,
         builder: (_, controller) => Container(
           height: double.infinity,
           decoration: BoxDecoration(
@@ -55,7 +58,7 @@ class _AddIngredientState extends State<AddIngredient> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
                   width: 150,
@@ -70,89 +73,74 @@ class _AddIngredientState extends State<AddIngredient> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Padding(
-                    //   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    //   child: CMText(
-                    //     text: 'Name of ingredient:',
-                    //     fontSize: 22,
-                    //     color: Theme.of(context).brightness == Brightness.dark
-                    //         ? myTextColorDark
-                    //         : myTextColorLight,
-                    //   ),
-                    // ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 15),
-                      child: Container(
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? myFgColorDark
-                              : myFgColorLight,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: TextField(
-                          controller: ingredientNameController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.done,
-                          focusNode: ingredientNameFocusNode,
-                          decoration: InputDecoration(
-                            labelStyle: TextStyle(
-                                color: Theme.of(context).brightness ==
-                                        Brightness.dark
-                                    ? myTextColorDark
-                                    : myTextColorLight,
-                                fontSize: 18),
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: mySecondaryColor,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.horizontal(
-                                right: Radius.circular(15),
-                                left: Radius.circular(15),
-                              ),
-                            ),
-                            border: const OutlineInputBorder(
-                              borderRadius: BorderRadius.horizontal(
-                                right: Radius.circular(15),
-                                left: Radius.circular(15),
-                              ),
-                              // borderSide: BorderSide(color: borderColor, width: borderWidth),
-                            ),
-                            iconColor: mySecondaryColor,
-                            labelText: 'Name of Ingredient',
-                            suffixIcon: ingredientNameController.text.isEmpty
-                                ? const SizedBox(
-                                    width: 0,
-                                  )
-                                : IconButton(
-                                    onPressed: () {
-                                      ingredientName = '';
-                                      ingredientNameController.clear();
-                                    },
-                                    icon: const Icon(
-                                      Icons.close,
-                                      color: Colors.black45,
-                                    ),
-                                  ),
+                    Form(
+                      key: _formKey,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: Container(
+                          height: 60,
+                          decoration: BoxDecoration(
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? myFgColorDark
+                                    : myFgColorLight,
+                            borderRadius: BorderRadius.circular(15),
                           ),
-                          onChanged: (value) {
-                            setState(() {
-                              value[0].toUpperCase();
-                              ingredientName = value.trim();
-                            });
-                          },
+                          child: TextFormField(
+                            controller: ingredientNameController,
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.done,
+                            focusNode: ingredientNameFocusNode,
+                            decoration: InputDecoration(
+                              labelStyle: TextStyle(
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? myTextColorDark
+                                      : myTextColorLight,
+                                  fontSize: 18),
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: mySecondaryColor,
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.horizontal(
+                                  right: Radius.circular(15),
+                                  left: Radius.circular(15),
+                                ),
+                              ),
+                              border: const OutlineInputBorder(
+                                borderRadius: BorderRadius.horizontal(
+                                  right: Radius.circular(15),
+                                  left: Radius.circular(15),
+                                ),
+                              ),
+                              iconColor: mySecondaryColor,
+                              labelText: 'Name of Ingredient',
+                              suffixIcon: ingredientNameController.text.isEmpty
+                                  ? const SizedBox(
+                                      width: 0,
+                                    )
+                                  : IconButton(
+                                      onPressed: () {
+                                        ingredientName = '';
+                                        ingredientNameController.clear();
+                                      },
+                                      icon: const Icon(
+                                        Icons.close,
+                                        color: Colors.black45,
+                                      ),
+                                    ),
+                            ),
+                            onChanged: (value) {
+                              setState(() {
+                                value[0].toUpperCase();
+                                ingredientName = value.trim();
+                              });
+                            },
+                          ),
                         ),
                       ),
                     ),
-                    // const Padding(
-                    //   padding: EdgeInsets.symmetric(vertical: 8.0),
-                    //   child: CMText(
-                    //     text: 'Category of ingredient',
-                    //     fontSize: 22,
-                    //     color: myTextColorLight,
-                    //   ),
-                    // ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Container(
@@ -177,7 +165,11 @@ class _AddIngredientState extends State<AddIngredient> {
                                       Brightness.dark
                                   ? myPrimaryColorDark
                                   : myPrimaryColorLight,
-                              dropdownColor: const Color(0xB14CAF4F),
+                              dropdownColor: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? myFgColorDark
+                                  : myFgColorLight,
+                              iconSize: 35,
                               value: value,
                               items: categories.map(buildMenuItem).toList(),
                               onChanged: ((value) =>
@@ -188,17 +180,19 @@ class _AddIngredientState extends State<AddIngredient> {
                       ),
                     ),
                     Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                        child: CMButton(
-                            text: 'Submit',
-                            width: double.infinity,
-                            onPressed: () {
-                              final ingredients = Ingredients(
-                                name: ingredientName,
-                                category: value!,
-                              );
-                              addIngredient(ingredients);
-                            })),
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: CMButton(
+                        text: 'Submit',
+                        width: double.infinity,
+                        onPressed: () {
+                          final ingredients = Ingredients(
+                            name: ingredientName,
+                            category: value!,
+                          );
+                          addIngredient(ingredients);
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ],

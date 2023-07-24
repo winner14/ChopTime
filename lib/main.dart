@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mini_project/constants.dart';
+import 'package:mini_project/screens/controls/add_recipe.dart';
 import 'package:mini_project/screens/home/home.dart';
 import 'package:mini_project/screens/intro/intro_page.dart';
 import 'package:mini_project/theme_provider.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: "/",
       navigatorKey: navigatorKey,
-      title: 'ChopTime',
+      title: 'CookMate',
       themeMode: ThemeMode.system,
       theme: MyThemes.lightTheme,
       darkTheme: MyThemes.darkTheme,
@@ -61,7 +62,7 @@ class MainPage extends StatelessWidget {
             );
           }
           if (snapshot.hasData) {
-            return const Home();
+            return const AddRecipe();
           }
           return const Intro();
         },

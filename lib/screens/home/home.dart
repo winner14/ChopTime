@@ -31,6 +31,7 @@ class _HomeState extends State<Home> {
   final filter = [
     'Fruits',
     'Fish and Meat',
+    'Spices',
     'Others',
     'Add your own ingredient'
   ];
@@ -87,394 +88,399 @@ class _HomeState extends State<Home> {
                         : .35,
                   ),
                 ),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 35, 10, 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  const CMText(
-                                    text: 'Hello, ',
-                                    color: myBgColorLight,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w400,
+                child: SafeArea(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(8, 5, 8, 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    const CMText(
+                                      text: 'Hello, ',
+                                      color: myBgColorLight,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                    CMText(
+                                      text: userSnapshot.data!.firstName,
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? myPrimaryColorLight
+                                          : myTextColorDark,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ],
+                                ),
+                                const CMText(
+                                  text: 'Ready for a Meal?',
+                                  color: myBgColorLight,
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ],
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Scaffold.of(context).openEndDrawer();
+                              },
+                              child: Builder(
+                                builder: (BuildContext context) {
+                                  return const SizedBox(
+                                    height: 60,
+                                    width: 60,
+                                    child: CircleAvatar(
+                                      child: Image(
+                                        image: AssetImage(
+                                            'assets/images/boy_profile.png'),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          height: height * .8,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color:
+                                Theme.of(context).brightness == Brightness.light
+                                    ? myBgColorLight
+                                    : myBgColorDark,
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(15),
+                              topRight: Radius.circular(15),
+                            ),
+                          ),
+                          child: SizedBox(
+                            height: .8,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            2, 5, 0, 5),
+                                        child: Focus(
+                                          key: _formKey,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color: Theme.of(context)
+                                                          .brightness ==
+                                                      Brightness.dark
+                                                  ? myFgColorDark
+                                                  : myFgColorLight,
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(15)),
+                                            ),
+                                            height: 55,
+                                            width: width * .6,
+                                            child: TextField(
+                                              controller: searchController,
+                                              keyboardType: TextInputType.text,
+                                              textInputAction:
+                                                  TextInputAction.search,
+                                              focusNode: searchFocusNode,
+                                              decoration: InputDecoration(
+                                                focusedBorder:
+                                                    const OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                    color: mySecondaryColor,
+                                                    width: .5,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.horizontal(
+                                                    right: Radius.circular(15),
+                                                    left: Radius.circular(15),
+                                                  ),
+                                                ),
+                                                border:
+                                                    const OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.horizontal(
+                                                    right: Radius.circular(15),
+                                                    left: Radius.circular(15),
+                                                  ),
+                                                  borderSide: BorderSide(
+                                                      color: mySecondaryColor,
+                                                      width: .1),
+                                                ),
+                                                iconColor: mySecondaryColor,
+                                                // labelText: label,
+                                                hintText:
+                                                    'Search to add ingredients',
+                                                // prefixIcon: icon,
+                                                suffixIcon: IconButton(
+                                                  onPressed: () {
+                                                    // searchController.clear();
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons.search_rounded,
+                                                    color: Colors.black45,
+                                                  ),
+                                                ),
+                                              ),
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  search = value;
+                                                });
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(2),
+                                      child: Container(
+                                        width: 50,
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? myFgColorDark
+                                              : myFgColorLight,
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(10)),
+                                        ),
+                                        child: PopupMenuButton<String>(
+                                          icon: Center(
+                                            child: Icon(
+                                              Icons.filter_list_rounded,
+                                              color: Theme.of(context)
+                                                          .brightness ==
+                                                      Brightness.dark
+                                                  ? myTextColorDark
+                                                  : myTextColorLight,
+                                              size: 38,
+                                            ),
+                                          ),
+                                          itemBuilder: (BuildContext context) {
+                                            return filter.map((String item) {
+                                              return PopupMenuItem<String>(
+                                                value: item,
+                                                child: Text(item),
+                                              );
+                                            }).toList();
+                                          },
+                                          onSelected: (String? value) {
+                                            setState(() {
+                                              this.value = value;
+                                              if (value == 'Fruits') {
+                                                isFruits = true;
+                                                isFishAndMeat = false;
+                                                isOthers = false;
+                                              } else if (value ==
+                                                  'Fish and Meat') {
+                                                isFruits = false;
+                                                isFishAndMeat = true;
+                                                isOthers = false;
+                                              } else if (value == 'Others') {
+                                                isFruits = false;
+                                                isFishAndMeat = false;
+                                                isOthers = true;
+                                              } else if (value ==
+                                                  'Add your own ingredient') {
+                                                showModalBottomSheet(
+                                                  isScrollControlled: true,
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      const AddIngredient(),
+                                                );
+                                              }
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Expanded(
+                                  child: StreamBuilder<List<Ingredients>>(
+                                    stream: getIngredients(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        final ingredients = snapshot.data!;
+                                        print(selectedIngredients);
+                                        return Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 4.0),
+                                          child: GridView.count(
+                                            padding:
+                                                const EdgeInsets.only(top: 0),
+                                            crossAxisCount: 3,
+                                            crossAxisSpacing: 2,
+                                            mainAxisSpacing: 2,
+                                            childAspectRatio: 1,
+                                            children:
+                                                buildIngredients(ingredients),
+                                          ),
+                                        );
+                                      } else {
+                                        print(snapshot.error);
+                                        return const Loading();
+                                      }
+                                    },
                                   ),
-                                  CMText(
-                                    text: userSnapshot.data!.firstName,
+                                ),
+                                Container(
+                                  // height: height * .18,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
                                     color: Theme.of(context).brightness ==
                                             Brightness.dark
-                                        ? myPrimaryColorLight
-                                        : myTextColorDark,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ],
-                              ),
-                              const CMText(
-                                text: 'Ready for a Meal?',
-                                color: myBgColorLight,
-                                fontSize: 25,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ],
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Scaffold.of(context).openEndDrawer();
-                            },
-                            child: Builder(
-                              builder: (BuildContext context) {
-                                return const SizedBox(
-                                  height: 60,
-                                  width: 60,
-                                  child: CircleAvatar(
-                                    child: Image(
-                                      image: AssetImage(
-                                          'assets/images/boy_profile.png'),
+                                        ? myPrimaryColorDark
+                                        : myPrimaryColorLight,
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20),
                                     ),
                                   ),
-                                );
-                              },
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        height: height * .8,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color:
-                              Theme.of(context).brightness == Brightness.light
-                                  ? myBgColorLight
-                                  : myBgColorDark,
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(15),
-                            topRight: Radius.circular(15),
-                          ),
-                        ),
-                        child: SizedBox(
-                          height: .8,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsets.fromLTRB(2, 5, 0, 5),
-                                      child: Focus(
-                                        key: _formKey,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color:
-                                                Theme.of(context).brightness ==
-                                                        Brightness.dark
-                                                    ? myFgColorDark
-                                                    : myFgColorLight,
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(15)),
-                                          ),
-                                          height: 55,
-                                          width: width * .6,
-                                          child: TextField(
-                                            controller: searchController,
-                                            keyboardType: TextInputType.text,
-                                            textInputAction:
-                                                TextInputAction.search,
-                                            focusNode: searchFocusNode,
-                                            decoration: InputDecoration(
-                                              focusedBorder:
-                                                  const OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  color: mySecondaryColor,
-                                                  width: .5,
-                                                ),
-                                                borderRadius:
-                                                    BorderRadius.horizontal(
-                                                  right: Radius.circular(15),
-                                                  left: Radius.circular(15),
-                                                ),
-                                              ),
-                                              border: const OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.horizontal(
-                                                  right: Radius.circular(15),
-                                                  left: Radius.circular(15),
-                                                ),
-                                                borderSide: BorderSide(
-                                                    color: mySecondaryColor,
-                                                    width: .1),
-                                              ),
-                                              iconColor: mySecondaryColor,
-                                              // labelText: label,
-                                              hintText:
-                                                  'Search to add ingredients',
-                                              // prefixIcon: icon,
-                                              suffixIcon: IconButton(
-                                                onPressed: () {
-                                                  // searchController.clear();
-                                                },
-                                                icon: const Icon(
-                                                  Icons.search_rounded,
-                                                  color: Colors.black45,
-                                                ),
-                                              ),
-                                            ),
-                                            onChanged: (value) {
-                                              setState(() {
-                                                search = value;
-                                              });
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(2),
-                                    child: Container(
-                                      width: 50,
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context).brightness ==
-                                                Brightness.dark
-                                            ? myFgColorDark
-                                            : myFgColorLight,
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(10)),
-                                      ),
-                                      child: PopupMenuButton<String>(
-                                        icon: Center(
-                                          child: Icon(
-                                            Icons.filter_list_rounded,
-                                            color:
-                                                Theme.of(context).brightness ==
-                                                        Brightness.dark
-                                                    ? myTextColorDark
-                                                    : myTextColorLight,
-                                            size: 38,
-                                          ),
-                                        ),
-                                        itemBuilder: (BuildContext context) {
-                                          return filter.map((String item) {
-                                            return PopupMenuItem<String>(
-                                              value: item,
-                                              child: Text(item),
-                                            );
-                                          }).toList();
-                                        },
-                                        onSelected: (String? value) {
-                                          setState(() {
-                                            this.value = value;
-                                            if (value == 'Fruits') {
-                                              isFruits = true;
-                                              isFishAndMeat = false;
-                                              isOthers = false;
-                                            } else if (value ==
-                                                'Fish and Meat') {
-                                              isFruits = false;
-                                              isFishAndMeat = true;
-                                              isOthers = false;
-                                            } else if (value == 'Others') {
-                                              isFruits = false;
-                                              isFishAndMeat = false;
-                                              isOthers = true;
-                                            } else if (value ==
-                                                'Add your own ingredient') {
-                                              showModalBottomSheet(
-                                                isScrollControlled: true,
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                context: context,
-                                                builder: (context) =>
-                                                    const AddIngredient(),
-                                              );
-                                            }
-                                          });
-                                        },
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                              Expanded(
-                                child: StreamBuilder<List<Ingredients>>(
-                                  stream: getIngredients(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasData) {
-                                      final ingredients = snapshot.data!;
-                                      print(selectedIngredients);
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0),
-                                        child: GridView.count(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 18),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Padding(
                                           padding:
-                                              const EdgeInsets.only(top: 0),
-                                          crossAxisCount: 3,
-                                          crossAxisSpacing: 2,
-                                          mainAxisSpacing: 2,
-                                          childAspectRatio: 1,
-                                          children:
-                                              buildIngredients(ingredients),
-                                        ),
-                                      );
-                                    } else {
-                                      print(snapshot.error);
-                                      return const Loading();
-                                    }
-                                  },
-                                ),
-                              ),
-                              Container(
-                                // height: height * .18,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).brightness ==
-                                          Brightness.dark
-                                      ? myPrimaryColorDark
-                                      : myPrimaryColorLight,
-                                  borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(20),
-                                    topRight: Radius.circular(20),
-                                  ),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 18),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 10),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            const Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 5),
-                                              child: Center(
-                                                child: CMText(
-                                                  text: 'Selected Ingredients',
+                                              const EdgeInsets.only(bottom: 10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              const Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 5),
+                                                child: Center(
+                                                  child: CMText(
+                                                    text:
+                                                        'Selected Ingredients',
+                                                    color: myTextColorDark,
+                                                    fontSize: 18,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                height: 30,
+                                                width: 50,
+                                                decoration: BoxDecoration(
+                                                  color: Theme.of(context)
+                                                              .brightness ==
+                                                          Brightness.dark
+                                                      ? myBgColorDark
+                                                      : const Color(0xFF045007),
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                    Radius.circular(10),
+                                                  ),
+                                                ),
+                                                child: Center(
+                                                    child: CMText(
+                                                  text: ingredientCount < 20
+                                                      ? '$ingredientCount'
+                                                      : '20+',
                                                   color: myTextColorDark,
                                                   fontSize: 18,
-                                                ),
+                                                )),
                                               ),
-                                            ),
-                                            Container(
-                                              height: 30,
-                                              width: 50,
-                                              decoration: BoxDecoration(
+                                              CMButton(
+                                                text: 'Clear',
+                                                textSize: 18,
+                                                fontWeight: FontWeight.w500,
+                                                // color: const Color(0xFF045007),
                                                 color: Theme.of(context)
                                                             .brightness ==
                                                         Brightness.dark
                                                     ? myBgColorDark
                                                     : const Color(0xFF045007),
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                  Radius.circular(10),
-                                                ),
-                                              ),
-                                              child: Center(
-                                                  child: CMText(
-                                                text: ingredientCount < 20
-                                                    ? '$ingredientCount'
-                                                    : '20+',
-                                                color: myTextColorDark,
-                                                fontSize: 18,
-                                              )),
-                                            ),
-                                            CMButton(
-                                              text: 'Clear',
-                                              textSize: 18,
-                                              fontWeight: FontWeight.w500,
-                                              // color: const Color(0xFF045007),
-                                              color: Theme.of(context)
-                                                          .brightness ==
-                                                      Brightness.dark
-                                                  ? myBgColorDark
-                                                  : const Color(0xFF045007),
-                                              borderRadius: 10,
-                                              width: 80,
-                                              height: 30,
-                                              onPressed: () {
-                                                setState(() {
-                                                  selectedIngredients.clear();
-                                                  ingredientCount = 0;
-                                                });
-                                              },
-                                            )
-                                          ],
+                                                borderRadius: 10,
+                                                width: 80,
+                                                height: 30,
+                                                onPressed: () {
+                                                  setState(() {
+                                                    selectedIngredients.clear();
+                                                    ingredientCount = 0;
+                                                  });
+                                                },
+                                              )
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      CMButton(
-                                        text: "Let's Cook!",
-                                        textSize: 20,
-                                        fontWeight: FontWeight.w500,
-                                        width: width * .95,
-                                        onPressed: () {
-                                          if (ingredientCount == 0) {
-                                            SnackBar(
-                                              backgroundColor: Theme.of(context)
-                                                          .brightness ==
-                                                      Brightness.dark
-                                                  ? myPrimaryColorDark
-                                                  : myPrimaryColorLight,
-                                              content: const CMText(
-                                                text:
-                                                    'Please select at least one ingredient',
-                                                color: Colors.white,
-                                              ),
-                                              duration: const Duration(
-                                                  milliseconds: 200),
-                                            );
-                                            showSnackbarWithoutAction(
-                                              context,
-                                              Theme.of(context).brightness ==
-                                                      Brightness.dark
-                                                  ? myPrimaryColorDark
-                                                  : myPrimaryColorLight,
-                                              'Please select at least one ingredient',
-                                            );
-                                            return;
-                                          } else {
-                                            showModalBottomSheet(
-                                              isScrollControlled: true,
-                                              backgroundColor:
-                                                  Colors.transparent,
-                                              context: context,
-                                              builder: (context) => Recipes(
-                                                selectedIngredients:
-                                                    selectedIngredients,
-                                              ),
-                                            );
-                                          }
-                                        },
-                                      )
-                                    ],
+                                        CMButton(
+                                          text: "Let's Cook!",
+                                          textSize: 20,
+                                          fontWeight: FontWeight.w500,
+                                          width: width * .95,
+                                          onPressed: () {
+                                            if (ingredientCount == 0) {
+                                              SnackBar(
+                                                backgroundColor:
+                                                    Theme.of(context)
+                                                                .brightness ==
+                                                            Brightness.dark
+                                                        ? myPrimaryColorDark
+                                                        : myPrimaryColorLight,
+                                                content: const CMText(
+                                                  text:
+                                                      'Please select at least one ingredient',
+                                                  color: Colors.white,
+                                                ),
+                                                duration: const Duration(
+                                                    milliseconds: 200),
+                                              );
+                                              showSnackbarWithoutAction(
+                                                context,
+                                                Theme.of(context).brightness ==
+                                                        Brightness.dark
+                                                    ? myPrimaryColorDark
+                                                    : myPrimaryColorLight,
+                                                'Please select at least one ingredient',
+                                              );
+                                              return;
+                                            } else {
+                                              showModalBottomSheet(
+                                                isScrollControlled: true,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                context: context,
+                                                builder: (context) => Recipes(
+                                                  selectedIngredients:
+                                                      selectedIngredients,
+                                                ),
+                                              );
+                                            }
+                                          },
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              )
-                            ],
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             } else {

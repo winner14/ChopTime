@@ -18,6 +18,7 @@ class _AddRecipeState extends State<AddRecipe> {
   final durationController = TextEditingController();
   String steps = '', ingredient = '', recipeName = '';
   int duration = 0;
+  double directionsBoxHeight = 0;
 
   List<String> ingredients = [];
   List<String> directions = [];
@@ -168,23 +169,25 @@ class _AddRecipeState extends State<AddRecipe> {
                                       ),
                                     ),
                                   ),
-                                  // const Padding(
-                                  //   padding:
-                                  //       EdgeInsets.symmetric(vertical: 8.0),
+                                  // Padding(
+                                  //   padding: const EdgeInsets.symmetric(
+                                  //       vertical: 8.0),
                                   //   child: Row(
                                   //     children: [
                                   //       CMText(
                                   //         text: 'Ingredients',
                                   //         fontSize: 20,
-                                  //         color: myTextColorLight,
+                                  //         color: Theme.of(context).brightness ==
+                                  //                 Brightness.dark
+                                  //             ? myTextColorDark
+                                  //             : myTextColorDark,
                                   //       ),
                                   //     ],
                                   //   ),
                                   // ),
                                   Padding(
-                                    padding:
-                                        const EdgeInsets.only(bottom: 15.0),
-                                    child: Row(
+                                    padding: const EdgeInsets.only(bottom: 0),
+                                    child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
@@ -193,7 +196,7 @@ class _AddRecipeState extends State<AddRecipe> {
                                               const EdgeInsets.only(right: 4.0),
                                           child: Container(
                                             height: 60,
-                                            width: width * .4,
+                                            // width: width * .4,
                                             decoration: BoxDecoration(
                                               color: Theme.of(context)
                                                           .brightness ==
@@ -268,8 +271,8 @@ class _AddRecipeState extends State<AddRecipe> {
                                           ),
                                         ),
                                         SizedBox(
-                                          height: 60,
-                                          width: width * .53,
+                                          height: 40,
+                                          // width: width * .53,
                                           child: ListView.builder(
                                               scrollDirection: Axis.horizontal,
                                               itemCount: ingredients.length,
@@ -302,165 +305,193 @@ class _AddRecipeState extends State<AddRecipe> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Column(children: [
-                                      const Row(
-                                        children: [
-                                          CMText(
-                                            text: 'Directions',
-                                            fontSize: 20,
-                                            color: myTextColorLight,
+                                    Column(
+                                      children: [
+                                        // Row(
+                                        //   children: [
+                                        //     CMText(
+                                        //       text: 'Directions',
+                                        //       fontSize: 20,
+                                        //       color:
+                                        //           Theme.of(context).brightness ==
+                                        //                   Brightness.dark
+                                        //               ? myTextColorDark
+                                        //               : myTextColorDark,
+                                        //     ),
+                                        //   ],
+                                        // ),
+                                        Container(
+                                          height: 60,
+                                          width: width * .95,
+                                          decoration: BoxDecoration(
+                                            color:
+                                                Theme.of(context).brightness ==
+                                                        Brightness.dark
+                                                    ? myFgColorDark
+                                                    : myFgColorLight,
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(15)),
                                           ),
-                                        ],
-                                      ),
-                                      directions.isNotEmpty
-                                          ? Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 8.0),
-                                              child: SizedBox(
-                                                height: 180,
-                                                width: width * .95,
-                                                child: ListView.builder(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            top: 0),
-                                                    itemCount:
-                                                        directions.length,
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      return Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .symmetric(
-                                                                vertical: 1.5),
-                                                        child: Container(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: Theme.of(context)
-                                                                        .brightness ==
-                                                                    Brightness
-                                                                        .dark
-                                                                ? myFgColorDark
-                                                                : myFgColorLight,
-                                                            borderRadius:
-                                                                const BorderRadius
-                                                                    .all(
-                                                              Radius.circular(
-                                                                  8),
-                                                            ),
-                                                          ),
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(3),
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              children: [
-                                                                CMText(
-                                                                  text:
-                                                                      "${index + 1}. ${directions[index]}",
-                                                                  fontSize: 18,
-                                                                  color:
-                                                                      myTextColorLight,
-                                                                ),
-                                                                GestureDetector(
-                                                                  onTap: () {
-                                                                    setState(
-                                                                        () {
-                                                                      directions
-                                                                          .removeAt(
-                                                                              index);
-                                                                    });
-                                                                  },
-                                                                  child: const Icon(
-                                                                      Icons
-                                                                          .close,
-                                                                      color: Colors
-                                                                          .black45,
-                                                                      size: 18),
-                                                                )
-                                                              ],
-                                                            ),
+                                          child: TextField(
+                                            controller: directionController,
+                                            keyboardType: TextInputType.text,
+                                            textInputAction:
+                                                TextInputAction.done,
+                                            decoration: InputDecoration(
+                                              labelStyle: const TextStyle(
+                                                  color: Color(0xA0000000),
+                                                  fontSize: 18),
+                                              focusedBorder:
+                                                  const OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: mySecondaryColor,
+                                                  width: 2,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.horizontal(
+                                                  right: Radius.circular(15),
+                                                  left: Radius.circular(15),
+                                                ),
+                                              ),
+                                              border: const OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.horizontal(
+                                                  right: Radius.circular(15),
+                                                  left: Radius.circular(15),
+                                                ),
+                                                // borderSide: BorderSide(color: borderColor, width: borderWidth),
+                                              ),
+                                              iconColor: mySecondaryColor,
+                                              hintText:
+                                                  'Add directions step by step',
+                                              suffixIcon: directionController
+                                                      .text.isEmpty
+                                                  ? const SizedBox(
+                                                      width: 0,
+                                                    )
+                                                  : IconButton(
+                                                      onPressed: () {
+                                                        steps = '';
+                                                        directionController
+                                                            .clear();
+                                                      },
+                                                      icon: const Icon(
+                                                        Icons.close,
+                                                        color: Colors.black45,
+                                                      ),
+                                                    ),
+                                            ),
+                                            onChanged: (value) {
+                                              setState(() {
+                                                steps = value;
+                                              });
+                                            },
+                                            onSubmitted: (value) {
+                                              setState(() {
+                                                directions.add(value);
+                                                directionsBoxHeight += 35;
+                                                directionController.clear();
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                        // directions.isNotEmpty
+                                        //     ?
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 8.0),
+                                          child: Expanded(
+                                            child: Container(
+                                              height: 40 + directionsBoxHeight,
+                                              width: width * .95,
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.dark
+                                                    ? myFgColorDark
+                                                    : myFgColorLight,
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                  Radius.circular(10),
+                                                ),
+                                              ),
+                                              child: ListView.builder(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 0),
+                                                  itemCount: directions.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return Padding(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          vertical: 1.5),
+                                                      child: Container(
+                                                        height: 35,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Theme.of(context)
+                                                                      .brightness ==
+                                                                  Brightness
+                                                                      .dark
+                                                              ? myBgColorDark
+                                                              : myBgColorLight,
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                  .all(
+                                                            Radius.circular(8),
                                                           ),
                                                         ),
-                                                      );
-                                                    }),
-                                              ),
-                                            )
-                                          : const SizedBox(height: 10),
-                                    ]),
-                                    Container(
-                                      height: 60,
-                                      width: width * .95,
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context).brightness ==
-                                                Brightness.dark
-                                            ? myFgColorDark
-                                            : myFgColorLight,
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(15)),
-                                      ),
-                                      child: TextField(
-                                        controller: directionController,
-                                        keyboardType: TextInputType.text,
-                                        textInputAction: TextInputAction.done,
-                                        decoration: InputDecoration(
-                                          labelStyle: const TextStyle(
-                                              color: Color(0xA0000000),
-                                              fontSize: 18),
-                                          focusedBorder:
-                                              const OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: mySecondaryColor,
-                                              width: 2,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.horizontal(
-                                              right: Radius.circular(15),
-                                              left: Radius.circular(15),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(3),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              CMText(
+                                                                text:
+                                                                    "${index + 1}. ${directions[index]}",
+                                                                fontSize: 18,
+                                                                color: Theme.of(context)
+                                                                            .brightness ==
+                                                                        Brightness
+                                                                            .dark
+                                                                    ? myTextColorDark
+                                                                    : myTextColorLight,
+                                                              ),
+                                                              GestureDetector(
+                                                                onTap: () {
+                                                                  setState(() {
+                                                                    directions
+                                                                        .removeAt(
+                                                                            index);
+                                                                    directionsBoxHeight -=
+                                                                        35;
+                                                                  });
+                                                                },
+                                                                child: Icon(
+                                                                    Icons.close,
+                                                                    color: Theme.of(context).brightness ==
+                                                                            Brightness.dark
+                                                                        ? myTextColorDark
+                                                                        : myTextColorLight,
+                                                                    size: 18),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }),
                                             ),
                                           ),
-                                          border: const OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.horizontal(
-                                              right: Radius.circular(15),
-                                              left: Radius.circular(15),
-                                            ),
-                                            // borderSide: BorderSide(color: borderColor, width: borderWidth),
-                                          ),
-                                          iconColor: mySecondaryColor,
-                                          hintText:
-                                              'Add directions step by step',
-                                          suffixIcon: directionController
-                                                  .text.isEmpty
-                                              ? const SizedBox(
-                                                  width: 0,
-                                                )
-                                              : IconButton(
-                                                  onPressed: () {
-                                                    steps = '';
-                                                    directionController.clear();
-                                                  },
-                                                  icon: const Icon(
-                                                    Icons.close,
-                                                    color: Colors.black45,
-                                                  ),
-                                                ),
-                                        ),
-                                        onChanged: (value) {
-                                          setState(() {
-                                            steps = value;
-                                          });
-                                        },
-                                        onSubmitted: (value) {
-                                          setState(() {
-                                            directions.add(value);
-                                            directionController.clear();
-                                          });
-                                        },
-                                      ),
+                                        )
+                                        // : const SizedBox(height: 10),
+                                      ],
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
@@ -481,7 +512,7 @@ class _AddRecipeState extends State<AddRecipe> {
                                             // ),
                                             Container(
                                               height: 60,
-                                              width: width * .4,
+                                              // width: width * .4,
                                               decoration: BoxDecoration(
                                                 color: Theme.of(context)
                                                             .brightness ==
@@ -580,7 +611,7 @@ class _AddRecipeState extends State<AddRecipe> {
                                                   likes: 0);
                                               addRecipe(recipes);
                                             },
-                                            width: 150,
+                                            width: width * .95,
                                           ),
                                         ],
                                       ),
