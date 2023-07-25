@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mini_project/constants.dart';
 import 'package:mini_project/widgets/text/cm_text.dart';
 import 'package:mini_project/widgets/button/button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class AddRecipe extends StatefulWidget {
   const AddRecipe({super.key});
@@ -600,62 +604,75 @@ class _AddRecipeState extends State<AddRecipe> {
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
-                                          vertical: 8),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          CMButton(
-                                            text: 'Submit',
-                                            onPressed: () {
-                                              final recipes = Recipes(
-                                                  recipeName: recipeName,
-                                                  ingredients: ingredients,
-                                                  steps: directions,
-                                                  duration: duration,
-                                                  likes: 0);
-                                              addRecipe(recipes);
+                                          vertical: 8.0),
+                                      child: CMButton(
+                                        text: 'Add a picture',
+                                        width: width * .93,
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? myFgColorDark
+                                            : myFgColorLight,
+                                        borderColor: mySecondaryColor,
+                                        hasIcon: true,
+                                        icon: Icon(Icons.add_a_photo_outlined,
+                                            color:
+                                                Theme.of(context).brightness ==
+                                                        Brightness.dark
+                                                    ? myTextColorDark
+                                                    : myTextColorLight),
+                                        onPressed: () {
+                                          selectPhoto(ImageSource.gallery);
+                                        },
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10),
+                                      child: CMButton(
+                                        text: 'Submit',
+                                        onPressed: () {
+                                          final recipes = Recipes(
+                                              recipeName: recipeName,
+                                              ingredients: ingredients,
+                                              steps: directions,
+                                              duration: duration,
+                                              likes: 0);
+                                          addRecipe(recipes);
 
-                                              oldIngredients.then(
-                                                (value) {
-                                                  bool ingredientInDatabase =
-                                                      false;
-                                                  for (int i = 0;
-                                                      i < value.length;
-                                                      i++) {
-                                                    for (int i = 0;
-                                                        i < ingredients.length;
-                                                        i++) {
-                                                      if (value[i]
-                                                              .toLowerCase() ==
-                                                          ingredients[i]
-                                                              .toLowerCase()) {
-                                                        ingredientInDatabase =
-                                                            true;
-                                                      }
-                                                    }
-                                                    if (ingredientInDatabase ==
-                                                        false) {
-                                                      final ingredient =
-                                                          Ingredients(
-                                                        name: ingredients[i],
-                                                      );
-                                                      addNewIngredient(
-                                                          ingredient);
-                                                    }
+                                          oldIngredients.then(
+                                            (value) {
+                                              bool ingredientInDatabase = false;
+                                              for (int i = 0;
+                                                  i < value.length;
+                                                  i++) {
+                                                for (int i = 0;
+                                                    i < ingredients.length;
+                                                    i++) {
+                                                  if (value[i].toLowerCase() ==
+                                                      ingredients[i]
+                                                          .toLowerCase()) {
+                                                    ingredientInDatabase = true;
                                                   }
-                                                },
-                                              );
-                                              // oldIngredients.then((value) => {
-                                              //       value.sort(),
-                                              //       value.forEach((element) {
-                                              //         print(element);
-                                              //       })
-                                              //     });
+                                                }
+                                                if (ingredientInDatabase ==
+                                                    false) {
+                                                  final ingredient =
+                                                      Ingredients(
+                                                    name: ingredients[i],
+                                                  );
+                                                  addNewIngredient(ingredient);
+                                                }
+                                              }
                                             },
-                                            width: width * .95,
-                                          ),
-                                        ],
+                                          );
+                                          // oldIngredients.then((value) => {
+                                          //       value.sort(),
+                                          //       value.forEach((element) {
+                                          //         print(element);
+                                          //       })
+                                          //     });
+                                        },
+                                        width: width * .93,
                                       ),
                                     )
                                   ],
@@ -674,6 +691,40 @@ class _AddRecipeState extends State<AddRecipe> {
         ),
       ),
     );
+  }
+
+  File? image;
+  Future selectPhoto(ImageSource source) async {
+    if (source == ImageSource.camera) {
+      var cameraPermissionStatus = await Permission.camera.request();
+      if (cameraPermissionStatus.isDenied) {
+        // Handle camera permission denied
+        return;
+      }
+    } else if (source == ImageSource.gallery) {
+      var galleryPermissionStatus = await Permission.photos.request();
+      if (galleryPermissionStatus.isDenied) {
+        // Handle photo library permission denied
+        return;
+      }
+    }
+
+    try {
+      final pickedFile = await ImagePicker().pickImage(source: source);
+      if (pickedFile == null) return;
+
+      File? img = File(pickedFile.path);
+      setState(() {
+        image = img;
+      });
+    } catch (e) {
+      showSnackbarWithoutAction(
+          context,
+          Theme.of(context).brightness == Brightness.dark
+              ? myPrimaryColorDark
+              : myPrimaryColorLight,
+          e.toString());
+    }
   }
 
   Future addRecipe(Recipes recipes) async {

@@ -16,6 +16,8 @@ class CMButton extends StatelessWidget {
   final double elevation;
   final double textSize;
   final FontWeight fontWeight;
+  final Icon icon;
+  final bool hasIcon;
 
   const CMButton({
     Key? key,
@@ -32,6 +34,11 @@ class CMButton extends StatelessWidget {
     this.elevation = 0,
     this.textSize = 18,
     this.fontWeight = FontWeight.w400,
+    this.icon = const Icon(
+      Icons.cancel,
+      color: Colors.white,
+    ),
+    this.hasIcon = false,
   }) : super(key: key);
 
   @override
@@ -56,11 +63,24 @@ class CMButton extends StatelessWidget {
           shadowColor: MaterialStateProperty.all<Color>(Colors.white),
           backgroundColor: MaterialStateProperty.all<Color>(color),
         ),
-        child: CMText(
-          text: text,
-          fontSize: textSize,
-          fontWeight: fontWeight,
-          color: textColor,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            hasIcon == true
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: icon,
+                  )
+                : const SizedBox(
+                    width: 0,
+                  ),
+            CMText(
+              text: text,
+              fontSize: textSize,
+              fontWeight: fontWeight,
+              color: textColor,
+            ),
+          ],
         ),
       ),
     );
