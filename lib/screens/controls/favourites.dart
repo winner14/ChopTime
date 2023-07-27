@@ -74,6 +74,7 @@ class _FavouritesState extends State<Favourites> {
                                   duration: 10,
                                   likes: 20,
                                   by: 'Community',
+                                  imageUrl: '',
                                 ));
                           },
                         ),

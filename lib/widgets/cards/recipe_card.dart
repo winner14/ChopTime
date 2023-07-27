@@ -7,12 +7,14 @@ class RecipeCard extends StatefulWidget {
   final int duration;
   final int likes;
   final String by;
+  final String imageUrl;
   const RecipeCard({
     Key? key,
     required this.recipeName,
     required this.duration,
     required this.likes,
     required this.by,
+    required this.imageUrl,
   }) : super(key: key);
 
   @override
@@ -36,8 +38,10 @@ class _RecipeCardState extends State<RecipeCard> {
         border: Border.all(width: .4, color: Colors.black12),
         borderRadius: const BorderRadius.vertical(
             top: Radius.circular(20), bottom: Radius.circular(10)),
-        image: const DecorationImage(
-          image: AssetImage('assets/images/braised_rice.jpg'),
+        image: DecorationImage(
+          image: widget.imageUrl == ''
+              ? const AssetImage('assets/images/default-recipe-image.png')
+              : NetworkImage(widget.imageUrl) as ImageProvider,
           fit: BoxFit.cover,
         ),
       ),

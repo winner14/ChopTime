@@ -6,7 +6,8 @@ import 'package:mini_project/constants.dart';
 import 'package:mini_project/widgets/text/cm_text.dart';
 import 'package:mini_project/widgets/button/button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+// import 'package:permission_handler/permission_handler.dart';
 
 class AddRecipe extends StatefulWidget {
   const AddRecipe({super.key});
@@ -24,6 +25,8 @@ class _AddRecipeState extends State<AddRecipe> {
   int duration = 0;
   double directionsBoxHeight = 0;
   final _formKey = GlobalKey<FormState>();
+
+  File? image;
 
   List<String> ingredients = [];
   List<String> directions = [];
@@ -615,6 +618,67 @@ class _AddRecipeState extends State<AddRecipe> {
                                         ),
                                       ),
                                     ),
+                                    image != null
+                                        ? Container(
+                                            width: width * .93,
+                                            height: 200,
+                                            decoration: BoxDecoration(
+                                              color: Theme.of(context)
+                                                          .brightness ==
+                                                      Brightness.dark
+                                                  ? myFgColorDark
+                                                  : myFgColorLight,
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                Radius.circular(10),
+                                              ),
+                                              image: DecorationImage(
+                                                image: FileImage(image!),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                            child: Stack(
+                                              children: [
+                                                Positioned(
+                                                  top: 10,
+                                                  right: 10,
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        image = null;
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      height: 45,
+                                                      width: 45,
+                                                      decoration: BoxDecoration(
+                                                        color: Theme.of(context)
+                                                                    .brightness ==
+                                                                Brightness.dark
+                                                            ? Colors.black45
+                                                            : Colors.white54,
+                                                        borderRadius:
+                                                            const BorderRadius
+                                                                .all(
+                                                          Radius.circular(10),
+                                                        ),
+                                                      ),
+                                                      child: Icon(
+                                                        Icons.close,
+                                                        color: Theme.of(context)
+                                                                    .brightness ==
+                                                                Brightness.dark
+                                                            ? myTextColorDark
+                                                            : myTextColorLight,
+                                                        size: 30,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        : const SizedBox(height: 0),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 8.0),
@@ -651,12 +715,15 @@ class _AddRecipeState extends State<AddRecipe> {
                                       child: CMButton(
                                         text: 'Submit',
                                         onPressed: () {
+                                          addImageToFirebase(image!);
                                           final recipes = Recipes(
-                                              recipeName: recipeName,
-                                              ingredients: ingredients,
-                                              steps: directions,
-                                              duration: duration,
-                                              likes: 0);
+                                            recipeName: recipeName,
+                                            ingredients: ingredients,
+                                            steps: directions,
+                                            duration: duration,
+                                            likes: 0,
+                                            imageUrl: imageUrl,
+                                          );
                                           addRecipe(recipes);
 
                                           oldIngredients.then(
@@ -752,8 +819,6 @@ class _AddRecipeState extends State<AddRecipe> {
     );
   }
 
-  File? image;
-
   Future selectPhoto(ImageSource source) async {
     try {
       final image = await ImagePicker().pickImage(source: source);
@@ -773,38 +838,47 @@ class _AddRecipeState extends State<AddRecipe> {
     }
   }
 
-  // Future selectPhoto(ImageSource source) async {
-  //   if (source == ImageSource.camera) {
-  //     var cameraPermissionStatus = await Permission.camera.request();
-  //     if (cameraPermissionStatus.isDenied) {
-  //       // Handle camera permission denied
-  //       return;
-  //     }
-  //   } else if (source == ImageSource.gallery) {
-  //     var galleryPermissionStatus = await Permission.photos.request();
-  //     if (galleryPermissionStatus.isDenied) {
-  //       // Handle photo library permission denied
-  //       return;
-  //     }
-  //   }
+  String imageUrl = '';
 
-  //   try {
-  //     final pickedFile = await ImagePicker().pickImage(source: source);
-  //     if (pickedFile == null) return;
+  Future<String?> addImageToFirebase(File image) async {
+    try {
+      final ref = FirebaseStorage.instance.ref().child('$recipeName.jpg');
 
-  //     File? img = File(pickedFile.path);
-  //     setState(() {
-  //       image = img;
-  //     });
-  //   } catch (e) {
-  //     showSnackbarWithoutAction(
-  //         context,
-  //         Theme.of(context).brightness == Brightness.dark
-  //             ? myPrimaryColorDark
-  //             : myPrimaryColorLight,
-  //         e.toString());
-  //   }
-  // }
+      final uploadTask = ref.putFile(image);
+      final snapshot = await uploadTask.whenComplete(() => null);
+      final url = await snapshot.ref.getDownloadURL();
+      imageUrl = url;
+
+      FirebaseFirestore.instance
+          .collection('recipes')
+          .doc()
+          .update({'imageUrl': url});
+      return url;
+    } catch (e) {
+      showSnackbarWithoutAction(
+          context,
+          Theme.of(context).brightness == Brightness.dark
+              ? myPrimaryColorDark
+              : myPrimaryColorLight,
+          e.toString());
+    }
+  }
+
+  //read image from firebase
+  Future getImageFromFirebase(String url) async {
+    try {
+      final ref = FirebaseStorage.instance.ref().child('$recipeName.jpg');
+      final url = await ref.getDownloadURL();
+      return url;
+    } catch (e) {
+      showSnackbarWithoutAction(
+          context,
+          Theme.of(context).brightness == Brightness.dark
+              ? myPrimaryColorDark
+              : myPrimaryColorLight,
+          e.toString());
+    }
+  }
 
   Future addRecipe(Recipes recipes) async {
     final formIsValid = _formKey.currentState!.validate();
@@ -842,6 +916,7 @@ class Recipes {
   final List ingredients;
   final List steps;
   final int duration;
+  final String imageUrl;
   bool isApproved;
   String by;
   final int likes;
@@ -855,6 +930,7 @@ class Recipes {
     this.isApproved = false,
     this.by = 'Community',
     required this.likes,
+    this.imageUrl = '',
   });
 
   Map<String, dynamic> toJson() => {
@@ -866,18 +942,19 @@ class Recipes {
         'isApproved': isApproved,
         'by': by,
         'likes': likes,
+        'imageUrl': imageUrl,
       };
 
   static Recipes fromJson(Map<String, dynamic> json) => Recipes(
-        id: json['id'],
-        recipeName: json['recipeName'],
-        ingredients: json['ingredients'],
-        steps: json['Steps'],
-        duration: json['duration'],
-        isApproved: json['isApproved'],
-        by: json['by'],
-        likes: json['likes'],
-      );
+      id: json['id'],
+      recipeName: json['recipeName'],
+      ingredients: json['ingredients'],
+      steps: json['Steps'],
+      duration: json['duration'],
+      isApproved: json['isApproved'],
+      by: json['by'],
+      likes: json['likes'],
+      imageUrl: json['imageUrl']);
 }
 
 class Ingredients {

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mini_project/constants.dart';
 import 'package:mini_project/screens/controls/add_recipe.dart';
+import 'package:mini_project/screens/controls/discover.dart';
 import 'package:mini_project/screens/home/home.dart';
 import 'package:mini_project/screens/intro/intro_page.dart';
 import 'package:mini_project/theme_provider.dart';

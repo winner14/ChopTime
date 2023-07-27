@@ -93,6 +93,7 @@ class _DiscoverState extends State<Discover> {
         duration: recipes.duration,
         likes: recipes.likes,
         by: recipes.by,
+        imageUrl: recipes.imageUrl,
       ),
     );
   }
@@ -111,6 +112,7 @@ class Recipes {
   final List steps;
   final int duration;
   final bool isApproved;
+  final String imageUrl;
   String by;
   final int likes;
 
@@ -122,6 +124,7 @@ class Recipes {
     required this.duration,
     required this.isApproved,
     this.by = 'Community',
+    this.imageUrl = '',
     required this.likes,
   });
 
@@ -133,6 +136,7 @@ class Recipes {
         'duration': duration,
         'isApproved': isApproved,
         'by': by,
+        'imageUrl': imageUrl,
         'likes': likes,
       };
 
@@ -143,6 +147,7 @@ class Recipes {
         steps: json['Steps'],
         duration: json['duration'],
         isApproved: json['isApproved'],
+        imageUrl: json['imageUrl'],
         by: json['by'],
         likes: json['likes'],
       );
