@@ -91,6 +91,12 @@ class _AddIngredientState extends State<AddIngredient> {
                             keyboardType: TextInputType.text,
                             textInputAction: TextInputAction.done,
                             focusNode: ingredientNameFocusNode,
+                            // validator: (value) {
+                            //   if (value!.isEmpty) {
+                            //     return 'Please enter a name';
+                            //   }
+                            //   return null;
+                            // },
                             decoration: InputDecoration(
                               labelStyle: TextStyle(
                                   color: Theme.of(context).brightness ==
@@ -209,10 +215,14 @@ class _AddIngredientState extends State<AddIngredient> {
       );
 
   Future addIngredient(Ingredients ingredients) async {
-    // final formIsValid = _formKey.currentState!.validate();
-    // if (!formIsValid) {
-    //   return;
-    // }
+    final formIsValid = _formKey.currentState!.validate();
+    if (!formIsValid) {
+      return showSnackbarWithoutAction(
+        context,
+        Colors.red,
+        'Please fill in all fields',
+      );
+    }
 
     final docIngredient =
         FirebaseFirestore.instance.collection('ingredients').doc();

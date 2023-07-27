@@ -113,12 +113,12 @@ class _EditProfileState extends State<EditProfile> {
                                     controller: firstNameController,
                                     keyboardType: TextInputType.text,
                                     textInputAction: TextInputAction.next,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter your first name';
-                                      }
-                                      return null;
-                                    },
+                                    // validator: (value) {
+                                    //   if (value == null || value.isEmpty) {
+                                    //     return 'Please enter your first name';
+                                    //   }
+                                    //   return null;
+                                    // },
                                     focusNode: _firstNameFocusNode,
                                     decoration: InputDecoration(
                                       labelStyle: const TextStyle(
@@ -208,12 +208,12 @@ class _EditProfileState extends State<EditProfile> {
                                     controller: lastNameController,
                                     keyboardType: TextInputType.text,
                                     textInputAction: TextInputAction.next,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter your last name';
-                                      }
-                                      return null;
-                                    },
+                                    // validator: (value) {
+                                    //   if (value == null || value.isEmpty) {
+                                    //     return 'Please enter your last name';
+                                    //   }
+                                    //   return null;
+                                    // },
                                     focusNode: _lastNameFocusNode,
                                     decoration: InputDecoration(
                                       labelStyle: const TextStyle(
@@ -302,11 +302,11 @@ class _EditProfileState extends State<EditProfile> {
                                   ),
                                   child: TextFormField(
                                     controller: emailController,
-                                    validator: (email) => email!.isEmpty
-                                        ? 'Please enter your email'
-                                        : !email.contains('@')
-                                            ? 'Please enter a valid email'
-                                            : null,
+                                    // validator: (email) => email!.isEmpty
+                                    //     ? 'Please enter your email'
+                                    //     : !email.contains('@')
+                                    //         ? 'Please enter a valid email'
+                                    //         : null,
                                     focusNode: _emailFocusNode,
                                     keyboardType: TextInputType.emailAddress,
                                     textInputAction: TextInputAction.next,
@@ -423,13 +423,10 @@ class _EditProfileState extends State<EditProfile> {
   Future<void> updateUserData(User user) async {
     final currentUserUid = FirebaseAuth.instance.currentUser!.uid;
 
-    if (!_formKey.currentState!.validate()) {
+    final formIsValid = _formKey.currentState!.validate();
+    if (!formIsValid) {
       return showSnackbarWithoutAction(
-          context,
-          Theme.of(context).brightness == Brightness.dark
-              ? myPrimaryColorDark
-              : myPrimaryColorLight,
-          'Please fill the required fields');
+          context, Colors.red, 'Please fill in all fields correctly.');
     }
 
     showDialog(

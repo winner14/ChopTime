@@ -14,6 +14,7 @@ class ResetPassword extends StatefulWidget {
 class _ResetPasswordState extends State<ResetPassword> {
   final emailController = TextEditingController();
   String email = '';
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -70,88 +71,93 @@ class _ResetPasswordState extends State<ResetPassword> {
                     //   text: 'Enter your email address',
                     //   fontSize: 20,
                     // ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 6.0),
-                      child: Container(
-                        width: width * .95,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? myFgColorDark
-                              : myFgColorLight,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: TextFormField(
-                          controller: emailController,
-                          keyboardType: TextInputType.emailAddress,
-                          textInputAction: TextInputAction.next,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (email) => email!.isEmpty
-                              ? 'Please enter your email'
-                              : !email.contains('@')
-                                  ? 'Please enter a valid email'
-                                  : null,
-                          decoration: InputDecoration(
-                            labelStyle: const TextStyle(
-                                color: Color(0xA0000000), fontSize: 18),
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: mySecondaryColor,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.horizontal(
-                                right: Radius.circular(15),
-                                left: Radius.circular(15),
-                              ),
-                            ),
-                            border: const OutlineInputBorder(
-                              borderRadius: BorderRadius.horizontal(
-                                right: Radius.circular(15),
-                                left: Radius.circular(15),
-                              ),
-                            ),
-                            iconColor: mySecondaryColor,
-                            label: CMText(
-                              text: 'Enter your email',
-                              color: Theme.of(context).brightness ==
-                                      Brightness.dark
-                                  ? myTextColorDark
-                                  : myTextColorLight,
-                            ),
-                            hintText: 'user@email.com',
-                            hintStyle: TextStyle(
-                              color: Theme.of(context).brightness ==
-                                      Brightness.dark
-                                  ? myTextColorDark
-                                  : myTextColorLight,
-                            ),
-                            prefixIcon: Icon(
-                              Icons.email,
-                              color: Theme.of(context).brightness ==
-                                      Brightness.dark
-                                  ? myTextColorDark
-                                  : myTextColorLight,
-                            ),
-                            suffixIcon: emailController.text.isEmpty
-                                ? const SizedBox(
-                                    width: 0,
-                                  )
-                                : IconButton(
-                                    onPressed: () {
-                                      email = '';
-                                      emailController.clear();
-                                    },
-                                    icon: const Icon(
-                                      Icons.close,
-                                      color: Colors.black45,
-                                    ),
-                                  ),
+                    Form(
+                      key: _formKey,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 6.0),
+                        child: Container(
+                          width: width * .95,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? myFgColorDark
+                                    : myFgColorLight,
+                            borderRadius: BorderRadius.circular(15),
                           ),
-                          onChanged: (value) {
-                            setState(() {
-                              email = value;
-                            });
-                          },
+                          child: TextFormField(
+                            controller: emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            textInputAction: TextInputAction.next,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            // validator: (email) => email!.isEmpty
+                            //     ? 'Please enter your email'
+                            //     : !email.contains('@')
+                            //         ? 'Please enter a valid email'
+                            //         : null,
+                            decoration: InputDecoration(
+                              labelStyle: const TextStyle(
+                                  color: Color(0xA0000000), fontSize: 18),
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: mySecondaryColor,
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.horizontal(
+                                  right: Radius.circular(15),
+                                  left: Radius.circular(15),
+                                ),
+                              ),
+                              border: const OutlineInputBorder(
+                                borderRadius: BorderRadius.horizontal(
+                                  right: Radius.circular(15),
+                                  left: Radius.circular(15),
+                                ),
+                              ),
+                              iconColor: mySecondaryColor,
+                              label: CMText(
+                                text: 'Enter your email',
+                                color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? myTextColorDark
+                                    : myTextColorLight,
+                              ),
+                              hintText: 'user@email.com',
+                              hintStyle: TextStyle(
+                                color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? myTextColorDark
+                                    : myTextColorLight,
+                              ),
+                              prefixIcon: Icon(
+                                Icons.email,
+                                color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? myTextColorDark
+                                    : myTextColorLight,
+                              ),
+                              suffixIcon: emailController.text.isEmpty
+                                  ? const SizedBox(
+                                      width: 0,
+                                    )
+                                  : IconButton(
+                                      onPressed: () {
+                                        email = '';
+                                        emailController.clear();
+                                      },
+                                      icon: const Icon(
+                                        Icons.close,
+                                        color: Colors.black45,
+                                      ),
+                                    ),
+                            ),
+                            onChanged: (value) {
+                              setState(() {
+                                email = value;
+                              });
+                            },
+                          ),
                         ),
                       ),
                     ),
@@ -182,6 +188,12 @@ class _ResetPasswordState extends State<ResetPassword> {
   }
 
   Future resetPassword() async {
+    final formIsValid = _formKey.currentState!.validate();
+    if (!formIsValid) {
+      return showSnackbarWithoutAction(
+          context, Colors.red, 'Please enter a valid email');
+    }
+
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
       showDialog(

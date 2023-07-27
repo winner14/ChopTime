@@ -62,7 +62,7 @@ class MainPage extends StatelessWidget {
             );
           }
           if (snapshot.hasData) {
-            return const Home();
+            return const AddRecipe();
           }
           return const Intro();
         },

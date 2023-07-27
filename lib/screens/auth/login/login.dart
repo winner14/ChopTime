@@ -117,11 +117,11 @@ class _LoginState extends State<Login> {
                                     keyboardType: TextInputType.emailAddress,
                                     textInputAction: TextInputAction.next,
                                     focusNode: emailFocus,
-                                    validator: (email) => email!.isEmpty
-                                        ? 'Please enter your email'
-                                        : !email.contains('@')
-                                            ? 'Please enter a valid email'
-                                            : null,
+                                    // validator: (email) => email!.isEmpty
+                                    //     ? 'Please enter your email'
+                                    //     : !email.contains('@')
+                                    //         ? 'Please enter a valid email'
+                                    //         : null,
                                     decoration: InputDecoration(
                                       labelStyle: const TextStyle(
                                           color: Color(0xA0000000),
@@ -202,11 +202,11 @@ class _LoginState extends State<Login> {
                                     controller: passwordController,
                                     obscureText: hidePassword,
                                     focusNode: passwordFocus,
-                                    validator: (password) => password!.isEmpty
-                                        ? 'Please enter your password'
-                                        : password.length < 6
-                                            ? 'Password must be at least 6 characters'
-                                            : null,
+                                    // validator: (password) => password!.isEmpty
+                                    //     ? 'Please enter your password'
+                                    //     : password.length < 6
+                                    //         ? 'Password must be at least 6 characters'
+                                    //         : null,
                                     // keyboardType: TextInputType.visiblePassword,
                                     textInputAction: TextInputAction.done,
                                     decoration: InputDecoration(
@@ -387,11 +387,7 @@ class _LoginState extends State<Login> {
     final formIsValid = _formKey.currentState!.validate();
     if (!formIsValid) {
       return showSnackbarWithoutAction(
-          context,
-          Theme.of(context).brightness == Brightness.dark
-              ? myPrimaryColorDark
-              : myPrimaryColorLight,
-          'Please fill the required fields');
+          context, Colors.red, 'Please fill the required fields correctly.');
     }
 
     showDialog(

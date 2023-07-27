@@ -289,11 +289,11 @@ class _RegisterState extends State<Register> {
                                 controller: emailController,
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
-                                validator: (email) => email!.isEmpty
-                                    ? 'Please enter your email'
-                                    : !email.contains('@')
-                                        ? 'Please enter a valid email'
-                                        : null,
+                                // validator: (email) => email!.isEmpty
+                                //     ? 'Please enter your email'
+                                //     : !email.contains('@')
+                                //         ? 'Please enter a valid email'
+                                //         : null,
                                 keyboardType: TextInputType.emailAddress,
                                 textInputAction: TextInputAction.next,
                                 decoration: InputDecoration(
@@ -382,11 +382,11 @@ class _RegisterState extends State<Register> {
                                 controller: passwordController,
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
-                                validator: (password) => password!.isEmpty
-                                    ? 'Please enter your password'
-                                    : password.length < 6
-                                        ? 'Password must be at least 6 characters'
-                                        : null,
+                                // validator: (password) => password!.isEmpty
+                                //     ? 'Please enter your password'
+                                //     : password.length < 6
+                                //         ? 'Password must be at least 6 characters'
+                                //         : null,
                                 obscureText: hidePassword,
                                 // keyboardType: TextInputType.visiblePassword,
                                 textInputAction: TextInputAction.next,
@@ -475,12 +475,12 @@ class _RegisterState extends State<Register> {
                                 controller: confirmPasswordController,
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
-                                validator: (confirmPassword) =>
-                                    confirmPassword!.isEmpty
-                                        ? 'Please confirm your password'
-                                        : confirmPassword != password
-                                            ? 'Passwords do not match'
-                                            : null,
+                                // validator: (confirmPassword) =>
+                                //     confirmPassword!.isEmpty
+                                //         ? 'Please confirm your password'
+                                //         : confirmPassword != password
+                                //             ? 'Passwords do not match'
+                                //             : null,
                                 obscureText: hidePassword,
                                 // keyboardType: TextInputType.visiblePassword,
                                 textInputAction: TextInputAction.done,
@@ -628,7 +628,7 @@ class _RegisterState extends State<Register> {
     final formIsValid = _formKey.currentState!.validate();
     if (!formIsValid) {
       return showSnackbarWithoutAction(
-          context, Colors.red, 'Please fill in all fields');
+          context, Colors.red, 'Please fill in all fields correctly.');
     }
 
     showDialog(
