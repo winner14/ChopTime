@@ -318,7 +318,7 @@ class _HomeState extends State<Home> {
                                     builder: (context, snapshot) {
                                       if (snapshot.hasData) {
                                         final ingredients = snapshot.data!;
-                                        print(selectedIngredients);
+                                        // print(selectedIngredients);
                                         return Padding(
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 4.0),
@@ -334,7 +334,7 @@ class _HomeState extends State<Home> {
                                           ),
                                         );
                                       } else {
-                                        print(snapshot.error);
+                                        // print(snapshot.error);
                                         return const Loading();
                                       }
                                     },

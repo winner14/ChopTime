@@ -41,7 +41,7 @@ class _RecipeCardState extends State<RecipeCard> {
         image: DecorationImage(
           image: widget.imageUrl == ''
               ? const AssetImage('assets/images/default-recipe-image.png')
-              : NetworkImage(widget.imageUrl) as ImageProvider,
+              : Image.network(widget.imageUrl).image,
           fit: BoxFit.cover,
         ),
       ),

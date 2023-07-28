@@ -177,7 +177,7 @@ class _AddRecipeState extends State<AddRecipe> {
                                           ),
                                           onChanged: (value) {
                                             setState(() {
-                                              recipeName = value;
+                                              recipeName = value.trim();
                                             });
                                           },
                                         ),
@@ -637,45 +637,61 @@ class _AddRecipeState extends State<AddRecipe> {
                                                 fit: BoxFit.cover,
                                               ),
                                             ),
-                                            child: Stack(
-                                              children: [
-                                                Positioned(
-                                                  top: 10,
-                                                  right: 10,
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      setState(() {
-                                                        image = null;
-                                                      });
-                                                    },
-                                                    child: Container(
-                                                      height: 45,
-                                                      width: 45,
-                                                      decoration: BoxDecoration(
-                                                        color: Theme.of(context)
-                                                                    .brightness ==
-                                                                Brightness.dark
-                                                            ? Colors.black45
-                                                            : Colors.white54,
-                                                        borderRadius:
-                                                            const BorderRadius
-                                                                .all(
-                                                          Radius.circular(10),
+                                            child: SizedBox(
+                                              height: double.infinity,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  SizedBox(
+                                                    width: double.infinity,
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      children: [
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            setState(() {
+                                                              image = null;
+                                                            });
+                                                          },
+                                                          child: Container(
+                                                            height: 45,
+                                                            width: 45,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: Theme.of(context)
+                                                                          .brightness ==
+                                                                      Brightness
+                                                                          .dark
+                                                                  ? Colors
+                                                                      .black45
+                                                                  : Colors
+                                                                      .white54,
+                                                              borderRadius:
+                                                                  const BorderRadius
+                                                                      .all(
+                                                                Radius.circular(
+                                                                    10),
+                                                              ),
+                                                            ),
+                                                            child: Icon(
+                                                              Icons.close,
+                                                              color: Theme.of(context)
+                                                                          .brightness ==
+                                                                      Brightness
+                                                                          .dark
+                                                                  ? myTextColorDark
+                                                                  : myTextColorLight,
+                                                              size: 30,
+                                                            ),
+                                                          ),
                                                         ),
-                                                      ),
-                                                      child: Icon(
-                                                        Icons.close,
-                                                        color: Theme.of(context)
-                                                                    .brightness ==
-                                                                Brightness.dark
-                                                            ? myTextColorDark
-                                                            : myTextColorLight,
-                                                        size: 30,
-                                                      ),
+                                                      ],
                                                     ),
                                                   ),
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
                                           )
                                         : const SizedBox(height: 0),
@@ -715,7 +731,6 @@ class _AddRecipeState extends State<AddRecipe> {
                                       child: CMButton(
                                         text: 'Submit',
                                         onPressed: () {
-                                          addImageToFirebase(image!);
                                           final recipes = Recipes(
                                             recipeName: recipeName,
                                             ingredients: ingredients,
@@ -725,6 +740,12 @@ class _AddRecipeState extends State<AddRecipe> {
                                             imageUrl: imageUrl,
                                           );
                                           addRecipe(recipes);
+
+                                          // addImageToFirebase(image!);
+                                          if (image != null) {
+                                            addImageToFirebase(image!);
+                                            print(imageUrl);
+                                          }
 
                                           oldIngredients.then(
                                             (value) {
@@ -840,20 +861,21 @@ class _AddRecipeState extends State<AddRecipe> {
 
   String imageUrl = '';
 
-  Future<String?> addImageToFirebase(File image) async {
+  Future<String?> addImageToFirebase(File? image) async {
     try {
-      final ref = FirebaseStorage.instance.ref().child('$recipeName.jpg');
+      FirebaseStorage storage = FirebaseStorage.instance;
+      String name = recipeName;
+      Reference ref = storage.ref().child('$name.jpg');
 
-      final uploadTask = ref.putFile(image);
-      final snapshot = await uploadTask.whenComplete(() => null);
-      final url = await snapshot.ref.getDownloadURL();
-      imageUrl = url;
+      await ref.putFile(image!);
 
-      FirebaseFirestore.instance
-          .collection('recipes')
-          .doc()
-          .update({'imageUrl': url});
-      return url;
+      String imageUrl = await ref.getDownloadURL();
+
+      // FirebaseFirestore.instance
+      //     .collection('recipes')
+      //     .doc()
+      //     .update({'imageUrl': imageUrl});
+      return imageUrl;
     } catch (e) {
       showSnackbarWithoutAction(
           context,
@@ -864,21 +886,45 @@ class _AddRecipeState extends State<AddRecipe> {
     }
   }
 
-  //read image from firebase
-  Future getImageFromFirebase(String url) async {
-    try {
-      final ref = FirebaseStorage.instance.ref().child('$recipeName.jpg');
-      final url = await ref.getDownloadURL();
-      return url;
-    } catch (e) {
-      showSnackbarWithoutAction(
-          context,
-          Theme.of(context).brightness == Brightness.dark
-              ? myPrimaryColorDark
-              : myPrimaryColorLight,
-          e.toString());
-    }
-  }
+  // Future<String?> addImageToFirebase(File image, String recipeName) async {
+  //   try {
+  //     final ref = FirebaseStorage.instance.ref().child('$recipeName.jpg');
+
+  //     final uploadTask = ref.putFile(image);
+  //     final snapshot = await uploadTask.whenComplete(() => null);
+  //     imageUrl = await snapshot.ref.getDownloadURL();
+  //     // imageUrl = url;
+
+  //     FirebaseFirestore.instance
+  //         .collection('recipes')
+  //         .doc()
+  //         .update({'imageUrl': imageUrl});
+  //     return imageUrl;
+  //   } catch (e) {
+  //     showSnackbarWithoutAction(
+  //         context,
+  //         Theme.of(context).brightness == Brightness.dark
+  //             ? myPrimaryColorDark
+  //             : myPrimaryColorLight,
+  //         e.toString());
+  //   }
+  // }
+
+  // //read image from firebase
+  // Future getImageFromFirebase(String url) async {
+  //   try {
+  //     final ref = FirebaseStorage.instance.ref().child('$recipeName.jpg');
+  //     final url = await ref.getDownloadURL();
+  //     return url;
+  //   } catch (e) {
+  //     showSnackbarWithoutAction(
+  //         context,
+  //         Theme.of(context).brightness == Brightness.dark
+  //             ? myPrimaryColorDark
+  //             : myPrimaryColorLight,
+  //         e.toString());
+  //   }
+  // }
 
   Future addRecipe(Recipes recipes) async {
     final formIsValid = _formKey.currentState!.validate();
