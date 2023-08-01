@@ -8,6 +8,7 @@ class CMText extends StatelessWidget {
   final TextAlign textAlign;
   final FontWeight fontWeight;
   final Color color;
+  final bool? softWrap;
   final int? maxLines;
   final TextOverflow? overflow;
   final double? textScaleFactor;
@@ -21,6 +22,7 @@ class CMText extends StatelessWidget {
     this.overflow,
     this.fontWeight = FontWeight.w400,
     this.textScaleFactor,
+    this.softWrap = true,
   }) : super(key: key);
 
   @override
@@ -30,6 +32,7 @@ class CMText extends StatelessWidget {
         maxLines: maxLines,
         overflow: overflow,
         textAlign: textAlign,
+        softWrap: softWrap,
         style: GoogleFonts.quicksand(
           fontSize: fontSize,
           fontWeight: fontWeight,

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mini_project/constants.dart';
@@ -20,6 +21,10 @@ class _AddRecipeState extends State<AddRecipe> {
   final ingredientController = TextEditingController();
   final directionController = TextEditingController();
   final durationController = TextEditingController();
+  final recipeNameFocusNode = FocusNode();
+  final ingredientFocusNode = FocusNode();
+  final directionFocusNode = FocusNode();
+  final durationFocusNode = FocusNode();
   String steps = '', ingredient = '', recipeName = '';
   int duration = 0;
   double directionsBoxHeight = 0;
@@ -38,6 +43,13 @@ class _AddRecipeState extends State<AddRecipe> {
   @override
   void dispose() {
     recipeNameController.dispose();
+    ingredientController.dispose();
+    directionController.dispose();
+    durationController.dispose();
+    recipeNameFocusNode.dispose();
+    ingredientFocusNode.dispose();
+    directionFocusNode.dispose();
+    durationFocusNode.dispose();
     super.dispose();
   }
 
@@ -55,317 +67,78 @@ class _AddRecipeState extends State<AddRecipe> {
             fontWeight: FontWeight.w500,
           )),
       extendBodyBehindAppBar: true,
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          color: Theme.of(context).brightness == Brightness.dark
-              ? myPrimaryColorDark
-              : myPrimaryColorLight,
-          image: DecorationImage(
-            image: Theme.of(context).brightness == Brightness.dark
-                ? const AssetImage('assets/images/topBgDark.png')
-                : const AssetImage('assets/images/topBg.png'),
-            repeat: ImageRepeat.repeat,
-            opacity:
-                Theme.of(context).brightness == Brightness.dark ? .15 : .35,
+      body: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          recipeNameFocusNode.unfocus();
+          ingredientFocusNode.unfocus();
+          directionFocusNode.unfocus();
+          durationFocusNode.unfocus();
+        },
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: BoxDecoration(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? myPrimaryColorDark
+                : myPrimaryColorLight,
+            image: DecorationImage(
+              image: Theme.of(context).brightness == Brightness.dark
+                  ? const AssetImage('assets/images/topBgDark.png')
+                  : const AssetImage('assets/images/topBg.png'),
+              repeat: ImageRepeat.repeat,
+              opacity:
+                  Theme.of(context).brightness == Brightness.dark ? .15 : .35,
+            ),
           ),
-        ),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            reverse: true,
-            child: Column(
-              children: [
-                Container(
-                  height: height * .85,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? myBgColorDark
-                        : myBgColorLight,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(15),
-                      topRight: Radius.circular(15),
+          child: SafeArea(
+            child: SingleChildScrollView(
+              reverse: true,
+              child: Column(
+                children: [
+                  Container(
+                    height: height * .85,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? myBgColorDark
+                          : myBgColorLight,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(15),
+                        topRight: Radius.circular(15),
+                      ),
                     ),
-                  ),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 10),
-                          child: Column(
-                            // mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Form(
-                                key: _formKey,
-                                child: Column(
-                                  children: [
-                                    // const Padding(
-                                    //   padding:
-                                    //       EdgeInsets.symmetric(vertical: 8.0),
-                                    //   child: Row(
-                                    //     children: [
-                                    //       CMText(
-                                    //         text: 'Name of dish',
-                                    //         fontSize: 20,
-                                    //         color: myTextColorLight,
-                                    //       ),
-                                    //     ],
-                                    //   ),
-                                    // ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 15.0),
-                                      child: Container(
-                                        height: 60,
-                                        width: width * .95,
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? myFgColorDark
-                                              : myFgColorLight,
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(15)),
-                                        ),
-                                        child: TextField(
-                                          controller: recipeNameController,
-                                          keyboardType: TextInputType.text,
-                                          textInputAction: TextInputAction.done,
-                                          decoration: InputDecoration(
-                                            labelStyle: const TextStyle(
-                                                color: Color(0xA0000000),
-                                                fontSize: 18),
-                                            focusedBorder:
-                                                const OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color: mySecondaryColor,
-                                                width: 2,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.horizontal(
-                                                right: Radius.circular(15),
-                                                left: Radius.circular(15),
-                                              ),
-                                            ),
-                                            border: const OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.horizontal(
-                                                right: Radius.circular(15),
-                                                left: Radius.circular(15),
-                                              ),
-                                              // borderSide: BorderSide(color: borderColor, width: borderWidth),
-                                            ),
-                                            iconColor: mySecondaryColor,
-                                            hintText: 'Name of Dish',
-                                            suffixIcon: recipeNameController
-                                                    .text.isEmpty
-                                                ? const SizedBox(
-                                                    width: 0,
-                                                  )
-                                                : IconButton(
-                                                    onPressed: () {
-                                                      recipeName = '';
-                                                      recipeNameController
-                                                          .clear();
-                                                    },
-                                                    icon: const Icon(
-                                                      Icons.close,
-                                                      color: Colors.black45,
-                                                    ),
-                                                  ),
-                                          ),
-                                          onChanged: (value) {
-                                            setState(() {
-                                              recipeName = value.trim();
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                    // Padding(
-                                    //   padding: const EdgeInsets.symmetric(
-                                    //       vertical: 8.0),
-                                    //   child: Row(
-                                    //     children: [
-                                    //       CMText(
-                                    //         text: 'Ingredients',
-                                    //         fontSize: 20,
-                                    //         color: Theme.of(context).brightness ==
-                                    //                 Brightness.dark
-                                    //             ? myTextColorDark
-                                    //             : myTextColorDark,
-                                    //       ),
-                                    //     ],
-                                    //   ),
-                                    // ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(bottom: 0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 6),
-                                            child: Container(
-                                              height: 60,
-                                              // width: width * .4,
-                                              decoration: BoxDecoration(
-                                                color: Theme.of(context)
-                                                            .brightness ==
-                                                        Brightness.dark
-                                                    ? myFgColorDark
-                                                    : myFgColorLight,
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(15)),
-                                              ),
-                                              child: TextField(
-                                                controller:
-                                                    ingredientController,
-                                                keyboardType:
-                                                    TextInputType.text,
-                                                textInputAction:
-                                                    TextInputAction.done,
-                                                decoration: InputDecoration(
-                                                  labelStyle: const TextStyle(
-                                                      color: Color(0xA0000000),
-                                                      fontSize: 18),
-                                                  focusedBorder:
-                                                      const OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                      color: mySecondaryColor,
-                                                      width: 2,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.horizontal(
-                                                      right:
-                                                          Radius.circular(15),
-                                                      left: Radius.circular(15),
-                                                    ),
-                                                  ),
-                                                  border:
-                                                      const OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.horizontal(
-                                                      right:
-                                                          Radius.circular(15),
-                                                      left: Radius.circular(15),
-                                                    ),
-                                                    // borderSide: BorderSide(color: borderColor, width: borderWidth),
-                                                  ),
-                                                  iconColor: mySecondaryColor,
-                                                  hintText: 'Ingredients',
-                                                  suffixIcon:
-                                                      ingredientController
-                                                              .text.isEmpty
-                                                          ? const SizedBox(
-                                                              width: 0,
-                                                            )
-                                                          : IconButton(
-                                                              onPressed: () {
-                                                                ingredient = '';
-                                                                ingredientController
-                                                                    .clear();
-                                                              },
-                                                              icon: const Icon(
-                                                                Icons.close,
-                                                                color: Colors
-                                                                    .black45,
-                                                              ),
-                                                            ),
-                                                ),
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    ingredient = value;
-                                                  });
-                                                },
-                                                onSubmitted: (value) {
-                                                  setState(() {
-                                                    ingredients.add(value);
-
-                                                    ingredientController
-                                                        .clear();
-                                                  });
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                                          ingredients.isNotEmpty
-                                              ? Container(
-                                                  height: 40,
-                                                  decoration: BoxDecoration(
-                                                    color: Theme.of(context)
-                                                                .brightness ==
-                                                            Brightness.dark
-                                                        ? myFgColorDark
-                                                        : myFgColorLight,
-                                                    borderRadius:
-                                                        const BorderRadius.all(
-                                                            Radius.circular(8)),
-                                                  ),
-                                                  // width: width * .53,
-                                                  child: ListView.builder(
-                                                      scrollDirection:
-                                                          Axis.horizontal,
-                                                      itemCount:
-                                                          ingredients.length,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        return Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .symmetric(
-                                                                  horizontal:
-                                                                      2),
-                                                          child: Chip(
-                                                            label: CMText(
-                                                                text:
-                                                                    ingredients[
-                                                                        index]),
-                                                            onDeleted: () {
-                                                              setState(() {
-                                                                ingredients
-                                                                    .removeAt(
-                                                                        index);
-                                                              });
-                                                            },
-                                                          ),
-                                                        );
-                                                      }),
-                                                )
-                                              : const SizedBox(height: 0),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      children: [
-                                        // Row(
-                                        //   children: [
-                                        //     CMText(
-                                        //       text: 'Directions',
-                                        //       fontSize: 20,
-                                        //       color:
-                                        //           Theme.of(context).brightness ==
-                                        //                   Brightness.dark
-                                        //               ? myTextColorDark
-                                        //               : myTextColorDark,
-                                        //     ),
-                                        //   ],
-                                        // ),
-                                        Container(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 10),
+                            child: Column(
+                              children: [
+                                Form(
+                                  key: _formKey,
+                                  child: Column(
+                                    children: [
+                                      // const Padding(
+                                      //   padding:
+                                      //       EdgeInsets.symmetric(vertical: 8.0),
+                                      //   child: Row(
+                                      //     children: [
+                                      //       CMText(
+                                      //         text: 'Name of dish',
+                                      //         fontSize: 20,
+                                      //         color: myTextColorLight,
+                                      //       ),
+                                      //     ],
+                                      //   ),
+                                      // ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 15.0),
+                                        child: Container(
                                           height: 60,
-                                          // width: width * .95,
+                                          width: width * .95,
                                           decoration: BoxDecoration(
                                             color:
                                                 Theme.of(context).brightness ==
@@ -376,11 +149,12 @@ class _AddRecipeState extends State<AddRecipe> {
                                                 const BorderRadius.all(
                                                     Radius.circular(15)),
                                           ),
-                                          child: TextField(
-                                            controller: directionController,
+                                          child: TextFormField(
+                                            controller: recipeNameController,
                                             keyboardType: TextInputType.text,
                                             textInputAction:
-                                                TextInputAction.done,
+                                                TextInputAction.next,
+                                            focusNode: recipeNameFocusNode,
                                             decoration: InputDecoration(
                                               labelStyle: const TextStyle(
                                                   color: Color(0xA0000000),
@@ -406,17 +180,16 @@ class _AddRecipeState extends State<AddRecipe> {
                                                 // borderSide: BorderSide(color: borderColor, width: borderWidth),
                                               ),
                                               iconColor: mySecondaryColor,
-                                              hintText:
-                                                  'Add directions step by step',
-                                              suffixIcon: directionController
+                                              hintText: 'Name of Dish',
+                                              suffixIcon: recipeNameController
                                                       .text.isEmpty
                                                   ? const SizedBox(
                                                       width: 0,
                                                     )
                                                   : IconButton(
                                                       onPressed: () {
-                                                        steps = '';
-                                                        directionController
+                                                        recipeName = '';
+                                                        recipeNameController
                                                             .clear();
                                                       },
                                                       icon: const Icon(
@@ -427,26 +200,208 @@ class _AddRecipeState extends State<AddRecipe> {
                                             ),
                                             onChanged: (value) {
                                               setState(() {
-                                                steps = value;
-                                              });
-                                            },
-                                            onSubmitted: (value) {
-                                              setState(() {
-                                                directions.add(value);
-                                                directionsBoxHeight += 35;
-                                                directionController.clear();
+                                                recipeName =
+                                                    value.trim().toUpperCase();
                                               });
                                             },
                                           ),
                                         ),
-                                        // directions.isNotEmpty
-                                        //     ?
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 8.0),
-                                          child: Container(
-                                            height: 0 + directionsBoxHeight,
-                                            width: width * .95,
+                                      ),
+                                      // Padding(
+                                      //   padding: const EdgeInsets.symmetric(
+                                      //       vertical: 8.0),
+                                      //   child: Row(
+                                      //     children: [
+                                      //       CMText(
+                                      //         text: 'Ingredients',
+                                      //         fontSize: 20,
+                                      //         color: Theme.of(context).brightness ==
+                                      //                 Brightness.dark
+                                      //             ? myTextColorDark
+                                      //             : myTextColorDark,
+                                      //       ),
+                                      //     ],
+                                      //   ),
+                                      // ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 6),
+                                              child: Container(
+                                                height: 60,
+                                                // width: width * .4,
+                                                decoration: BoxDecoration(
+                                                  color: Theme.of(context)
+                                                              .brightness ==
+                                                          Brightness.dark
+                                                      ? myFgColorDark
+                                                      : myFgColorLight,
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                          Radius.circular(15)),
+                                                ),
+                                                child: TextFormField(
+                                                  controller:
+                                                      ingredientController,
+                                                  keyboardType:
+                                                      TextInputType.text,
+                                                  focusNode:
+                                                      ingredientFocusNode,
+                                                  textInputAction:
+                                                      TextInputAction.done,
+                                                  decoration: InputDecoration(
+                                                    labelStyle: const TextStyle(
+                                                        color:
+                                                            Color(0xA0000000),
+                                                        fontSize: 18),
+                                                    focusedBorder:
+                                                        const OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color: mySecondaryColor,
+                                                        width: 2,
+                                                      ),
+                                                      borderRadius: BorderRadius
+                                                          .horizontal(
+                                                        right:
+                                                            Radius.circular(15),
+                                                        left:
+                                                            Radius.circular(15),
+                                                      ),
+                                                    ),
+                                                    border:
+                                                        const OutlineInputBorder(
+                                                      borderRadius: BorderRadius
+                                                          .horizontal(
+                                                        right:
+                                                            Radius.circular(15),
+                                                        left:
+                                                            Radius.circular(15),
+                                                      ),
+                                                      // borderSide: BorderSide(color: borderColor, width: borderWidth),
+                                                    ),
+                                                    iconColor: mySecondaryColor,
+                                                    hintText: 'Ingredients',
+                                                    suffixIcon:
+                                                        ingredientController
+                                                                .text.isEmpty
+                                                            ? const SizedBox(
+                                                                width: 0,
+                                                              )
+                                                            : IconButton(
+                                                                onPressed: () {
+                                                                  ingredient =
+                                                                      '';
+                                                                  ingredientController
+                                                                      .clear();
+                                                                },
+                                                                icon:
+                                                                    const Icon(
+                                                                  Icons.close,
+                                                                  color: Colors
+                                                                      .black45,
+                                                                ),
+                                                              ),
+                                                  ),
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      ingredient = value
+                                                          .trim()
+                                                          .toUpperCase();
+                                                    });
+                                                  },
+                                                  onFieldSubmitted: (value) {
+                                                    setState(() {
+                                                      ingredients.add(value);
+
+                                                      ingredientController
+                                                          .clear();
+                                                    });
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                            ingredients.isNotEmpty
+                                                ? Container(
+                                                    height: 40,
+                                                    decoration: BoxDecoration(
+                                                      color: Theme.of(context)
+                                                                  .brightness ==
+                                                              Brightness.dark
+                                                          ? myFgColorDark
+                                                          : myFgColorLight,
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                                  .all(
+                                                              Radius.circular(
+                                                                  8)),
+                                                    ),
+                                                    // width: width * .53,
+                                                    child: ListView.builder(
+                                                        scrollDirection:
+                                                            Axis.horizontal,
+                                                        itemCount:
+                                                            ingredients.length,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          return Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        2),
+                                                            child: Chip(
+                                                              label: CMText(
+                                                                  text: ingredients[
+                                                                      index]),
+                                                              onDeleted: () {
+                                                                setState(() {
+                                                                  ingredients
+                                                                      .removeAt(
+                                                                          index);
+                                                                });
+                                                              },
+                                                            ),
+                                                          );
+                                                        }),
+                                                  )
+                                                : const SizedBox(height: 0),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          // Row(
+                                          //   children: [
+                                          //     CMText(
+                                          //       text: 'Directions',
+                                          //       fontSize: 20,
+                                          //       color:
+                                          //           Theme.of(context).brightness ==
+                                          //                   Brightness.dark
+                                          //               ? myTextColorDark
+                                          //               : myTextColorDark,
+                                          //     ),
+                                          //   ],
+                                          // ),
+                                          Container(
+                                            height: 60,
+                                            // width: width * .95,
                                             decoration: BoxDecoration(
                                               color: Theme.of(context)
                                                           .brightness ==
@@ -455,136 +410,51 @@ class _AddRecipeState extends State<AddRecipe> {
                                                   : myFgColorLight,
                                               borderRadius:
                                                   const BorderRadius.all(
-                                                Radius.circular(10),
-                                              ),
+                                                      Radius.circular(15)),
                                             ),
-                                            child: ListView.builder(
-                                                padding: const EdgeInsets.only(
-                                                    top: 0),
-                                                itemCount: directions.length,
-                                                itemBuilder: (context, index) {
-                                                  return Padding(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        vertical: 1.5),
-                                                    child: Container(
-                                                      height: 35,
-                                                      decoration: BoxDecoration(
-                                                        color: Theme.of(context)
-                                                                    .brightness ==
-                                                                Brightness.dark
-                                                            ? myBgColorDark
-                                                            : myBgColorLight,
-                                                        borderRadius:
-                                                            const BorderRadius
-                                                                .all(
-                                                          Radius.circular(8),
-                                                        ),
-                                                      ),
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(3),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            CMText(
-                                                              text:
-                                                                  "${index + 1}. ${directions[index]}",
-                                                              fontSize: 18,
-                                                              color: Theme.of(context)
-                                                                          .brightness ==
-                                                                      Brightness
-                                                                          .dark
-                                                                  ? myTextColorDark
-                                                                  : myTextColorLight,
-                                                            ),
-                                                            GestureDetector(
-                                                              onTap: () {
-                                                                setState(() {
-                                                                  directions
-                                                                      .removeAt(
-                                                                          index);
-                                                                  directionsBoxHeight -=
-                                                                      35;
-                                                                });
-                                                              },
-                                                              child: Icon(
-                                                                  Icons.close,
-                                                                  color: Theme.of(context)
-                                                                              .brightness ==
-                                                                          Brightness
-                                                                              .dark
-                                                                      ? myTextColorDark
-                                                                      : myTextColorLight,
-                                                                  size: 18),
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  );
-                                                }),
-                                          ),
-                                        )
-                                        // : const SizedBox(height: 10),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 8.0),
-                                      child: Container(
-                                        height: 60,
-                                        // width: width * .4,
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? myFgColorDark
-                                              : myFgColorLight,
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(15)),
-                                        ),
-                                        child: TextField(
-                                          controller: durationController,
-                                          keyboardType: TextInputType.number,
-                                          textInputAction: TextInputAction.done,
-                                          decoration: InputDecoration(
-                                            labelStyle: const TextStyle(
-                                                color: Color(0xA0000000),
-                                                fontSize: 18),
-                                            focusedBorder:
-                                                const OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color: mySecondaryColor,
-                                                width: 2,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.horizontal(
-                                                right: Radius.circular(15),
-                                                left: Radius.circular(15),
-                                              ),
-                                            ),
-                                            border: const OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.horizontal(
-                                                right: Radius.circular(15),
-                                                left: Radius.circular(15),
-                                              ),
-                                              // borderSide: BorderSide(color: borderColor, width: borderWidth),
-                                            ),
-                                            iconColor: mySecondaryColor,
-                                            hintText: 'Cooking time',
-                                            suffixIcon:
-                                                durationController.text.isEmpty
+                                            child: TextFormField(
+                                              controller: directionController,
+                                              keyboardType: TextInputType.text,
+                                              textInputAction:
+                                                  TextInputAction.done,
+                                              focusNode: directionFocusNode,
+                                              decoration: InputDecoration(
+                                                labelStyle: const TextStyle(
+                                                    color: Color(0xA0000000),
+                                                    fontSize: 18),
+                                                focusedBorder:
+                                                    const OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                    color: mySecondaryColor,
+                                                    width: 2,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.horizontal(
+                                                    right: Radius.circular(15),
+                                                    left: Radius.circular(15),
+                                                  ),
+                                                ),
+                                                border:
+                                                    const OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.horizontal(
+                                                    right: Radius.circular(15),
+                                                    left: Radius.circular(15),
+                                                  ),
+                                                  // borderSide: BorderSide(color: borderColor, width: borderWidth),
+                                                ),
+                                                iconColor: mySecondaryColor,
+                                                hintText:
+                                                    'Add directions step by step',
+                                                suffixIcon: directionController
+                                                        .text.isEmpty
                                                     ? const SizedBox(
                                                         width: 0,
                                                       )
                                                     : IconButton(
                                                         onPressed: () {
-                                                          duration = 0;
-                                                          durationController
+                                                          steps = '';
+                                                          directionController
                                                               .clear();
                                                         },
                                                         icon: const Icon(
@@ -592,197 +462,456 @@ class _AddRecipeState extends State<AddRecipe> {
                                                           color: Colors.black45,
                                                         ),
                                                       ),
+                                              ),
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  steps = value;
+                                                });
+                                              },
+                                              onFieldSubmitted: (value) {
+                                                setState(() {
+                                                  directions.add(value);
+                                                  directionsBoxHeight += 35;
+                                                  directionController.clear();
+                                                });
+                                              },
+                                            ),
                                           ),
-                                          onChanged: (value) {
-                                            setState(() {
-                                              duration = int.parse(value);
-                                            });
-                                          },
-                                          onSubmitted: (value) {
-                                            // setState(() {
-                                            //   directions.add(value);
-                                            //   directionController.clear();
-                                            // });
-                                          },
+                                          // directions.isNotEmpty
+                                          //     ?
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 8.0),
+                                            child: Container(
+                                              height: 0 + directionsBoxHeight,
+                                              width: width * .95,
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.dark
+                                                    ? myBgColorDark
+                                                    : myBgColorLight,
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                  Radius.circular(10),
+                                                ),
+                                              ),
+                                              child: ListView.builder(
+                                                  reverse: false,
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 0),
+                                                  itemCount: directions.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return Padding(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          vertical: 1.5),
+                                                      child: Container(
+                                                        height: 35,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Theme.of(context)
+                                                                      .brightness ==
+                                                                  Brightness
+                                                                      .dark
+                                                              ? myFgColorDark
+                                                              : myFgColorLight,
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                  .all(
+                                                            Radius.circular(8),
+                                                          ),
+                                                        ),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(3),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            4.0),
+                                                                child: CMText(
+                                                                  text:
+                                                                      "${index + 1}. ${directions[index]}",
+                                                                  fontSize: 18,
+                                                                  color: Theme.of(context)
+                                                                              .brightness ==
+                                                                          Brightness
+                                                                              .dark
+                                                                      ? myTextColorDark
+                                                                      : myTextColorLight,
+                                                                ),
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        right:
+                                                                            4),
+                                                                child:
+                                                                    GestureDetector(
+                                                                  onTap: () {
+                                                                    setState(
+                                                                        () {
+                                                                      directions
+                                                                          .removeAt(
+                                                                              index);
+                                                                      directionsBoxHeight -=
+                                                                          35;
+                                                                    });
+                                                                  },
+                                                                  child: Icon(
+                                                                      Icons
+                                                                          .close,
+                                                                      color: Theme.of(context).brightness ==
+                                                                              Brightness.dark
+                                                                          ? myTextColorDark
+                                                                          : myTextColorLight,
+                                                                      size: 18),
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }),
+                                            ),
+                                          )
+                                          // : const SizedBox(height: 10),
+                                        ],
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8.0),
+                                        child: Container(
+                                          height: 60,
+                                          // width: width * .4,
+                                          decoration: BoxDecoration(
+                                            color:
+                                                Theme.of(context).brightness ==
+                                                        Brightness.dark
+                                                    ? myFgColorDark
+                                                    : myFgColorLight,
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(15)),
+                                          ),
+                                          child: TextFormField(
+                                            controller: durationController,
+                                            keyboardType: TextInputType.number,
+                                            textInputAction:
+                                                TextInputAction.done,
+                                            focusNode: durationFocusNode,
+                                            decoration: InputDecoration(
+                                              labelStyle: const TextStyle(
+                                                  color: Color(0xA0000000),
+                                                  fontSize: 18),
+                                              focusedBorder:
+                                                  const OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: mySecondaryColor,
+                                                  width: 2,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.horizontal(
+                                                  right: Radius.circular(15),
+                                                  left: Radius.circular(15),
+                                                ),
+                                              ),
+                                              border: const OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.horizontal(
+                                                  right: Radius.circular(15),
+                                                  left: Radius.circular(15),
+                                                ),
+                                                // borderSide: BorderSide(color: borderColor, width: borderWidth),
+                                              ),
+                                              iconColor: mySecondaryColor,
+                                              hintText: 'Cooking time',
+                                              suffixIcon: durationController
+                                                      .text.isEmpty
+                                                  ? const SizedBox(
+                                                      width: 0,
+                                                    )
+                                                  : IconButton(
+                                                      onPressed: () {
+                                                        duration = 0;
+                                                        durationController
+                                                            .clear();
+                                                      },
+                                                      icon: const Icon(
+                                                        Icons.close,
+                                                        color: Colors.black45,
+                                                      ),
+                                                    ),
+                                            ),
+                                            onChanged: (value) {
+                                              setState(() {
+                                                duration = int.parse(value);
+                                              });
+                                            },
+                                            onFieldSubmitted: (value) {
+                                              // setState(() {
+                                              //   directions.add(value);
+                                              //   directionController.clear();
+                                              // });
+                                            },
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    // image != null
-                                    //     ? Container(
-                                    //         width: width * .93,
-                                    //         height: 200,
-                                    //         decoration: BoxDecoration(
-                                    //           color: Theme.of(context)
-                                    //                       .brightness ==
-                                    //                   Brightness.dark
-                                    //               ? myFgColorDark
-                                    //               : myFgColorLight,
-                                    //           borderRadius:
-                                    //               const BorderRadius.all(
-                                    //             Radius.circular(10),
-                                    //           ),
-                                    //           image: DecorationImage(
-                                    //             image: FileImage(image!),
-                                    //             fit: BoxFit.cover,
-                                    //           ),
-                                    //         ),
-                                    //         child: SizedBox(
-                                    //           height: double.infinity,
-                                    //           child: Column(
-                                    //             mainAxisAlignment:
-                                    //                 MainAxisAlignment.start,
-                                    //             children: [
-                                    //               SizedBox(
-                                    //                 width: double.infinity,
-                                    //                 child: Row(
-                                    //                   mainAxisAlignment:
-                                    //                       MainAxisAlignment.end,
-                                    //                   children: [
-                                    //                     GestureDetector(
-                                    //                       onTap: () {
-                                    //                         setState(() {
-                                    //                           image = null;
-                                    //                         });
-                                    //                       },
-                                    //                       child: Container(
-                                    //                         height: 45,
-                                    //                         width: 45,
-                                    //                         decoration:
-                                    //                             BoxDecoration(
-                                    //                           color: Theme.of(context)
-                                    //                                       .brightness ==
-                                    //                                   Brightness
-                                    //                                       .dark
-                                    //                               ? Colors
-                                    //                                   .black45
-                                    //                               : Colors
-                                    //                                   .white54,
-                                    //                           borderRadius:
-                                    //                               const BorderRadius
-                                    //                                   .all(
-                                    //                             Radius.circular(
-                                    //                                 10),
-                                    //                           ),
-                                    //                         ),
-                                    //                         child: Icon(
-                                    //                           Icons.close,
-                                    //                           color: Theme.of(context)
-                                    //                                       .brightness ==
-                                    //                                   Brightness
-                                    //                                       .dark
-                                    //                               ? myTextColorDark
-                                    //                               : myTextColorLight,
-                                    //                           size: 30,
-                                    //                         ),
-                                    //                       ),
-                                    //                     ),
-                                    //                   ],
-                                    //                 ),
-                                    //               ),
-                                    //             ],
-                                    //           ),
-                                    //         ),
-                                    //       )
-                                    //     : const SizedBox(height: 0),
-                                    // Padding(
-                                    //   padding: const EdgeInsets.symmetric(
-                                    //       vertical: 8.0),
-                                    //   child: CMButton(
-                                    //     text: 'Add a picture',
-                                    //     width: width * .93,
-                                    //     color: Theme.of(context).brightness ==
-                                    //             Brightness.dark
-                                    //         ? myFgColorDark
-                                    //         : myFgColorLight,
-                                    //     borderColor: mySecondaryColor,
-                                    //     hasIcon: true,
-                                    //     icon: Icon(Icons.add_a_photo_outlined,
-                                    //         color:
-                                    //             Theme.of(context).brightness ==
-                                    //                     Brightness.dark
-                                    //                 ? myTextColorDark
-                                    //                 : myTextColorLight),
-                                    //     onPressed: () {
-                                    //       // selectPhoto(ImageSource.gallery);
-                                    //       showModalBottomSheet(
-                                    //         isScrollControlled: true,
-                                    //         backgroundColor: Colors.transparent,
-                                    //         context: context,
-                                    //         builder: (context) =>
-                                    //             _selectPhoto(),
-                                    //       );
-                                    //     },
-                                    //   ),
-                                    // ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 10),
-                                      child: CMButton(
-                                        text: 'Submit',
-                                        onPressed: () {
-                                          final recipes = Recipes(
-                                            recipeName: recipeName,
-                                            ingredients: ingredients,
-                                            steps: directions,
-                                            duration: duration,
-                                            likes: 0,
-                                            // imageUrl: imageUrl,
-                                          );
-                                          addRecipe(recipes);
+                                      // image != null
+                                      //     ? Container(
+                                      //         width: width * .93,
+                                      //         height: 200,
+                                      //         decoration: BoxDecoration(
+                                      //           color: Theme.of(context)
+                                      //                       .brightness ==
+                                      //                   Brightness.dark
+                                      //               ? myFgColorDark
+                                      //               : myFgColorLight,
+                                      //           borderRadius:
+                                      //               const BorderRadius.all(
+                                      //             Radius.circular(10),
+                                      //           ),
+                                      //           image: DecorationImage(
+                                      //             image: FileImage(image!),
+                                      //             fit: BoxFit.cover,
+                                      //           ),
+                                      //         ),
+                                      //         child: SizedBox(
+                                      //           height: double.infinity,
+                                      //           child: Column(
+                                      //             mainAxisAlignment:
+                                      //                 MainAxisAlignment.start,
+                                      //             children: [
+                                      //               SizedBox(
+                                      //                 width: double.infinity,
+                                      //                 child: Row(
+                                      //                   mainAxisAlignment:
+                                      //                       MainAxisAlignment.end,
+                                      //                   children: [
+                                      //                     GestureDetector(
+                                      //                       onTap: () {
+                                      //                         setState(() {
+                                      //                           image = null;
+                                      //                         });
+                                      //                       },
+                                      //                       child: Container(
+                                      //                         height: 45,
+                                      //                         width: 45,
+                                      //                         decoration:
+                                      //                             BoxDecoration(
+                                      //                           color: Theme.of(context)
+                                      //                                       .brightness ==
+                                      //                                   Brightness
+                                      //                                       .dark
+                                      //                               ? Colors
+                                      //                                   .black45
+                                      //                               : Colors
+                                      //                                   .white54,
+                                      //                           borderRadius:
+                                      //                               const BorderRadius
+                                      //                                   .all(
+                                      //                             Radius.circular(
+                                      //                                 10),
+                                      //                           ),
+                                      //                         ),
+                                      //                         child: Icon(
+                                      //                           Icons.close,
+                                      //                           color: Theme.of(context)
+                                      //                                       .brightness ==
+                                      //                                   Brightness
+                                      //                                       .dark
+                                      //                               ? myTextColorDark
+                                      //                               : myTextColorLight,
+                                      //                           size: 30,
+                                      //                         ),
+                                      //                       ),
+                                      //                     ),
+                                      //                   ],
+                                      //                 ),
+                                      //               ),
+                                      //             ],
+                                      //           ),
+                                      //         ),
+                                      //       )
+                                      //     : const SizedBox(height: 0),
+                                      // Padding(
+                                      //   padding: const EdgeInsets.symmetric(
+                                      //       vertical: 8.0),
+                                      //   child: CMButton(
+                                      //     text: 'Add a picture',
+                                      //     width: width * .93,
+                                      //     color: Theme.of(context).brightness ==
+                                      //             Brightness.dark
+                                      //         ? myFgColorDark
+                                      //         : myFgColorLight,
+                                      //     borderColor: mySecondaryColor,
+                                      //     hasIcon: true,
+                                      //     icon: Icon(Icons.add_a_photo_outlined,
+                                      //         color:
+                                      //             Theme.of(context).brightness ==
+                                      //                     Brightness.dark
+                                      //                 ? myTextColorDark
+                                      //                 : myTextColorLight),
+                                      //     onPressed: () {
+                                      //       // selectPhoto(ImageSource.gallery);
+                                      //       showModalBottomSheet(
+                                      //         isScrollControlled: true,
+                                      //         backgroundColor: Colors.transparent,
+                                      //         context: context,
+                                      //         builder: (context) =>
+                                      //             _selectPhoto(),
+                                      //       );
+                                      //     },
+                                      //   ),
+                                      // ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10),
+                                        child: CMButton(
+                                          text: 'Submit',
+                                          onPressed: () async {
+                                            if (recipeName.isEmpty ||
+                                                ingredients.isEmpty ||
+                                                directions.isEmpty ||
+                                                duration == 0) {
+                                              showSnackbarWithoutAction(
+                                                  context,
+                                                  Theme.of(context)
+                                                              .brightness ==
+                                                          Brightness.dark
+                                                      ? myPrimaryColorDark
+                                                      : myPrimaryColorLight,
+                                                  'Please fill out all fields');
+                                            } else if (directions.length < 3) {
+                                              showSnackbarWithoutAction(
+                                                  context,
+                                                  Theme.of(context)
+                                                              .brightness ==
+                                                          Brightness.dark
+                                                      ? myPrimaryColorDark
+                                                      : myPrimaryColorLight,
+                                                  'Please add at least 3 steps');
+                                            } else {
+                                              showDialog(
+                                                barrierDismissible: false,
+                                                context: context,
+                                                builder: (context) =>
+                                                    const Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                ),
+                                              );
 
-                                          // addImageToFirebase(image!);
-                                          // if (image != null) {
-                                          //   addImageToFirebase(image!);
-                                          //   print('imageUrl $imageUrl');
-                                          // }
+                                              final recipes = Recipes(
+                                                recipeName: recipeName,
+                                                ingredients: ingredients,
+                                                steps: directions,
+                                                duration: duration,
+                                                likes: 0,
+                                              );
 
-                                          oldIngredients.then(
-                                            (value) {
-                                              bool ingredientInDatabase = false;
+                                              await addRecipe(recipes);
+
+                                              List test = [];
+
+                                              await oldIngredients
+                                                  .then((value) {
+                                                value.sort();
+                                                value.forEach((element) {
+                                                  test.add(element);
+                                                });
+                                              });
+
                                               for (int i = 0;
-                                                  i < value.length;
+                                                  i < ingredients.length;
                                                   i++) {
-                                                for (int i = 0;
-                                                    i < ingredients.length;
-                                                    i++) {
-                                                  if (value[i].toLowerCase() ==
+                                                bool ingredientInDatabase =
+                                                    false;
+                                                for (int j = 0;
+                                                    j < test.length;
+                                                    j++) {
+                                                  if (test[j].toLowerCase() ==
                                                       ingredients[i]
                                                           .toLowerCase()) {
                                                     ingredientInDatabase = true;
+                                                    break;
                                                   }
                                                 }
-                                                if (ingredientInDatabase ==
-                                                    false) {
+                                                if (!ingredientInDatabase) {
                                                   final ingredient =
                                                       Ingredients(
                                                     name: ingredients[i],
                                                   );
-                                                  addNewIngredient(ingredient);
+                                                  await addNewIngredient(
+                                                      ingredient);
                                                 }
                                               }
-                                            },
-                                          );
-                                          // oldIngredients.then((value) => {
-                                          //       value.sort(),
-                                          //       value.forEach((element) {
-                                          //         print(element);
-                                          //       })
-                                          //     });
-                                        },
-                                        width: double.infinity,
-                                      ),
-                                    )
-                                  ],
+
+                                              Navigator.pop(context);
+
+                                              recipeNameController.clear();
+                                              ingredientController.clear();
+                                              directionController.clear();
+                                              durationController.clear();
+                                              setState(() {
+                                                ingredients.clear();
+                                                directions.clear();
+                                                recipeName = '';
+                                                duration = 0;
+                                                directionsBoxHeight = 0;
+                                                // image = null;
+                                              });
+
+                                              showSnackbarWithoutAction(
+                                                  context,
+                                                  Theme.of(context)
+                                                              .brightness ==
+                                                          Brightness.dark
+                                                      ? myPrimaryColorDark
+                                                      : myPrimaryColorLight,
+                                                  'Recipe added successfully');
+                                            }
+
+                                            // addImageToFirebase(image!);
+                                            // if (image != null) {
+                                            //   addImageToFirebase(image!);
+                                            //   print('imageUrl $imageUrl');
+                                            // }
+
+                                            // oldIngredients.then((value) => {
+                                            //       value.sort(),
+                                            //       value.forEach((element) {
+                                            //         print(element);
+                                            //       })
+                                            //     });
+                                          },
+                                          width: double.infinity,
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -928,11 +1057,12 @@ class _AddRecipeState extends State<AddRecipe> {
       await docUser.set(json);
     } catch (e) {
       showSnackbarWithoutAction(
-          context,
-          Theme.of(context).brightness == Brightness.dark
-              ? myPrimaryColorDark
-              : myPrimaryColorLight,
-          e);
+        context,
+        Theme.of(context).brightness == Brightness.dark
+            ? myPrimaryColorDark
+            : myPrimaryColorLight,
+        e.toString(),
+      );
     }
   }
 
@@ -950,6 +1080,27 @@ class _AddRecipeState extends State<AddRecipe> {
               ? myPrimaryColorDark
               : myPrimaryColorLight,
           e);
+    }
+  }
+
+  String by(User user) {
+    String name = '${user.firstName} ${user.lastName}';
+    return name;
+  }
+
+  Future<User?> getUserInfo() async {
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('id',
+            isEqualTo: FirebaseAuth.instance.currentUser!.uid.toString().trim())
+        .limit(1)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      final documentSnapshot = querySnapshot.docs.first;
+      return User.fromJson(documentSnapshot.data());
+    } else {
+      return null;
     }
   }
 }
@@ -999,6 +1150,34 @@ class Recipes {
         by: json['by'],
         likes: json['likes'],
         // imageUrl: json['imageUrl'],
+      );
+}
+
+class User {
+  String id;
+  final String firstName;
+  final String lastName;
+  final String email;
+
+  User({
+    this.id = '',
+    required this.firstName,
+    required this.lastName,
+    required this.email,
+  });
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'firstName': firstName,
+        'lastName': lastName,
+        'email': email,
+      };
+
+  static User fromJson(Map<String, dynamic> json) => User(
+        id: json['id'],
+        firstName: json['firstName'],
+        lastName: json['lastName'],
+        email: json['email'],
       );
 }
 

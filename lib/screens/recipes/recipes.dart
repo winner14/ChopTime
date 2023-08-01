@@ -144,7 +144,9 @@ class _RecipesState extends State<Recipes> {
         duration: recipe.duration,
         likes: recipe.likes,
         by: recipe.by,
-        imageUrl: '',
+        ingredients: recipe.ingredients,
+        steps: recipe.steps,
+        // imageUrl: '',
       ),
     );
   }
