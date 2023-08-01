@@ -52,72 +52,98 @@ class _RecipesState extends State<Recipes> {
                           right: Radius.circular(20),
                         )),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 6),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        CMText(
-                          text: 'Recipes that match your ingredients',
-                          color: myTextColorLight,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  ),
                   StreamBuilder<List<Recipe>>(
-                      stream: getMatchedRecipes(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          final recipes = snapshot.data!;
-                          // print(widget.selectedIngredients);
-                          return SizedBox(
-                            height: MediaQuery.of(context).size.height * .8,
-                            width: double.infinity,
-                            child: ListView(
-                              padding: const EdgeInsets.only(top: 0),
-                              children: recipes.map(buildRecipes).toList(),
-                            ),
-                          );
-                        } else if (snapshot.hasError) {
-                          return const Center(
-                            child: CMText(
-                              text: 'Something went wrong',
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          );
-                        } else if (snapshot.hasData == false) {
-                          return SizedBox(
-                            height: MediaQuery.of(context).size.height * .8,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const CMText(
-                                  text:
-                                      'No recipes found for your selected ingredients. \nTry adding more ingredients or change your selected ingredients.',
-                                  textAlign: TextAlign.center,
-                                  fontSize: 18,
-                                  color: myTextColorLight,
-                                  fontWeight: FontWeight.w500,
+                    stream: getMatchedRecipes(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        // Handle error
+                        return Center(
+                          child: CMText(
+                            text: 'Something went wrong',
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? myTextColorDark
+                                    : myTextColorLight,
+                          ),
+                        );
+                      } else if (snapshot.hasData &&
+                          snapshot.data!.isNotEmpty) {
+                        // Handle data and not empty
+                        final recipes = snapshot.data!;
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 0),
+                          child: Column(
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.fromLTRB(6, 6, 0, 6),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    CMText(
+                                      text:
+                                          'Recipes that match your ingredients',
+                                      color: myTextColorLight,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w500,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
                                 ),
-                                CMButton(
-                                    text: 'Submit a recipe',
-                                    width: double.infinity,
-                                    onPressed: () {
-                                      nextScreen(context, const AddRecipe());
-                                    })
-                              ],
-                            ),
-                          );
-                        } else {
-                          return const Center(
-                            child: Loading(),
-                          );
-                        }
-                      }),
+                              ),
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height * .8,
+                                width: double.infinity,
+                                child: ListView(
+                                  padding: const EdgeInsets.only(top: 0),
+                                  children: recipes.map(buildRecipes).toList(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      } else {
+                        // Handle no data
+                        return SizedBox(
+                          height: MediaQuery.of(context).size.height * .8,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Center(
+                                child: SizedBox(
+                                  height: 80,
+                                  child: Icon(Icons.search_off_rounded,
+                                      size: 70,
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? myTextColorDark
+                                          : myTextColorLight),
+                                ),
+                              ),
+                              CMText(
+                                text:
+                                    'No recipes found for your selected ingredients. \nTry adding more ingredients or change your selected ingredients.',
+                                textAlign: TextAlign.center,
+                                fontSize: 18,
+                                color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? myTextColorDark
+                                    : myTextColorLight,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              CMButton(
+                                  text: 'Submit a recipe',
+                                  width: double.infinity,
+                                  onPressed: () {
+                                    nextScreen(context, const AddRecipe());
+                                  })
+                            ],
+                          ),
+                        );
+                      }
+                    },
+                  ),
                 ],
               ),
             ),
@@ -137,17 +163,14 @@ class _RecipesState extends State<Recipes> {
   }
 
   Widget buildRecipes(Recipe recipe) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 3.0, horizontal: 2),
-      child: RecipeCard(
-        recipeName: recipe.recipeName,
-        duration: recipe.duration,
-        likes: recipe.likes,
-        by: recipe.by,
-        ingredients: recipe.ingredients,
-        steps: recipe.steps,
-        // imageUrl: '',
-      ),
+    return RecipeCard(
+      recipeName: recipe.recipeName,
+      duration: recipe.duration,
+      likes: recipe.likes,
+      by: recipe.by,
+      ingredients: recipe.ingredients,
+      steps: recipe.steps,
+      // imageUrl: '',
     );
   }
 }

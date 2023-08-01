@@ -52,8 +52,8 @@ class _RecipeCardState extends State<RecipeCard> {
         child: Container(
           decoration: BoxDecoration(
             color: Theme.of(context).brightness == Brightness.light
-                ? const Color(0xB14CAF4F)
-                : const Color(0xAF000000),
+                ? myPrimaryColorLight
+                : myPrimaryColorDark,
             borderRadius: const BorderRadius.vertical(
                 bottom: Radius.circular(10), top: Radius.circular(10)),
           ),

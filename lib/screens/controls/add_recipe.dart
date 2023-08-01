@@ -314,6 +314,8 @@ class _AddRecipeState extends State<AddRecipe> {
                                                       ingredient = value
                                                           .trim()
                                                           .toUpperCase();
+                                                      ingredient = ingredient
+                                                          .toUpperCase();
                                                     });
                                                   },
                                                   onFieldSubmitted: (value) {

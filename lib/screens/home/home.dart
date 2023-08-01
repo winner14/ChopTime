@@ -29,10 +29,11 @@ class _HomeState extends State<Home> {
       isSpices = false;
 
   final filter = [
-    'Fruits',
+    'Fruits and Vegetables',
     'Fish and Meat',
     'Spices',
     'Others',
+    'All Ingredients',
     'Add your own ingredient'
   ];
 
@@ -41,7 +42,7 @@ class _HomeState extends State<Home> {
   String selectedIngredient = '';
   int ingredientCount = 0;
 
-  String? value = 'Fruits';
+  String? value = 'Fruits and Vegetables';
 
   @override
   void dispose() {
@@ -281,19 +282,44 @@ class _HomeState extends State<Home> {
                                           onSelected: (String? value) {
                                             setState(() {
                                               this.value = value;
-                                              if (value == 'Fruits') {
-                                                isFruits = true;
-                                                isFishAndMeat = false;
-                                                isOthers = false;
+                                              if (value ==
+                                                  'Fruits and Vegetables') {
+                                                setState(() {
+                                                  isFruits = true;
+                                                  isFishAndMeat = false;
+                                                  isSpices = false;
+                                                  isOthers = false;
+                                                });
                                               } else if (value ==
                                                   'Fish and Meat') {
-                                                isFruits = false;
-                                                isFishAndMeat = true;
-                                                isOthers = false;
+                                                setState(() {
+                                                  isFruits = false;
+                                                  isSpices = false;
+                                                  isFishAndMeat = true;
+                                                  isOthers = false;
+                                                });
                                               } else if (value == 'Others') {
-                                                isFruits = false;
-                                                isFishAndMeat = false;
-                                                isOthers = true;
+                                                setState(() {
+                                                  isFruits = false;
+                                                  isFishAndMeat = false;
+                                                  isSpices = false;
+                                                  isOthers = true;
+                                                });
+                                              } else if (value == 'Spices') {
+                                                setState(() {
+                                                  isFruits = false;
+                                                  isFishAndMeat = false;
+                                                  isSpices = true;
+                                                  isOthers = false;
+                                                });
+                                              } else if (value ==
+                                                  'All Ingredients') {
+                                                setState(() {
+                                                  isFruits = false;
+                                                  isFishAndMeat = false;
+                                                  isSpices = false;
+                                                  isOthers = false;
+                                                });
                                               } else if (value ==
                                                   'Add your own ingredient') {
                                                 showModalBottomSheet(
@@ -554,7 +580,7 @@ class _HomeState extends State<Home> {
           .map((snapshot) => snapshot.docs
               .map((doc) => Ingredients.fromJson(doc.data()))
               .toList());
-    } else if (isOthers) {
+    } else if (isSpices) {
       return FirebaseFirestore.instance
           .collection('ingredients')
           .where('category', isEqualTo: 'Spices')
